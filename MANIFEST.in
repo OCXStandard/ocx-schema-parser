@@ -21,4 +21,4 @@ include LICENSE
 include README.rst
 include Makefile
 
-global-exclude *.py[cod] __pycache__/* *.so *.dylib
+global-exclude *.py[cod] __pycache__/* *.so *.dylib schema_versions/*

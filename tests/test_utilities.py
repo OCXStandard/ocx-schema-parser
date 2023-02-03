@@ -1,9 +1,10 @@
 """ Tests for the cross module utility functions."""
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
-from pathlib import Path
 from collections import defaultdict
-from utils import utilities
+from pathlib import Path
+
 from schema_parser import config_file
+from utils import utilities
 
 TEST_DICT = {'Bob': 'male', 'Jenny': 'female', 'Axel': 'boy', 'Eva': 'girl', 'Theodora': 'hen'}
 

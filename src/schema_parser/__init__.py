@@ -1,6 +1,7 @@
 #  Copyright (c) 2023.  OCX Consortium https://3docx.org. See the LICENSE
 
 from pathlib import Path
+
 from utils import utilities
 
 __version__ = '0.2.0'
