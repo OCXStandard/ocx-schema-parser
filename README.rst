@@ -54,9 +54,9 @@ ocx-schema-parser
     :alt: Supported implementations
     :target: https://pypi.org/project/ocx-schema-parser
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/OCXStandard/ocx-schema-parser/v0.1.0.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/OCXStandard/ocx-schema-parser/v0.2.0.svg
     :alt: Commits since latest release
-    :target: https://github.com/OCXStandard/ocx-schema-parser/compare/v0.1.0...main
+    :target: https://github.com/OCXStandard/ocx-schema-parser/compare/v0.2.0...main
 
 
 

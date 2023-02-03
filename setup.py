@@ -19,7 +19,7 @@ def read(*names, **kwargs):
 
 setup(
     name='ocx-schema-parser',
-    version='0.1.0',
+    version='0.2.0',
     license='MIT',
     description='A python XML parser for the Open Class 3D Exchange (OCX) schema',
     long_description='{}\n{}'.format(
