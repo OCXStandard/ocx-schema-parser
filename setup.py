@@ -45,11 +45,11 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',
-    #    'Programming Language :: Python :: 3.7',
-    #    'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
-    #    'Programming Language :: Python :: 3.10',
-    #    'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         # uncomment if you test on these interpreters:
@@ -69,17 +69,23 @@ setup(
     ],
     python_requires='>=3.7',
     install_requires=[
-        'click',
+        'click==8.1.3',
+        'click-shell==2.1',
+        'pyyaml==6.0',
+        'colorlog==6.7.0',
+        'fuzzywuzzy==0.18.0',
+        'tabulate==0.9.0',
+        'python-Levenshtein==0.20.8',
+        'lxml==4.9.2',
+        'requests==2.28.1',
+        'validators==0.18.2',
+        'pytest-regressions',
+        'bump2version'
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
     ],
     extras_require={
         # eg:
         #   'rst': ['docutils>=0.11'],
         #   ':python_version=="2.6"': ['argparse'],
-    },
-    entry_points={
-        'console_scripts': [
-            'schema = schema_parser.cli:main',
-        ]
     },
 )

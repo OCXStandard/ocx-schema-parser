@@ -8,7 +8,7 @@ little bit helps, and credit will always be given.
 Bug reports
 ===========
 
-When `reporting a bug <https://github.com/ocastrup/ocx-schema-parser/issues>`_ please include:
+When `reporting a bug <https://github.com/OCXStandard/ocx-schema-parser/issues>`_ please include:
 
     * Your operating system name and version.
     * Any details about your local setup that might be helpful in troubleshooting.
@@ -17,14 +17,14 @@ When `reporting a bug <https://github.com/ocastrup/ocx-schema-parser/issues>`_ p
 Documentation improvements
 ==========================
 
-ocastrup could always use more documentation, whether as part of the
-official ocastrup docs, in docstrings, or even on the web in blog posts,
+`ocx-schema-parser` could always use more documentation, whether as part of the
+official `ocx-schema-parser` docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 Feature requests and feedback
 =============================
 
-The best way to send feedback is to file an issue at https://github.com/ocastrup/ocx-schema-parser/issues.
+The best way to send feedback is to file an issue at https://github.com/OCXStandard/ocx-schema-parser/issues.
 
 If you are proposing a feature:
 
@@ -37,7 +37,7 @@ Development
 
 To set up `ocx-schema-parser` for local development:
 
-1. Fork `ocx-schema-parser <https://github.com/ocastrup/ocx-schema-parser>`_
+1. Fork `ocx-schema-parser <https://github.com/OCXStandard/ocx-schema-parser>`_
    (look for the "Fork" button).
 2. Clone your fork locally::
 
@@ -49,7 +49,7 @@ To set up `ocx-schema-parser` for local development:
 
    Now you can make your changes locally.
 
-4. When you're done making changes run all the checks and docs builder with `tox <https://tox.wiki/en/latest/install.html>`_ one command::
+4. When you're done making changes run all the checks and docs builder with `tox <https://tox.wiki/en/latest/>`_ one command::
 
     tox
 
@@ -60,6 +60,26 @@ To set up `ocx-schema-parser` for local development:
     git push origin name-of-your-bugfix-or-feature
 
 6. Submit a pull request through the GitHub website.
+
+Using Conda environment on Windows
+-------------------------------------
+It is possible to use the `Conda <https://conda.io/projects/conda/en/latest/index.html>`_ package manager for providing the required python
+packages.
+Conda can be installed from an `Anaconda or miniconda installation <https://conda.io/projects/conda/en/latest/user-guide/install/index.html>`_.
+
+Create a bootstrap development environment with your python version and pip::
+
+    conda create -n <name> python=<version> pip
+
+This will create the environment with ``python=<version>`` and ``pip`` installed. Then install all the package requirements using the ``conda update`` command::
+
+    conda env update -f environment.yaml
+
+
+Conda will install the requirements in the ``environment.yaml`` file. You need to manually align the requirements between this file and the requirements in  ``setup.py``. Activate the environment using::
+
+    conda activate <name>
+
 
 Pull Request Guidelines
 -----------------------
@@ -85,3 +105,4 @@ To run a subset of tests::
 To run all the test environments in *parallel*::
 
     tox -p auto
+

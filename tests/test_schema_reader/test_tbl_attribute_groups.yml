@@ -1,0 +1,55 @@
+'{http://www.w3.org/XML/1998/namespace}specialAttrs':
+  Name: specialAttrs
+  Prefix: xml
+  Source Line: 157
+  Tag: '{http://www.w3.org/XML/1998/namespace}specialAttrs'
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}barSectionAttributes':
+  Name: barSectionAttributes
+  Prefix: ocx
+  Source Line: 7560
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}barSectionAttributes'
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}externalRefAttributes':
+  Name: externalRefAttributes
+  Prefix: ocx
+  Source Line: 3043
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}externalRefAttributes'
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}header':
+  Name: header
+  Prefix: ocx
+  Source Line: 2327
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}header'
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}nurbsAttributes':
+  Name: nurbsAttributes
+  Prefix: ocx
+  Source Line: 5587
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}nurbsAttributes'
+'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}dimensionURL':
+  Name: dimensionURL
+  Prefix: null
+  Source Line: 189
+  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}dimensionURL'
+'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}initialUnit':
+  Name: initialUnit
+  Prefix: null
+  Source Line: 107
+  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}initialUnit'
+'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}powerRational':
+  Name: powerRational
+  Prefix: null
+  Source Line: 137
+  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}powerRational'
+'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}prefix':
+  Name: prefix
+  Prefix: null
+  Source Line: 147
+  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}prefix'
+'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}sourceName':
+  Name: sourceName
+  Prefix: null
+  Source Line: 117
+  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}sourceName'
+'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}sourceURL':
+  Name: sourceURL
+  Prefix: null
+  Source Line: 127
+  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}sourceURL'

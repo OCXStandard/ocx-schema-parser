@@ -1,0 +1,35 @@
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}booleanListType':
+  Name: booleanListType
+  Prefix: ocx
+  Source Line: 7996
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}booleanListType'
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}classificationSociety':
+  Name: classificationSociety
+  Prefix: ocx
+  Source Line: 7688
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}classificationSociety'
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}curveForm_enum':
+  Name: curveForm_enum
+  Prefix: ocx
+  Source Line: 5628
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}curveForm_enum'
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}doubleListType':
+  Name: doubleListType
+  Prefix: ocx
+  Source Line: 8010
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}doubleListType'
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}floatListType':
+  Name: floatListType
+  Prefix: ocx
+  Source Line: 8003
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}floatListType'
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}guid':
+  Name: guid
+  Prefix: ocx
+  Source Line: 2551
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}guid'
+'{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}integerListType':
+  Name: integerListType
+  Prefix: ocx
+  Source Line: 7989
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd}integerListType'

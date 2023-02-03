@@ -1,0 +1,5 @@
+ocx: https://3docx.org/fileadmin//ocx_schema//V287//OCX_Schema.xsd
+unitsml: urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18
+vc: http://www.w3.org/2007/XMLSchema-versioning
+xlink: http://www.w3.org/1999/xlink
+xs: http://www.w3.org/2001/XMLSchema

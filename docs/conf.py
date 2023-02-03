@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
-import sphinx_py3doc_enhanced_theme
+from __future__ import unicode_literals
+
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath("../src/"))
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -11,26 +16,28 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
+    'sphinx_autodoc_typehints',
 ]
 source_suffix = '.rst'
 master_doc = 'index'
-project = 'ocastrup'
+project = 'ocx-schema-reader'
 year = '2023'
-author = 'Ole Christian Astrup'
+author = '3Docx.org'
 copyright = '{0}, {1}'.format(year, author)
 version = release = '0.1.0'
 
 pygments_style = 'trac'
 templates_path = ['.']
 extlinks = {
-    'issue': ('https://github.com/ocastrup/ocx-schema-parser/issues/%s', '#'),
-    'pr': ('https://github.com/ocastrup/ocx-schema-parser/pull/%s', 'PR #'),
+    'issue': ('https://github.com/OCXStandard/ocx-schema-parser/issues/%s', '#'),
+    'pr': ('https://github.com/OCXStandard/ocx-schema-parser/pull/%s', 'PR #'),
 }
-html_theme = 'sphinx_py3doc_enhanced_theme'
-html_theme_path = [sphinx_py3doc_enhanced_theme.get_html_theme_path()]
-html_theme_options = {
-    'githuburl': 'https://github.com/ocastrup/ocx-schema-parser/',
-}
+# on_rtd is whether we are on readthedocs.org
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+
+if not on_rtd:  # only set the theme if we're building docs locally
+    html_theme = 'sphinx_rtd_theme'
+
 
 html_use_smartypants = True
 html_last_updated_fmt = '%b %d, %Y'
@@ -39,7 +46,7 @@ html_sidebars = {
     '**': ['searchbox.html', 'globaltoc.html', 'sourcelink.html'],
 }
 html_short_title = '%s-%s' % (project, version)
-
+html_static_path = ["_static"]
 napoleon_use_ivar = True
 napoleon_use_rtype = False
 napoleon_use_param = False
