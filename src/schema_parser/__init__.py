@@ -3,7 +3,7 @@
 from pathlib import Path
 from utils import utilities
 
-__version__ = '0.0.0'
+__version__ = '0.1.0'
 
 config_file = Path(utilities.root_dir()) / "schema_parser" / "configs" / "schema_config.yaml"  # The schema config
 
