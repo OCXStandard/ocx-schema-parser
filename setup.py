@@ -57,7 +57,6 @@ setup(
         # 'Programming Language :: Python :: Implementation :: Jython',
         # 'Programming Language :: Python :: Implementation :: Stackless',
         'Topic :: Utilities',
-        'Private :: Do Not Upload',
     ],
     project_urls={
         'Documentation': 'https://ocx-schema-parser.readthedocs.io/',
@@ -80,7 +79,8 @@ setup(
         'requests==2.28.1',
         'validators==0.18.2',
         'pytest-regressions',
-        'bump2version'
+        'bump2version',
+        'twine'
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
     ],
     extras_require={

@@ -39,6 +39,7 @@ dependencies:
   - m2-gawk # awk for windows. for Makefile sh
   - pyinstaller  # For making a bundled python installation (--onefile)
   - pip
+  - twine
   # Install any PyPi packages
   - pip:
       # Packages only on PyPi
