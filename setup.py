@@ -76,7 +76,7 @@ setup(
         'tabulate==0.9.0',
         'python-Levenshtein==0.20.8',
         'lxml==4.9.2',
-        'requests==2.28.1',
+        'requests==2.31.0',
         'validators==0.18.2',
         'pytest-regressions',
         'bump2version',
