@@ -1,32 +1,27 @@
 # A self-documenting Makefile
 # You can set these variables from the command line, and also
 # from the environment for the first two.
-SOURCE = ./src/
-CONDA_ENV = ocxdev
+SOURCE = ./ocx_schema_parser/
+CONDA_ENV = ocx-schema-parser
 # PS replacements for sh
 RM = 'del -Confirmed False'
 
-PACKAGE := src
+PACKAGE := ocx_schema_parser
 MODULES := $(wildcard $(PACKAGE)/*.py)
 
 # CONDA TASKS ##################################################################
 # PROJECT setup using conda and powershell
 .PHONY: conda-create
 conda-create:  ## Create a new conda environment with the python version and basic development tools
-	@conda env create -f environment.yaml
+	@conda env create -f environment.yml
 	@conda activate $(CONDA_ENV)
 cc: conda-create
 .PHONY: cc
 conda-upd:  environment.yaml ## Update the conda development environment when environment.yaml has changed
-	@conda env update -f environment.yaml
+	@conda env update -f environment.yml
 cu: conda-upd
 .PHONY:cu
 
-conda-lock:  environment.yaml ## Update the conda development environment when environment.yaml has changed
-	@conda env export > environment.lock.yaml
-
-cl: conda-lock
-.PHONY: cl
 
 conda-activate: ## Activate the conda environment for the project
 	@conda activate $(CONDA_ENV)
@@ -78,7 +73,8 @@ run: ## Start ocx-tools CLI
 FAILURES := .pytest_cache/pytest/v/cache/lastfailed
 
 test:  ## Run unit and integration tests
-	@pytest --durations=5  --cov-report html --cov src .
+	#@pytest --durations=5  --cov-report html --cov src .
+	@pytest
 
 test-upd:  ## Update the regression tests baseline
 	@pytest --force-regen

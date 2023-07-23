@@ -12,27 +12,31 @@ from lxml.etree import QName
 
 from .helpers import SchemaHelper
 from .xelement import LxmlElement
+from .data_classes import SchemaEnumerator
 
 
 class OcxAttribute:
-    """Global schema attribute class capturing the xsd schema definition of a global xs:attribute.
+    """Global schema attribute class capturing the XSD schema definition of a global ``xs:attribute``.
 
     Args:
-        xs_attribute: The lxml.etree.Element class
+        xs_attribute: The ``lxml.etree.Element`` instance
 
     Attributes:
+        _xs_attribute: The ``lxml.etree.Element`` instance
         _name : The attribute name
         _type : The attribute type
         _use : Whether the attribute is optional or required
         _fixed: Whether the attribute has a fixed value if any
-        _default: The deaflalt value of the attribute if any
+        _default: The default value of the attribute if any
         _annotation: The attribute description
         _is_global: True if the element is global, False otherwise
+        _enumerations: List of enumerator values. Empty if the attribute is not an enumerator
 
     """
 
     def __init__(self, xs_attribute: Element):
         # Private
+        self._xs_attribute = xs_attribute
         self._name = LxmlElement.get_name(xs_attribute)
         self._type = SchemaHelper.get_type(xs_attribute)
         self._use = LxmlElement.get_use(xs_attribute)
@@ -40,6 +44,7 @@ class OcxAttribute:
         self._default = xs_attribute.get("default")
         self._annotation = LxmlElement.get_element_text(xs_attribute)
         self._is_global = False
+        self._enumerator = self.find_enumerations()
 
     def get_use(self) -> str:
         """The xs:attribute use (optional or required)
@@ -49,6 +54,17 @@ class OcxAttribute:
 
         """
         return self._use
+
+    def assign_referenced_attribute(self, reference: Element):
+        """Assign the actual referenced attribute and update members.
+
+        Args:
+            reference: The reference to the attribute ``xs:attribute`` definition
+
+        """
+
+        self._xs_attribute = reference
+        self._enumerator = self.find_enumerations()
 
     def get_fixed(self) -> str:
         """The fixed value of the xs:attribute
@@ -162,6 +178,28 @@ class OcxAttribute:
             "Fixed": self.get_fixed(),
             "Description": self.get_description(),
         }
+
+    def is_enumerator(self):
+        """True if the attribute is an enumeration, False otherwise."""
+        return len(LxmlElement.find_all_children_with_name(self._xs_attribute, 'enumeration')) > 0
+
+    def find_enumerations(self) -> Union[SchemaEnumerator, None]:
+        """Find any enumeration values."""
+        enum = None
+        if self.is_enumerator():
+            enum = SchemaEnumerator(self.get_name())
+            values = []
+            descriptions = []
+            for e in LxmlElement.iter(self._xs_attribute, '{*}enumeration'):
+                values.append(e.get('value'))
+                descriptions.append(LxmlElement.get_element_text(e))
+            enum.values = values
+            enum.descriptions = descriptions
+        return enum
+
+    def get_enumerations(self) -> SchemaEnumerator:
+        """Return the enumerator data class."""
+        return self._enumerator
 
 
 class OcxChildElement:
@@ -476,7 +514,7 @@ class OcxGlobalElement:
         self._children[tag] = child
 
     def get_children(self) -> List:
-        """Get all my children xsd types
+        """Get all my children XSD types.
 
         Returns:
             Return all children as a dict of key-value pairs ``(tag, OCXChildElement)``

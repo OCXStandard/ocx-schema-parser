@@ -1,31 +1,31 @@
 #  Copyright (c) 3-2023.  OCX Consortium https://3docx.org. See the LICENSE
-
+# System imports
 from collections import defaultdict
-from logging import Logger
 from pathlib import Path
 from typing import Any
 from typing import Dict
 from typing import List
 from typing import Tuple
 from typing import Union
-
+# Third party imports
+from loguru import logger
 import requests
 from lxml.etree import Element
 from lxml.etree import QName
 from requests import HTTPError
-
-from . import DEFAULT_SCHEMA
-from . import PROCESS_SCHEMA_TYPES
-from . import SCHEMA_FOLDER
-from . import W3C_SCHEMA_BUILT_IN_TYPES
+# Application imports
+from ocx_schema_parser import DEFAULT_SCHEMA
+from ocx_schema_parser import PROCESS_SCHEMA_TYPES
+from ocx_schema_parser import SCHEMA_FOLDER
+from ocx_schema_parser import W3C_SCHEMA_BUILT_IN_TYPES
 from .data_classes import SchemaSummary
 from .data_classes import SchemaType
-from .elements import OcxAttribute
-from .elements import OcxChildElement
-from .elements import OcxGlobalElement
+from .data_classes import SchemaEnumerator
+from .elements import OcxAttribute, OcxChildElement, OcxGlobalElement
 from .helpers import SchemaHelper
 from .xparse import LxmlElement
 from .xparse import LxmlParser
+from ocx_schema_parser.ocxtransformer.transformer import SchemaTransformer
 
 
 class OcxSchema:
@@ -47,16 +47,17 @@ class OcxSchema:
         _builtin_xs_types: W3C primitive data types.
             `www.w3.org <https://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes>`_. Defined in ``config.yaml``
 
+
     """
 
-    def __init__(self, logger: Logger, local_folder: str = SCHEMA_FOLDER):
-        self._parser = LxmlParser(logger)
-        self.log = logger
+    def __init__(self, log: logger, local_folder: str = SCHEMA_FOLDER):
+        self._parser = LxmlParser(log)
+        self.log = log
         # Default namespace map for the reserved prefix xml. See https://www.w3.org/TR/xml-names/#sec-namespaces
         self._namespace = {"xml": "http://www.w3.org/XML/1998/namespace"}
-        Path(SCHEMA_FOLDER).mkdir(parents=True, exist_ok=True)
         self._is_parsed = False
         self._local_folder = local_folder
+        Path(self._local_folder).mkdir(parents=True, exist_ok=True)
         self._default_schema = DEFAULT_SCHEMA
         self._all_schema_elements = {}  # Hash table with tag as key schema_elements[tag] = lxml.etree.Element
         self._ocx_global_elements = {}  # Hash table with tag as key, value pairs(tag, OcxGlobalElement)
@@ -240,6 +241,8 @@ class OcxSchema:
             name = qn.localname
             self.log.debug(f"Adding global element {name}")
             ocx = OcxGlobalElement(e, tag, self.log)
+            transformer = SchemaTransformer()
+            xsd_element = transformer.transform(e, LxmlElement.get_namespace(e))
             # store in look-up table
             self._add_global_ocx_element(tag, ocx)
             # Find all parents and add them to the instance
@@ -331,6 +334,7 @@ class OcxSchema:
             # Get the referenced element
             tag, a = self._get_element_from_type(reference)
             attribute.put_name(LxmlElement.get_name(a))
+            attribute.assign_referenced_attribute(a)
             if attribute.get_description() == "":
                 attribute.put_description(LxmlElement.get_element_text(a))
             attribute.put_type(SchemaHelper.get_type(a))
@@ -503,11 +507,11 @@ class OcxSchema:
         """
         return self._namespace
 
-    def _get_all_schema_elements(self) -> Dict:
-        """All ``lxml.etree.Element`` schema elements
+    def get_all_schema_elements(self) -> Dict:
+        """Return all OCX schema elements.
 
         Returns:
-            The dict of all global xsd lxml.etree.Element elements with tag as key
+            The dict of all global XSD ``lxml.etree.Element`` elements with the unique tag ``{namespace}name`` as key.
 
         """
         return self._all_schema_elements
@@ -518,7 +522,7 @@ class OcxSchema:
         self._all_schema_elements = sorted_dict
 
     def _get_schema_types(self, schema_type: str) -> List[str]:
-        """Internal function to retrieve a list of tags of ``lxml.etree.Element`` schema elements of a specific type
+        """Internal function to retrieve a list of tags of ``lxml.etree.Element`` schema elements of a specific type.
 
         Returns:
             The sorted list of all tags of ``lxml.etree.Element`` of type ``schema_type``
@@ -530,7 +534,7 @@ class OcxSchema:
         return sorted(elements)
 
     def get_ocx_elements(self) -> List:
-        """All ocx ``OcxGlobalElement`` elements
+        """All ocx ``OcxGlobalElement`` elements.
 
         Returns:
             The list of all parsed ``OcxGlobalElement`` instances
@@ -548,7 +552,7 @@ class OcxSchema:
         return self._schema_version
 
     def get_schema_changes(self) -> Dict:
-        """The OCX schema change history
+        """The OCX schema change history.
 
         Returns:
             The schema changes for all schema versions
@@ -557,7 +561,7 @@ class OcxSchema:
         return self._schema_changes
 
     def _get_schema_element_types(self) -> List:
-        """All schema elements of type ``element``
+        """All schema elements of type ``element``.
 
         Returns:
             The list of all etree.Element of type ``element``
@@ -566,7 +570,7 @@ class OcxSchema:
         return self._get_schema_types("element")
 
     def _get_schema_complex_types(self) -> List[str]:
-        """All tags for schema elements of type ``complexType``
+        """All tags for schema elements of type ``complexType``.
 
         Returns:
             The list of tags of all ``etree.Element`` of type ``complexType``
@@ -575,7 +579,7 @@ class OcxSchema:
         return self._get_schema_types("complexType")
 
     def _get_schema_simple_types(self) -> List[str]:
-        """Alle schema elements of type ``simpleType``
+        """Alle schema elements of type ``simpleType``.
 
         Returns:
             The list of tags of all etree.Element of type ``simpleType``
@@ -587,14 +591,14 @@ class OcxSchema:
         """All schema elements of type ``attribute'
 
         Returns:
-            The list of unique tags for all etree.Element of type ``attribute``
+            The list of unique tags for all etree.Element of type ``attribute``.
 
         """
 
         return self._get_schema_types("attribute")
 
     def _get_schema_attribute_group_types(self) -> List[str]:
-        """All schema elements of type ``attributeGroup``
+        """All schema elements of type ``attributeGroup``.
 
         Returns:
             The list of all etree.Element of type ``attributeGroup``
@@ -614,7 +618,7 @@ class OcxSchema:
         return SchemaSummary(schema_version, schema_types, namespaces)
 
     def tbl_attribute_groups(self) -> Dict:
-        """All parsed ``attributeGroup`` types in the schema and any referenced schemas'
+        """All parsed ``attributeGroup`` types in the schema and any referenced schemas.
 
         Returns:
 
@@ -628,7 +632,7 @@ class OcxSchema:
         return table
 
     def tbl_simple_types(self) -> Dict:
-        """The table of all parsed ``simpleType`` elements in the schema and any referenced schemas'
+        """The table of all parsed ``simpleType`` elements in the schema and any referenced schemas.
 
         Returns:
 
@@ -643,7 +647,7 @@ class OcxSchema:
         return table
 
     def tbl_attribute_types(self) -> Dict:
-        """The table of all parsed attribute elements in the schema and any referenced schemas'
+        """The table of all parsed attribute elements in the schema and any referenced schemas.
 
         Returns:
 
@@ -657,7 +661,7 @@ class OcxSchema:
         return table
 
     def tbl_element_types(self) -> Dict:
-        """The table of all parsed elements of type element in the schema and any referenced schemas'
+        """The table of all parsed elements of type element in the schema and any referenced schemas.
 
         Returns:
 
@@ -671,7 +675,7 @@ class OcxSchema:
         return table
 
     def tbl_complex_types(self) -> Dict:
-        """The table of all parsed complexType elements in the schema and any referenced schemas'
+        """The table of all parsed complexType elements in the schema and any referenced schemas.
 
         Returns:
 
@@ -685,7 +689,7 @@ class OcxSchema:
         return table
 
     def _get_schema_type_data_class(self, tag: str) -> SchemaType:
-        """Return the ``SchemaType`` dataclass of the schema type with ``tag``
+        """Return the ``SchemaType`` dataclass of the schema type with ``tag``.
             Args:
                 tag: the schema ``tag``
 

@@ -111,4 +111,4 @@ Note, to combine the coverage data from all the tox environments run:
 
 Credits
 =======
-The project is based on a setup described in the blog `Packaging a library <https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure%3E>`_ by Ionel Cristian Maries and the use of his `cookiecutter <https://github.com/ionelmc/cookiecutter-pylibrary>`_.
+The project is based on a setup described in the blog `Packaging a library <https://blog.ionelmc.ro/2014/05/25/python-packaging>`_ by Ionel Cristian Maries and the use of his `cookiecutter <https://github.com/ionelmc/cookiecutter-pylibrary>`_.

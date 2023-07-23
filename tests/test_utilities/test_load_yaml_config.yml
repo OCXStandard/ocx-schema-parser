@@ -1,4 +1,32 @@
-DEFAULT_SCHEMA: https://raw.githubusercontent.com/OCXStandard/OCX_Schema/working_draft/OCX_Schema.xsd
+DEFAULT_SCHEMA: https://3docx.org/fileadmin/ocx_schema/V286/OCX_Schema.xsd
+KNOWN_WORD_LIST:
+- 3D
+- NURBS
+- OCX
+- XML
+- authoring
+- circumcircle
+- consumables
+- enumerated
+- mm
+- modulus
+- multiplicities
+- ordinate
+- orthogonal
+- scantling
+- scantlings
+- schema
+- stiffeners
+OCX_NAME_EXCEPTIONS:
+- AP_Pos
+- FP_Pos
+- GUIDRef
+- U_NURBSproperties
+- V_NURBSproperties
+- application_version
+- ocxXML
+- originating_system
+- time_stamp
 PROCESS_SCHEMA_TYPES:
 - element
 - attribute
@@ -24,3 +52,4 @@ W3C_SCHEMA_BUILT_IN_TYPES:
   '{http://www.w3.org/2001/XMLSchema}hexBinary': https://www.w3.org/TR/xmlschema-2/#hexBinary
   '{http://www.w3.org/2001/XMLSchema}string': https://www.w3.org/TR/xmlschema-2/#string
   '{http://www.w3.org/2001/XMLSchema}token': https://www.w3.org/TR/xmlschema-2/#token
+WORKING_DRAFT: https://raw.githubusercontent.com/OCXStandard/OCX_Schema/working_draft/OCX_Schema.xsd

@@ -1,4 +1,4 @@
-"""The data_class module contains the dataclasses holding schema attributes after parsing."""
+"""The data_classes module contains the dataclasses holding schema attributes after parsing."""
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
 from dataclasses import dataclass
 from dataclasses import field
@@ -12,7 +12,7 @@ from typing import Tuple
 class BaseDataClass:
     """Base class for OCX dataclasses.
 
-    Each sub-class has to implement a field metadata with name `header` for each of its attributes, for example:
+    Each subclass has to implement a field metadata with name `header` for each of its attributes, for example:
 
         ``name : str = field(metadata={'header': '<User friendly field name>'})``
 
@@ -31,7 +31,7 @@ class BaseDataClass:
 
 @dataclass
 class SchemaChange(BaseDataClass):
-    """Class for keeping track of OCX schema changes
+    """Class for keeping track of OCX schema changes.
 
     Args:
          version: The schema version the change applies to
@@ -49,7 +49,7 @@ class SchemaChange(BaseDataClass):
 
 @dataclass
 class SchemaType(BaseDataClass):
-    """Class for xsd schema type information
+    """Class for xsd schema type information.
 
     Args:
          name: The schema type name
@@ -67,7 +67,7 @@ class SchemaType(BaseDataClass):
 
 @dataclass
 class SchemaSummary:
-    """Class for schema summary information
+    """Class for schema summary information.
 
     Args:
          schema_version: The schema version
@@ -79,3 +79,18 @@ class SchemaSummary:
     schema_version: List[Tuple] = field(metadata={"header": "Schema Version"})
     schema_types: List[Tuple] = field(metadata={"header": "Schema Types"})
     schema_namespaces: List[Tuple] = field(metadata={"header": "Namespaces"})
+
+
+@dataclass
+class SchemaEnumerator(BaseDataClass):
+    """Enumerator class.
+
+    Args:
+        name: The name of the ``xs:attribute`` enumerator
+        values: Enumeration values
+        descriptions: Enumeration descriptions
+    """
+
+    name: str = field(metadata={"header": "Attribute name"})
+    values: List[str] = field(metadata={"header": "Value"}, default_factory=lambda: [])
+    descriptions: List[str] = field(metadata={"header": "Source Line"}, default_factory=lambda: [])

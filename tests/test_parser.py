@@ -1,5 +1,5 @@
-""" Tests for the schema reader classes"""
-from schema_parser.parser import OcxSchema
+""" Tests for the OCXSchema class"""
+from ocx_schema_parser.parser import OcxSchema
 
 
 class TestOcxSchema:
@@ -30,3 +30,12 @@ class TestOcxSchema:
     def test_attribute_types(self, data_regression, process_schema: OcxSchema):
         result = process_schema.tbl_simple_types()
         data_regression.check(result)
+
+    def test_attribute_enumerator(self, process_schema: OcxSchema):
+        panel = process_schema.get_ocx_element_from_type("ocx:Panel")
+        attribute = None
+        # attribute = [a for a in panel.get_attributes() if a.get_name == 'functionType'][0]
+        for a in panel.get_attributes():
+            if a.get_name() == 'functionType':
+                attribute = a
+        assert attribute.is_enumerator() is True

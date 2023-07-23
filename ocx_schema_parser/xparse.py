@@ -1,12 +1,12 @@
 #  Copyright (c) 2023.  OCX Consortium https://3docx.org. See the LICENSE
-
-from logging import Logger
+# System imports
 from typing import Dict
-
+# Third party imports
+from loguru import logger
 from lxml import etree
 from lxml.etree import Element
 from lxml.etree import XMLSyntaxError
-
+# Application imports
 from .xelement import LxmlElement
 
 
@@ -22,9 +22,9 @@ class LxmlParser:
 
     """
 
-    def __init__(self, logger: Logger):
+    def __init__(self, log: logger):
         self._tree: Element = None
-        self._log: Logger = logger
+        self._log = log
 
     def parse(self, file: str, store_ids: bool = False) -> bool:
         """Parses an XML file

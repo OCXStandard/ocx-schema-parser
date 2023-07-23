@@ -1,6 +1,6 @@
 #  Copyright (c) 2022. OCX Consortium https://3docx.org. See the LICENSE
 
-import logging
+from loguru import logger
 import os
 import sys
 from pathlib import Path
@@ -11,40 +11,21 @@ import requests
 from requests import HTTPError
 
 # To make sure that the tests import the modules this has to come before the import statements
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
+#sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
 
-from schema_parser import DEFAULT_SCHEMA
-from schema_parser.parser import LxmlParser
-from schema_parser.parser import OcxSchema
+from ocx_schema_parser import DEFAULT_SCHEMA
+from ocx_schema_parser.parser import LxmlParser
+from ocx_schema_parser.parser import OcxSchema
 
-logger = logging.Logger(__name__)
-
-
-@pytest.fixture
-def download_schema(shared_datadir) -> (bool, Union[str, None]):  # The `shared_datadir` points to ./data in root
-    """Download a schema to the global data folder `shared_datadir` from an url."""
-
-    try:
-        file_name = Path(DEFAULT_SCHEMA).name
-        file = Path(shared_datadir) / file_name
-        r = requests.get(DEFAULT_SCHEMA)
-        with open(file, "wb") as f:
-            f.write(r.content)
-            assert Path(file).exists()
-            return True, file
-    except HTTPError as e:
-        logger.error(f'Failed to access schema from "{DEFAULT_SCHEMA}: {e}""')
-        return False, None
 
 
 @pytest.fixture
-def load_schema_from_file(shared_datadir, download_schema) -> LxmlParser:
+def load_schema_from_file(shared_datadir) -> LxmlParser:
     """Load the schema from file and make it available for processing."""
-    assert download_schema[0] is True
     parser = LxmlParser(logger)
-    file = download_schema[1]
-    parser.parse(file)
-    assert parser.lxml_version() == (4, 9, 2, 0)
+    file = shared_datadir / 'OCX_Schema.xsd'
+    parser.parse(file.absolute())
+    assert parser.lxml_version() == (4, 9, 3, 0)
     return parser
 
 

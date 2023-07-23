@@ -331,7 +331,7 @@ class LxmlElement:
 
     @staticmethod
     def get_element_text(element: Element) -> str:
-        """The text between the element's start and end tags without any tail text
+        """The text between the element's start and end tags without any tail text.
 
         Args:
             element: the etree.Element instance
@@ -586,13 +586,14 @@ class LxmlElement:
     def strip_namespace_tag(element: str) -> str:
         """Returns the element name without the namespace tag
         Args:
-            element: The element name without tag
+            element: The element name with or without namespace as a string
 
         Returns:
-            The element name without tag
+            The element without namespace tag
 
         """
         i = element.find("}")
         if not i == -1:
             element = element[i + 1 : len(element)]
         return element
+

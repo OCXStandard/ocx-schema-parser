@@ -7,14 +7,14 @@ import os
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 
 import yaml
 
 
 def root_dir() -> str:
     """Path to the directory of the parent module."""
-    return os.path.realpath(os.path.join(os.path.dirname(__file__), "../"))
+    return os.path.realpath(os.path.join(os.path.dirname(__file__), "../../src/"))
 
 
 def current_dir(file: str) -> str:
@@ -199,3 +199,13 @@ def load_yaml_config(config: Path) -> dict:
         return app_config
     else:
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), config.absolute())
+
+
+def camel_case_split(str) -> List:
+    """Split camel case string to individual strings."""
+    return re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))', str)
+
+
+def dromedary_case_split(str) -> List:
+    """Split camel case string to individual strings."""
+    return re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)', str)
