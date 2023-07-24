@@ -463,6 +463,36 @@ class OcxSchema:
             self.log.debug(f'{__class__}: The _namespace prefix  "{nsprefix}" is not defined')
             return None
 
+    def get_ocx_children_data(self, schema_type: str) -> Dict:
+        """Method to retrieve the ocx ``OcxGlobalElement`` children data
+
+        Args:
+            schema_type: the ocx type on the form ``prefix:name``
+
+        Returns:
+            All children data attributes of the element
+
+        """
+        element = self.get_ocx_element_from_type(schema_type)
+        if element:
+            return element.children_to_dict()
+        return {}
+
+    def get_ocx_attribute_data(self, schema_type: str) -> Dict:
+        """Method to retrieve the ocx ``OcxGlobalElement`` attribute data
+
+        Args:
+            schema_type: the ocx type on the form ``prefix:name``
+
+        Returns:
+            All the ocx element attribute data
+
+        """
+        element = self.get_ocx_element_from_type(schema_type)
+        if element:
+            return element.attributes_to_dict()
+        return {}
+
     def _get_prefix_from_namespace(self, namespace: str) -> str:
         """Return the namespace prefix
 
@@ -533,7 +563,7 @@ class OcxSchema:
             elements.append(tag)
         return sorted(elements)
 
-    def get_ocx_elements(self) -> List:
+    def get_ocx_elements(self) -> List[OcxGlobalElement]:
         """All ocx ``OcxGlobalElement`` elements.
 
         Returns:

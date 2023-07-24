@@ -14,7 +14,7 @@ import yaml
 
 def root_dir() -> str:
     """Path to the directory of the parent module."""
-    return os.path.realpath(os.path.join(os.path.dirname(__file__), "../../src/"))
+    return os.path.realpath(os.path.join(os.path.dirname(__file__), "../../"))
 
 
 def current_dir(file: str) -> str:

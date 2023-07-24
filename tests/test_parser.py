@@ -39,3 +39,7 @@ class TestOcxSchema:
             if a.get_name() == 'functionType':
                 attribute = a
         assert attribute.is_enumerator() is True
+
+    def test_get_ocx_children_data(self, data_regression, process_schema: OcxSchema):
+        result = process_schema.get_ocx_children_data('ocx:Vessel')[0]
+        data_regression.check(result)

@@ -9,7 +9,7 @@ from ocx_schema_parser import ALLOWED_WORDS, NAME_EXCEPTIONS
 
 
 class SchemaCheck:
-    """The SchemaCheck provides functionality for checking the conformance of the OCX scheam XSD.
+    """The SchemaCheck provides functionality for checking the conformance of the OCX schema XSD.
 
     Args:
         parser: the OCX schema parser

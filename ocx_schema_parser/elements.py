@@ -1,5 +1,5 @@
 """The OCX Schema content classes."""
-# Copyright (c) 2022-2023.  OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2022-2023. OCX Consortium https://3docx.org. See the LICENSE
 
 from collections import defaultdict
 from logging import Logger
@@ -771,7 +771,7 @@ class OcxGlobalElement:
 
         """
         table = defaultdict(list)
-        for child in self._children:
+        for child in sorted(self._children, key=lambda x: x.get_name()):
             attributes = child.attributes_to_dict()
             for a in attributes:
                 table[a].append(attributes[a])
