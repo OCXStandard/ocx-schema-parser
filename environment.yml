@@ -1,4 +1,4 @@
-name: ocxdev
+name: ocx-schema-parser
 channels:
   - conda-forge
   - msys2 # for m2-grep
@@ -8,39 +8,30 @@ channels:
   - nodefaults
 dependencies:
   - python=3.10
-  - certifi
-  - pyyaml=6.0
-  - colorlog=6.7.0
-  - xsdata
-  - python-Levenshtein=0.20.8
-  - lxml=4.9.2
-  - requests=2.28.1
-  - validators=0.18.2
-  # Development deps
+  - typer
+  - loguru
+  - rich
+  - tqdm
+  - tabulate
+  # Dev deps
+  - pip
+  - poetry
+  - pre-commit
+  - tbump
+  # Doc deps
   - sphinx
   - sphinx-autodoc-typehints
   - sphinx_rtd_theme
   - sphinx-click
-  - pre-commit
-  - black
-  - isort
-  - autoflake
-  - flake8
-  - bandit
-  - pytest
-  - pytest-cov
-  - coverage
-  - pytest-regressions
-  - bump2version
-  - jake  # Vulnerability scanner for Conda packages
   - m2w64-make # GNU mMake for windows
   - m2-grep # Grep for windows. For Makefile sh
   - m2-gawk # awk for windows. for Makefile sh
-  - pip
-  - twine
-  - pyspellchecker
-  - inflection
+  # Build & test
+  - pytest
   # Install any PyPi packages
   - pip:
       # Packages only on PyPi
-      - sphinx-py3doc-enhanced-theme
+      - xsdata[cli,lxml,soap]
+      - click-shell==2.1 # conda has not version 2.1
+      - sphinx_automodapi
+      - typer[all]

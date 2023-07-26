@@ -3,8 +3,8 @@
 from collections import defaultdict
 from pathlib import Path
 
-from schema_parser import config_file
-from utils import utilities
+from ocx_schema_parser import config_file
+from ocx_schema_parser.utils import utilities
 
 TEST_DICT = {'Bob': 'male', 'Jenny': 'female', 'Axel': 'boy', 'Eva': 'girl', 'Theodora': 'hen'}
 
@@ -37,3 +37,17 @@ def test_number_table_rows(data_regression):
     numbered_dict = utilities.number_table_rows(TEST_DICT)
     index = [0, 1, 2, 3]
     assert index == numbered_dict['#']
+
+
+@staticmethod
+def test_camel_case_split():
+    camel_case = 'pythonGeekForGeeks'
+    words = utilities.camel_case_split(camel_case)
+    assert words == ['Geek', 'For', 'Geeks']
+
+
+@staticmethod
+def test_dromedary_case_split():
+    camel_case = 'pythonGeekForGeeks'
+    words = utilities.dromedary_case_split(camel_case)
+    assert words == ['python', 'Geek', 'For', 'Geeks']

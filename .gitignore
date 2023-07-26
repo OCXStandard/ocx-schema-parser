@@ -1,3 +1,5 @@
+# Project
+schema_versions/
 *.py[cod]
 __pycache__
 

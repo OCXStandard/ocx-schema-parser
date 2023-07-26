@@ -1,0 +1,35 @@
+'{http://data.dnvgl.com/Schemas/ocxXMLSchema}booleanListType':
+  Name: booleanListType
+  Prefix: ocx
+  Source Line: 7527
+  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}booleanListType'
+'{http://data.dnvgl.com/Schemas/ocxXMLSchema}classificationSociety':
+  Name: classificationSociety
+  Prefix: ocx
+  Source Line: 7219
+  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}classificationSociety'
+'{http://data.dnvgl.com/Schemas/ocxXMLSchema}curveForm_enum':
+  Name: curveForm_enum
+  Prefix: ocx
+  Source Line: 5164
+  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}curveForm_enum'
+'{http://data.dnvgl.com/Schemas/ocxXMLSchema}doubleListType':
+  Name: doubleListType
+  Prefix: ocx
+  Source Line: 7541
+  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}doubleListType'
+'{http://data.dnvgl.com/Schemas/ocxXMLSchema}floatListType':
+  Name: floatListType
+  Prefix: ocx
+  Source Line: 7534
+  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}floatListType'
+'{http://data.dnvgl.com/Schemas/ocxXMLSchema}guid':
+  Name: guid
+  Prefix: ocx
+  Source Line: 2088
+  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}guid'
+'{http://data.dnvgl.com/Schemas/ocxXMLSchema}integerListType':
+  Name: integerListType
+  Prefix: ocx
+  Source Line: 7520
+  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}integerListType'

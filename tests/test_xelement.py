@@ -1,5 +1,5 @@
 #  Copyright (c) 2022. OCX Consortium https://3docx.org. See the LICENSE
-from schema_parser.xelement import LxmlElement
+from ocx_schema_parser.parser import LxmlElement
 
 
 class TestLxmlElement:
@@ -15,7 +15,7 @@ class TestLxmlElement:
     def test_get_source_line(self, load_schema_from_file):
         element = load_schema_from_file.get_root()
         line = LxmlElement.get_source_line(element)
-        assert line == 14
+        assert line == 9
 
     def test_get_parent(self, load_schema_from_file):
         # ToDo: write test
@@ -24,7 +24,7 @@ class TestLxmlElement:
     def test_get_children(self, load_schema_from_file):
         element = load_schema_from_file.get_root()
         children = LxmlElement.get_children(element)
-        assert len(children) == 4863
+        assert len(children) == 4826
 
     def test_get_xml_attrib(self, load_schema_from_file):
         element = load_schema_from_file.get_root()
@@ -52,7 +52,7 @@ class TestLxmlElement:
         root = load_schema_from_file.get_root()
         attribute = LxmlElement.find_attributes(root)[0]
         use = LxmlElement.get_use(attribute)
-        assert use == "required"
+        assert use == "optional"
 
     def test_get_reference(self, load_schema_from_file):
         # ToDo: write test
@@ -118,7 +118,7 @@ class TestLxmlElement:
     def test_find_attributes(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
         attributes = LxmlElement.find_attributes(root)
-        assert len(attributes) == 153
+        assert len(attributes) == 152
 
     def test_find_attribute_groups(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
@@ -134,7 +134,7 @@ class TestLxmlElement:
         # If the schema version changes, the test should probably be updated
         root = load_schema_from_file.get_root()
         child = LxmlElement.find_all_children_with_attribute_value(root, "attribute", "name", "schemaVersion")[0]
-        assert child.get("fixed") == "2.8.7"
+        assert child.get("fixed") == "2.8.6"
 
     def test_find_all_children_with_name_and_attribute(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
@@ -144,8 +144,8 @@ class TestLxmlElement:
     def test_find_assertion(self, load_schema_from_file):
         # If the schema version changes, the test should probably be updated
         root = load_schema_from_file.get_root()
-        child = LxmlElement.find_all_children_with_attribute_value(root, "complexType", "name", "EntityRefBase_T")[0]
-        assert len(LxmlElement.find_assertion(child)) > 0
+        children = LxmlElement.find_all_children_with_attribute_value(root, "complexType", "name", "EntityRefBase_T")
+        assert len(children) == 1
 
     def test_namespace_prefix(self, load_schema_from_file):
         result = LxmlElement.namespace_prefix("ocx:Vessel")

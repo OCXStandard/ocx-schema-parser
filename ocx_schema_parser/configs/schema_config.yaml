@@ -1,0 +1,63 @@
+#  Copyright (c) 2023.  OCX Consortium https://3docx.org. See the LICENSE
+# Module specific config settings
+SCHEMA_FOLDER: 'schema_versions\'
+# DEFAULT_SCHEMA: 'https://3docx.org/fileadmin/ocx_schema/V286/OCX_Schema.xsd'
+# The working draft version on github:
+WORKING_DRAFT: 'https://raw.githubusercontent.com/OCXStandard/OCX_Schema/working_draft/OCX_Schema.xsd'
+DEFAULT_SCHEMA: 'https://3docx.org/fileadmin/ocx_schema/V286/OCX_Schema.xsd'
+SUB_COMMAND: 'schema'
+# w3c primitive data types. ref https://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes
+W3C_SCHEMA_BUILT_IN_TYPES: {
+  '{http://www.w3.org/2001/XMLSchema}string': 'https://www.w3.org/TR/xmlschema-2/#string',
+  '{http://www.w3.org/2001/XMLSchema}boolean': 'https://www.w3.org/TR/xmlschema-2/#boolean',
+  '{http://www.w3.org/2001/XMLSchema}decimal': 'https://www.w3.org/TR/xmlschema-2/#decimal',
+  '{http://www.w3.org/2001/XMLSchema}float': 'https://www.w3.org/TR/xmlschema-2/#float',
+  '{http://www.w3.org/2001/XMLSchema}double': 'https://www.w3.org/TR/xmlschema-2/#double',
+  '{http://www.w3.org/2001/XMLSchema}duration': 'https://www.w3.org/TR/xmlschema-2/#duration',
+  '{http://www.w3.org/2001/XMLSchema}dateTime': 'https://www.w3.org/TR/xmlschema-2/#dateTime',
+  '{http://www.w3.org/2001/XMLSchema}gYearMonth': 'https://www.w3.org/TR/xmlschema-2/#gYearMonth',
+  '{http://www.w3.org/2001/XMLSchema}gYear': 'https://www.w3.org/TR/xmlschema-2/#gYear',
+  '{http://www.w3.org/2001/XMLSchema}gMonthDay': 'https://www.w3.org/TR/xmlschema-2/#gMonthDay',
+  '{http://www.w3.org/2001/XMLSchema}hexBinary': 'https://www.w3.org/TR/xmlschema-2/#hexBinary',
+  '{http://www.w3.org/2001/XMLSchema}base64Binary': 'https://www.w3.org/TR/xmlschema-2/#base64Binary',
+  '{http://www.w3.org/2001/XMLSchema}anyURI': 'https://www.w3.org/TR/xmlschema-2/#string',
+  '{http://www.w3.org/2001/XMLSchema}QName': 'https://www.w3.org/TR/xmlschema-2/#QName',
+  '{http://www.w3.org/2001/XMLSchema}token': 'https://www.w3.org/TR/xmlschema-2/#token',
+  '{http://www.w3.org/2001/XMLSchema}NOTATION': 'https://www.w3.org/TR/xmlschema-2/#NOTATION'
+}
+# Process only these XSD schema types
+PROCESS_SCHEMA_TYPES: [ 'element', 'attribute', 'complexType', 'simpleType', 'attributeGroup' ]
+# Known words for the spell checker
+KNOWN_WORD_LIST: [
+      '3D',
+      'NURBS',
+      'OCX',
+      'XML',
+      'authoring',
+      'circumcircle',
+      'consumables',
+      'enumerated',
+      'mm',
+      'modulus',
+      'multiplicities',
+      'ordinate',
+      'orthogonal',
+      'scantling',
+      'scantlings',
+      'schema',
+      'stiffeners',
+]
+# Schema naming conformance exceptions
+OCX_NAME_EXCEPTIONS: [
+      'AP_Pos',
+      'FP_Pos',
+      'GUIDRef',
+      'U_NURBSproperties',
+      'V_NURBSproperties',
+      'application_version',
+      'ocxXML',
+      'originating_system',
+      'time_stamp',
+]
+
+
