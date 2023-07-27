@@ -4,7 +4,7 @@ from pathlib import Path
 #Application imports
 from .utils import utilities
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 
 current_dir = Path(__file__).parent
 config_file = current_dir / "configs" / "schema_config.yaml"  # The schema config
