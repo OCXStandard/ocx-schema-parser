@@ -639,7 +639,7 @@ class OcxSchema:
         """The summary of the parsed schema and any referenced schemas'
 
         Returns:
-            The schema summary
+            The schema summary as a dataclass
         """
 
         schema_version = [("Schema Version", self.get_schema_version())]

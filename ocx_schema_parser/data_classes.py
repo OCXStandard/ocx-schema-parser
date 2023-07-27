@@ -66,7 +66,7 @@ class SchemaType(BaseDataClass):
 
 
 @dataclass
-class SchemaSummary:
+class SchemaSummary(BaseDataClass):
     """Class for schema summary information.
 
     Args:

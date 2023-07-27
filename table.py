@@ -24,6 +24,8 @@ def print_table(element: str= 'Vessel'):
         result = filter(lambda target: target.get_name() == element, elements)
         for item in result:
             if item.get_name() == element:
+                result = item.children_to_dict()
+                keys = result.keys()
                 print (tabulate(item.children_to_dict(), headers="keys"))
 
 
