@@ -22,7 +22,7 @@ from ocx_schema_parser.parser import OcxSchema
 @pytest.fixture
 def load_schema_from_file(shared_datadir) -> LxmlParser:
     """Load the schema from file and make it available for processing."""
-    parser = LxmlParser(logger)
+    parser = LxmlParser()
     file = shared_datadir / 'OCX_Schema.xsd'
     parser.parse(file.absolute())
     assert parser.lxml_version() == (4, 9, 3, 0)
@@ -37,7 +37,7 @@ def process_schema(shared_datadir, load_schema_from_file) -> OcxSchema:
     url = str(test_data.resolve())
     schema_folder = shared_datadir
     folder = str(schema_folder.resolve())
-    schema_reader = OcxSchema(logger, folder)
+    schema_reader = OcxSchema(folder)
     result = schema_reader.process_schema(url)
     assert result is True
     return schema_reader

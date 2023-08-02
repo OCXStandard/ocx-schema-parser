@@ -4,4 +4,4 @@ Installation
 
 At the command line::
 
-    pip install ocx-schema-parser
+    pip install ocx_schema_parser

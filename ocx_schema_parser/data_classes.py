@@ -82,7 +82,7 @@ class SchemaSummary(BaseDataClass):
 
 
 @dataclass
-class SchemaEnumerator(BaseDataClass):
+class SchemaEnumerator:
     """Enumerator class.
 
     Args:
@@ -91,6 +91,11 @@ class SchemaEnumerator(BaseDataClass):
         descriptions: Enumeration descriptions
     """
 
-    name: str = field(metadata={"header": "Attribute name"})
+    prefix: str = field(metadata={"header": "Attribute name"})
+    name: str = field(metadata={"header": "Prefix"})
     values: List[str] = field(metadata={"header": "Value"}, default_factory=lambda: [])
-    descriptions: List[str] = field(metadata={"header": "Source Line"}, default_factory=lambda: [])
+    descriptions: List[str] = field(metadata={"header": "Description"}, default_factory=lambda: [])
+
+
+    def to_dict(self) -> Dict:
+        return {'%%Value%%': self.values, '%%Description%%': self.descriptions}

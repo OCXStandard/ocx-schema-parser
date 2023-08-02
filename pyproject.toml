@@ -22,6 +22,7 @@ xsdata = "23.6"
 ocx = "3.0.0a0"
 pyspellchecker ="*"
 inflection = "*"
+loguru = "*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"

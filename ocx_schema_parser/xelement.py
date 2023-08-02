@@ -556,6 +556,26 @@ class LxmlElement:
         return None
 
     @staticmethod
+    def replace_ns_tag_with_ns_prefix(element:str, namespaces: Dict) -> str:
+        nsprefix = list(iter(namespaces))
+        nstags = list(iter(namespaces.values()))
+        qn = QName(element)
+        prefix = ''
+        try:
+            index = nstags.index(qn.namespace)
+            prefix = nsprefix[index]
+            if prefix is None:
+                nstags.pop(index)
+                nsprefix.pop(index)
+                index = nstags.index(qn.namespace)
+                prefix = nsprefix.index(index)
+        except ValueError as e:
+            logger.error(f'{qn.namespace} is not in the namespace list')
+        if prefix == '':
+            logger.debug(f'Empty namespace prefix in element {qn.localname}')
+        return f'{prefix}:{qn.localname}'
+
+    @staticmethod
     def namespaces_decorate(ns: str) -> str:
         """Decorate a string with curly brackets to form a valid XML namespace
         Args:

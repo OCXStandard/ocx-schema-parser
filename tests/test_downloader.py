@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from ocx_schema_parser.ocxtransformer.downloader import SchemaDownloader
+from ocx_schema_parser.ocxdownloader.downloader import SchemaDownloader
 from ocx_schema_parser import WORKING_DRAFT
 
 

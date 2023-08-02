@@ -9,7 +9,7 @@ class TestOcxSchema:
 
     def test_summary_table(self, data_regression, process_schema: OcxSchema):
         summary = process_schema.tbl_summary()
-        data_regression.check(summary.__dict__)
+        data_regression.check(summary)
 
     def test_tbl_attribute_groups(self, data_regression, process_schema: OcxSchema):
         result = process_schema.tbl_attribute_groups()
@@ -43,3 +43,4 @@ class TestOcxSchema:
     def test_get_ocx_children_data(self, data_regression, process_schema: OcxSchema):
         result = process_schema.get_ocx_children_data('ocx:Vessel')[0]
         data_regression.check(result)
+
