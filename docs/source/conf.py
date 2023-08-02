@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+
+#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+
 from __future__ import unicode_literals
 
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../ocx_schema_parser/"))
+sys.path.insert(0, os.path.abspath("../../ocx_schema_parser/"))
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -24,7 +27,7 @@ project = 'ocx_schema_parser'
 year = '2023'
 author = '3Docx.org'
 copyright = '{0}, {1}'.format(year, author)
-version = release = '0.3.1'
+version = release = '0.4.0'
 
 pygments_style = 'trac'
 templates_path = ['.']

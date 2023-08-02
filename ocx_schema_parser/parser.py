@@ -703,10 +703,10 @@ class OcxSchema:
         return self._get_schema_types("simpleType")
 
     def get_schema_attribute_types(self) -> List[str]:
-        """All schema elements of type ``attribute'
+        """All schema elements of type ``attribute``.
 
         Returns:
-            The list of unique tags for all etree.Element of type ``attribute``.
+            The list of unique tags for all etree.Element of type ``attribute``
 
         """
 

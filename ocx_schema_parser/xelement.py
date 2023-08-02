@@ -1,11 +1,13 @@
 #  Copyright (c) 2022. OCX Consortium https://3docx.org. See the LICENSE
 
+# Sys imports
 import re
 from typing import Any
 from typing import Dict
 from typing import List
 from typing import Union
-
+#Third party imports
+from loguru import logger
 from lxml import etree
 from lxml.etree import Element
 from lxml.etree import ElementTextIterator
@@ -376,6 +378,7 @@ class LxmlElement:
 
             Passing multiple tags (or a sequence of tags) instead of a single tag
             will let the iterator return all elements matching any of these tags, in document order.
+
         Args:
             element: The etree.Element node to search from
             tag: The name of the child
@@ -397,6 +400,7 @@ class LxmlElement:
     @staticmethod
     def find_all_children_with_name(element: Element, child_name: str, namespace: str = "*") -> List:
         """Find all the XML element's children with  name ``child_name``
+
         Args:
             element: The XML parent node to search from
             child_name: The name of the child
@@ -413,6 +417,7 @@ class LxmlElement:
     @staticmethod
     def find_child_with_name(element: Element, child_name: str, namespace: str = "*") -> Element:
         """Find the first direct child of the XML element's children with  name ``child_name``
+
         Args:
             element: The XML parent node to search from
             child_name: The name of the child
@@ -459,6 +464,7 @@ class LxmlElement:
     @staticmethod
     def has_child_with_name(element: Element, child_name: str, namespace: str = "*") -> bool:
         """Check if the element has a child with  name 'child_name'
+
         Args:
             element: The XML parent node to search from
             child_name: The name of the child
@@ -480,6 +486,7 @@ class LxmlElement:
         namespace: str = "*",
     ) -> List:
         """Find all the XML elements with the attribute name 'attrib_name' having a given value  'attrib_value'
+
         Args:
             element: The XML parent node to search from
             name: The name of the element with attrib_name and attrib_value
@@ -498,6 +505,7 @@ class LxmlElement:
     @staticmethod
     def find_all_children_with_name_and_attribute(element: Element, child_name: str, attrib_name: str, namespace: str = "*") -> List:
         """Find all the XML elements with name ``name`` and attribute name ``attrib_name``
+
         Args:
             element: The XML parent node to search from
             child_name: The name of the children elements
@@ -540,6 +548,7 @@ class LxmlElement:
     @staticmethod
     def namespace_prefix(element: str) -> Union[str, None]:
         """Returns the namespace prefix of an element if any
+
         Args:
 
             element: The element name with or without prefix as a string
@@ -557,6 +566,19 @@ class LxmlElement:
 
     @staticmethod
     def replace_ns_tag_with_ns_prefix(element:str, namespaces: Dict) -> str:
+        """Replace the namespace tag with a mapped namespace prefix.
+
+        Args:
+
+            element: The element name with or without prefix as a string
+            namespaces: the namespace tag to prefix mapping
+
+        Returns:
+
+            the element with prefix
+
+        """
+
         nsprefix = list(iter(namespaces))
         nstags = list(iter(namespaces.values()))
         qn = QName(element)
@@ -578,6 +600,7 @@ class LxmlElement:
     @staticmethod
     def namespaces_decorate(ns: str) -> str:
         """Decorate a string with curly brackets to form a valid XML namespace
+
         Args:
             ns: The namespace
 
@@ -590,6 +613,7 @@ class LxmlElement:
     @staticmethod
     def strip_namespace_prefix(element: str) -> str:
         """Returns the element name without the namespace prefix
+
         Args:
             element: The element name with or without prefix as a string
 
@@ -605,6 +629,7 @@ class LxmlElement:
     @staticmethod
     def strip_namespace_tag(element: str) -> str:
         """Returns the element name without the namespace tag
+
         Args:
             element: The element name with or without namespace as a string
 
