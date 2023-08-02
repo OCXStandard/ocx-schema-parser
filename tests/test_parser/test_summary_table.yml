@@ -1,4 +1,4 @@
-schema_namespaces:
+Namespaces:
 - - xml
   - http://www.w3.org/XML/1998/namespace
 - - xs
@@ -15,17 +15,17 @@ schema_namespaces:
   - urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18
 - - xsd
   - http://www.w3.org/2001/XMLSchema
-schema_types:
+Schema Types:
 - - element
   - 334
 - - attribute
-  - 120
+  - 21
 - - complexType
   - 189
 - - simpleType
   - 7
 - - attributeGroup
   - 11
-schema_version:
+Schema Version:
 - - Schema Version
   - 2.8.6

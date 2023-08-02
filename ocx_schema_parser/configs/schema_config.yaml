@@ -9,6 +9,8 @@ SUB_COMMAND: 'schema'
 # w3c primitive data types. ref https://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes
 W3C_SCHEMA_BUILT_IN_TYPES: {
   '{http://www.w3.org/2001/XMLSchema}string': 'https://www.w3.org/TR/xmlschema-2/#string',
+  '{http://www.w3.org/2001/XMLSchema}ID': 'https://www.w3.org/TR/xmlschema-2/#ID',
+  '{http://www.w3.org/2001/XMLSchema}IDREF': 'https://www.w3.org/TR/xmlschema-2/#IDREF',
   '{http://www.w3.org/2001/XMLSchema}boolean': 'https://www.w3.org/TR/xmlschema-2/#boolean',
   '{http://www.w3.org/2001/XMLSchema}decimal': 'https://www.w3.org/TR/xmlschema-2/#decimal',
   '{http://www.w3.org/2001/XMLSchema}float': 'https://www.w3.org/TR/xmlschema-2/#float',
@@ -23,7 +25,8 @@ W3C_SCHEMA_BUILT_IN_TYPES: {
   '{http://www.w3.org/2001/XMLSchema}anyURI': 'https://www.w3.org/TR/xmlschema-2/#string',
   '{http://www.w3.org/2001/XMLSchema}QName': 'https://www.w3.org/TR/xmlschema-2/#QName',
   '{http://www.w3.org/2001/XMLSchema}token': 'https://www.w3.org/TR/xmlschema-2/#token',
-  '{http://www.w3.org/2001/XMLSchema}NOTATION': 'https://www.w3.org/TR/xmlschema-2/#NOTATION'
+  '{http://www.w3.org/2001/XMLSchema}NOTATION': 'https://www.w3.org/TR/xmlschema-2/#NOTATION',
+  '{http://www.w3.org/2001/XMLSchema}byte': 'https://www.w3.org/TR/xmlschema-2/#byte',
 }
 # Process only these XSD schema types
 PROCESS_SCHEMA_TYPES: [ 'element', 'attribute', 'complexType', 'simpleType', 'attributeGroup' ]

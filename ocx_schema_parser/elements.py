@@ -2,7 +2,7 @@
 #  Copyright (c) 2022-2023. OCX Consortium https://3docx.org. See the LICENSE
 
 from collections import defaultdict
-from logging import Logger
+from loguru import logger
 from typing import Dict
 from typing import List
 from typing import Union
@@ -30,21 +30,24 @@ class OcxAttribute:
         _default: The default value of the attribute if any
         _annotation: The attribute description
         _is_global: True if the element is global, False otherwise
-        _enumerations: List of enumerator values. Empty if the attribute is not an enumerator
+        _enumerator: Enumerator values. None if the attribute is not an enum.
 
     """
 
-    def __init__(self, xs_attribute: Element):
+    def __init__(self, xs_attribute: Element, prefix: str):
         # Private
         self._xs_attribute = xs_attribute
-        self._name = LxmlElement.get_name(xs_attribute)
-        self._type = SchemaHelper.get_type(xs_attribute)
-        self._use = LxmlElement.get_use(xs_attribute)
-        self._fixed = xs_attribute.get("fixed")
-        self._default = xs_attribute.get("default")
-        self._annotation = LxmlElement.get_element_text(xs_attribute)
-        self._is_global = False
-        self._enumerator = self.find_enumerations()
+        self._ns_prefix: str = prefix
+        self._name: str = LxmlElement.get_name(xs_attribute)
+        self._type: str = SchemaHelper.get_type(xs_attribute)
+        self._use: str = LxmlElement.get_use(xs_attribute)
+        self._fixed: str = xs_attribute.get("fixed")
+        self._default: str = xs_attribute.get("default")
+        self._annotation:str = LxmlElement.get_element_text(xs_attribute)
+        self._is_global: bool = False
+        self._enumerator: Union[SchemaEnumerator, None] = self.find_enumerations()
+
+
 
     def get_use(self) -> str:
         """The xs:attribute use (optional or required)
@@ -73,10 +76,7 @@ class OcxAttribute:
             Returns the fixed value of the attribute or an empty string if None
 
         """
-        if self._fixed is None:
-            return ""
-        else:
-            return self._fixed
+        return "" if self._fixed is None else self._fixed
 
     def get_default(self) -> str:
         """The default value of the xs:attribute
@@ -85,10 +85,7 @@ class OcxAttribute:
             Returns the default value of the attribute or an empty string if None
 
         """
-        if self._default is None:
-            return ""
-        else:
-            return self._default
+        return "" if self._default is None else self._default
 
     def get_name(self) -> str:
         """The name of the xs:attribute
@@ -108,6 +105,15 @@ class OcxAttribute:
         """
         return self._type
 
+    def get_prefix(self) -> str:
+        """The prefix of the xs:attribute
+
+        Returns:
+            The namespace prefix
+
+        """
+        return self._ns_prefix
+
     def get_description(self) -> str:
         """The annotation string of the xs:attribute
 
@@ -125,6 +131,8 @@ class OcxAttribute:
 
         """
         self._annotation = text
+
+
 
     def put_use(self, use: str):
         """Set the xs:attribute use string
@@ -152,6 +160,7 @@ class OcxAttribute:
 
         """
         self._name = name
+
 
     def attributes_to_dict(self) -> Dict:
         """A dictionary of the OcxAttribute values
@@ -187,7 +196,8 @@ class OcxAttribute:
         """Find any enumeration values."""
         enum = None
         if self.is_enumerator():
-            enum = SchemaEnumerator(self.get_name())
+            prefix = self._ns_prefix
+            enum = SchemaEnumerator(name=self.get_name(), prefix=prefix)
             values = []
             descriptions = []
             for e in LxmlElement.iter(self._xs_attribute, '{*}enumeration'):
@@ -220,15 +230,15 @@ class OcxChildElement:
 
     """
 
-    def __init__(self, xs_element: Element):
+    def __init__(self, xs_element: Element, unique_tag: str):
         # Private
-        self._element = xs_element
-        self._tag = ""
-        self._name = LxmlElement.get_name(xs_element)
-        self._type = SchemaHelper.get_type(xs_element)
+        self._element: Element = xs_element
+        self._tag:str  = unique_tag
+        self._name:str  = LxmlElement.get_name(xs_element)
+        self._type:str  = SchemaHelper.get_type(xs_element)
         self._cardinality = LxmlElement.cardinality(xs_element)
-        self._annotation = LxmlElement.get_element_text(xs_element)
-        self._is_choice = LxmlElement.is_choice(xs_element)
+        self._annotation: str = LxmlElement.get_element_text(xs_element)
+        self._is_choice: bool = LxmlElement.is_choice(xs_element)
 
     def get_use(self) -> str:
         """Mandatory or optional sub element
@@ -300,6 +310,16 @@ class OcxChildElement:
         """
         self._use = use
 
+    def put_choice(self, choice: bool):
+        """Set the xs:element choice
+
+        Returns:
+            None
+
+        """
+        self._is_choice = choice
+
+
     def put_reference(self, tag: str):
         """Set the tag reference to the global schema element
 
@@ -308,6 +328,15 @@ class OcxChildElement:
 
         """
         self._tag = tag
+
+    def put_cardinality(self, element: Element):
+        """Override the cardinality for a substitution group member
+
+        Args:
+            element: the etree.Element node
+
+        """
+        self._cardinality = LxmlElement.cardinality(element)
 
     def is_mandatory(self) -> bool:
         """Whether the element mandatory or not
@@ -402,17 +431,17 @@ class OcxGlobalElement:
 
     """
 
-    def __init__(self, xsd_element: Element, unique_tag: str, logger: Logger):
-        self.log = logger
+    def __init__(self, xsd_element: Element, unique_tag: str, namespaces: Dict):
         # Private
-        self._element = xsd_element
-        self._attributes = []
-        self._namespace = QName(unique_tag).namespace
-        self._tag = unique_tag
-        self._cardinality = LxmlElement.cardinality(xsd_element)
-        self._children = []
-        self._parents = {}
-        self._assertions = []
+        self._element: Element = xsd_element
+        self._attributes: List = []
+        self._namespace:str  = QName(unique_tag).namespace
+        self._tag:str  = unique_tag
+        self._cardinality: str = LxmlElement.cardinality(xsd_element)
+        self._children: List = []
+        self._parents: Dict = {}
+        self._assertions: List = []
+        self._namespaces: Dict = namespaces
 
     def add_attribute(self, attribute: OcxAttribute):
         """Add attributes to the global element
@@ -421,7 +450,6 @@ class OcxGlobalElement:
             attribute : The ``OcxAttribute`` instance to be added
 
         """
-
         self._attributes.append(attribute)
 
     def add_child(self, child: OcxChildElement):
@@ -471,7 +499,7 @@ class OcxGlobalElement:
         self._parents[tag] = parent
 
     def get_parents(self) -> dict:
-        """Get all my attributes
+        """Return all my parents
 
         Returns:
             Return all parents as a dict of key-value pairs ``(tag, Element)``
@@ -486,10 +514,7 @@ class OcxGlobalElement:
             Return all parents names in a list
 
         """
-        parents = []
-        for tag in self._parents:
-            parents.append(LxmlElement.strip_namespace_tag(tag))
-        return parents
+        return [LxmlElement.strip_namespace_tag(tag) for tag in self._parents]
 
     def get_assertion_tests(self) -> List:
         """Get all my assertions
@@ -573,14 +598,25 @@ class OcxGlobalElement:
         """The global element _namespace prefix
 
         Returns:
-            The type of the global schema element as a str
+            The namespace prefix of the global schema element
 
         """
-        if self.is_reference():
-            return LxmlElement.namespace_prefix(self.get_reference())
-        else:
-            type = self.get_type()
-            return LxmlElement.namespace_prefix(type)
+        nsprefix = list(iter(self._namespaces))
+        nstags = list(iter(self._namespaces.values()))
+        prefix =''
+        try:
+            index = nstags.index(self._namespace)
+            prefix =  nsprefix[index]
+            if prefix is None:
+                nstags.pop(index)
+                nsprefix.pop(index)
+                index = nstags.index(self._namespace)
+                prefix = nsprefix.index(index)
+        except ValueError as e:
+            logger.error(f'{self._namespace} is not in the namespace list')
+        if prefix == '':
+            logger.debug(f'Empty namespace prefix in global elem,ent {self.get_name()}')
+        return prefix
 
     def get_schema_element(self) -> Element:
         """Get the schema xsd element of the ``OcxSchemeElement`` object

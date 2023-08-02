@@ -13,18 +13,13 @@ from .xelement import LxmlElement
 class LxmlParser:
     """A wrapper of the lxml etree document tree and parser.
 
-    Args:
-        logger: The instance of the Python logger
-
     Attributes:
         _tree : The ``lxml.etree`` DOM
-        _log: The Python logger
 
     """
 
-    def __init__(self, log: logger):
+    def __init__(self):
         self._tree: Element = None
-        self._log = log
 
     def parse(self, file: str, store_ids: bool = False) -> bool:
         """Parses an XML file
@@ -48,9 +43,9 @@ class LxmlParser:
             self._tree = etree.parse(file, parser=my_parser)
             parsed = True
         except XMLSyntaxError as e:
-            self._log.error(e)
+            logger.error(e)
         except OSError:
-            self._log.error("Failed to open file %s" % file, exc_info=True)
+            logger.error("Failed to open file %s" % file, exc_info=True)
         return parsed
 
     def get_root(self) -> Element:

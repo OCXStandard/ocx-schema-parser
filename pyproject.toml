@@ -9,7 +9,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "ocx_schema_parser"
-version = "0.3.0"
+version = "0.4.0"
 description = ""
 authors = ["ocastrup <ole.christain.astrup@dnv.com>"]
 readme = "README.md"
@@ -22,6 +22,8 @@ xsdata = "23.6"
 ocx = "3.0.0a0"
 pyspellchecker ="*"
 inflection = "*"
+loguru = "*"
+sphinx = "<=6.2.1"
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"
@@ -39,7 +41,7 @@ sphinx_automodapi = "*"
 github_url = "https://github.com/OCXStandard/ocx-schema-parser"
 
 [tool.tbump.version]
-current = "0.3.0"
+current = "0.4.0"
 
 # Example of a semver regexp.
 # Make sure this matches current_version before

@@ -1,18 +1,14 @@
-========
-Overview
-========
-
+ocx-schema-parser
+=================
 .. image:: docs/_static/logo.png
    :width: 200px
    :height: 100px
    :scale: 50 %
    :alt: alternate text
-   :align: right
+   :align: left
 
-ocx-schema-parser
-=================
-
-
+Badges
+======
 .. start-badges
 
 .. list-table::
@@ -71,7 +67,7 @@ Installation
 
 ::
 
-    pip install ocx-schema-parser
+    pip install ocx_schema_parser:latest
 
 You can also install the in-development version with::
 
@@ -82,33 +78,6 @@ Documentation
 =============
 
 
-https://ocx-schema-parser.readthedocs.io/en/latest/
+https://ocx_schema_parser.readthedocs.io/en/latest/
 
 
-Development
-===========
-
-To run all the tests run::
-
-    tox
-
-Note, to combine the coverage data from all the tox environments run:
-
-.. list-table::
-    :widths: 10 90
-    :stub-columns: 1
-
-    - - Windows
-      - ::
-
-            set PYTEST_ADDOPTS=--cov-append
-            tox
-
-    - - Other
-      - ::
-
-            PYTEST_ADDOPTS=--cov-append tox
-
-Credits
-=======
-The project is based on a setup described in the blog `Packaging a library <https://blog.ionelmc.ro/2014/05/25/python-packaging>`_ by Ionel Cristian Maries and the use of his `cookiecutter <https://github.com/ionelmc/cookiecutter-pylibrary>`_.

@@ -13,10 +13,6 @@ DEFAULTDICT['col1'].append(range(6))
 DEFAULTDICT['col2'].append((range(5, 10)))
 
 
-@staticmethod
-def test_root_dir():
-    root = Path(utilities.root_dir()).name
-    assert root == 'src'
 
 
 @staticmethod

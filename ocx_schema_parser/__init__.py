@@ -1,10 +1,12 @@
 #  Copyright (c) 2023.  OCX Consortium https://3docx.org. See the LICENSE
 # System imports
 from pathlib import Path
+# Third party imports
+from loguru import logger
 #Application imports
 from .utils import utilities
 
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 
 current_dir = Path(__file__).parent
 config_file = current_dir / "configs" / "schema_config.yaml"  # The schema config
@@ -19,3 +21,7 @@ SUB_COMMAND = app_config.get("SUB_COMMAND")
 ALLOWED_WORDS = app_config.get("KNOWN_WORD_LIST")
 NAME_EXCEPTIONS = app_config.get("OCX_NAME_EXCEPTIONS")
 WORKING_DRAFT = app_config.get("WORKING_DRAFT")
+
+logger.enable(__name__)
+
+
