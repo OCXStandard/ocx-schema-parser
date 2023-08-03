@@ -17,7 +17,7 @@ conda-create:  ## Create a new conda environment with the python version and bas
 	@conda activate $(CONDA_ENV)
 cc: conda-create
 .PHONY: cc
-conda-upd:  environment.yaml ## Update the conda development environment when environment.yaml has changed
+conda-upd:  environment.yml ## Update the conda development environment when environment.yaml has changed
 	@conda env update -f environment.yml
 cu: conda-upd
 .PHONY:cu
@@ -48,20 +48,19 @@ SPHINXBUILD = sphinx-build -E -b html docs dist/docs
 COVDIR = "htmlcov"
 
 doc-serve: ## Open the the html docs built by Sphinx
-	@cmd /c start "dist/docs/index.html"
+	@cmd /c start "_build/index.html"
 
 ds: doc-serve
 .PHINY: ds
 
-doc-help:  ## Sphinx options when running make from the docs folder
-	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 doc: ## Build the html docs using Sphinx. For other Sphinx options, run make in the docs folder
-	@$(SPHINXBUILD)  -M clean "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-	@$(SPHINXBUILD)  "$(SOURCEDIR)" "$(BUILDDIR)/$(SPHINXOPTS)" -b "$(SPHINXOPTS)"
+	@sphinx-build doc _build
+PHONY: doc
 
-
-
+doc-links: ## Check the internal and external links after building the documentation
+	@sphinx-build docs -W -b linkcheck -d _build/doctrees _build/html
+PHONY: doc-links
 # RUN ##################################################################
 
 PHONY: run

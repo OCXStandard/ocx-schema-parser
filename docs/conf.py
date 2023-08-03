@@ -2,12 +2,18 @@
 
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
 
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+# This file is execfile()d with the current directory set to its
+# containing dir.
+
 from __future__ import unicode_literals
 
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../../ocx_schema_parser/"))
+sys.path.insert(0, os.path.abspath("../ocx_schema_parser/"))
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -30,7 +36,7 @@ copyright = '{0}, {1}'.format(year, author)
 version = release = '0.4.0'
 
 pygments_style = 'trac'
-templates_path = ['.']
+templates_path = ['_templates']
 extlinks = {
     'issue': ('https://github.com/OCXStandard/ocx-schema-parser/issues/%s', '#'),
     'pr': ('https://github.com/OCXStandard/ocx-schema-parser/pull/%s', 'PR #'),
