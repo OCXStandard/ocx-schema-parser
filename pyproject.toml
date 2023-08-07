@@ -19,6 +19,7 @@ homepage = "https://github.com/OCXStandard/ocx-schema-parser"
 [tool.poetry.dependencies]
 python = "^3.10"
 xsdata = "23.6"
+lxml = "*"
 ocx = "3.0.0a0"
 pyspellchecker ="*"
 inflection = "*"
