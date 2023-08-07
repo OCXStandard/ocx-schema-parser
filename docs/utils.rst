@@ -3,7 +3,7 @@ utils
 
 .. testsetup::
 
-    from utils import *
+    from ocx_schema_parser.utils import *
 
 .. automodule:: utils.utilities
     :members:

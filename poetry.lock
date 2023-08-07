@@ -809,4 +809,4 @@ test = ["pre-commit", "pytest", "pytest-benchmark", "pytest-cov"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "289c3a79180dda0a51906f683fbdae9aa249589107c364af13294d1a596b9a94"
+content-hash = "7aaca63b1dc60c99e7f74f32031680bec59a6ee643f6cea250f35d2150638904"

@@ -25,6 +25,7 @@ inflection = "*"
 loguru = "*"
 sphinx = "<=6.2.1"
 fuzzywuzzy = "^0.18.0"
+pyyaml = "*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"
