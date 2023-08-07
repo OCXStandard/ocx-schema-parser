@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../ocx_schema_parser/"))
+sys.path.insert(0, os.path.abspath(".."))
 
 extensions = [
     'sphinx.ext.autodoc',

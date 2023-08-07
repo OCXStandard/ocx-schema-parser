@@ -2,8 +2,8 @@
 Contents
 ========
 
-Reference
-=========
+API
+===
 
 
 .. toctree::
