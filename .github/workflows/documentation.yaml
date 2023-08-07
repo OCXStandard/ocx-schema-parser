@@ -13,7 +13,7 @@ jobs:
           pip install poetry
       - name: Install dependencies
         run: |
-          poetry self install
+          poetry install
       - name: Sphinx build
         run: |
           sphinx-build docs _build
