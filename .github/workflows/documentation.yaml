@@ -8,9 +8,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
+      - name: Install poetry
+        run: |
+          pip install poetry
       - name: Install dependencies
         run: |
-          pip install -r docs/requirements.txt
+          poetry self install
       - name: Sphinx build
         run: |
           sphinx-build docs _build
