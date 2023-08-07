@@ -2,10 +2,15 @@
 Contents
 ========
 
-.. toctree::
-   :maxdepth: 2
+Reference
+=========
 
-   reference/index
+
+.. toctree::
+    :glob:
+
+    schema.rst
+    utils.rst
 
 
 

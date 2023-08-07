@@ -55,7 +55,7 @@ ds: doc-serve
 
 
 doc: ## Build the html docs using Sphinx. For other Sphinx options, run make in the docs folder
-	@sphinx-build doc _build
+	@sphinx-build docs _build
 PHONY: doc
 
 doc-links: ## Check the internal and external links after building the documentation

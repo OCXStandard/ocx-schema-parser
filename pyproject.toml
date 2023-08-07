@@ -24,6 +24,7 @@ pyspellchecker ="*"
 inflection = "*"
 loguru = "*"
 sphinx = "<=6.2.1"
+fuzzywuzzy = "^0.18.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"
