@@ -1,13 +1,9 @@
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
 
 from tabulate import tabulate
-from loguru import logger
 from pathlib import Path
-from ocx_schema_parser.parser import OcxSchema
-from ocx_schema_parser.ocxdownloader.downloader import SchemaDownloader
 from ocx_schema_parser import WORKING_DRAFT, TMP_FOLDER, SCHEMA_FOLDER
 from ocx_schema_parser.transformer import Transformer
-from handle_exception import HandleException
 
 
 
@@ -37,7 +33,6 @@ def enum(transformer, target: str = 'functionType'):
             if enum.name == target:
                 print(tabulate(enum.to_dict(), headers='keys'))
 
-@HandleException
 def summary(transformer):
 
 

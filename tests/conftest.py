@@ -11,7 +11,7 @@ import pytest
 # To make sure that the tests import the modules this has to come before the import statements
 #sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
 
-from ocx_schema_parser import DEFAULT_SCHEMA
+from ocx_schema_parser import WORKING_DRAFT
 from ocx_schema_parser.xparse import LxmlParser
 from ocx_schema_parser.ocxparser import OcxParser
 from ocx_schema_parser.transformer import Transformer
@@ -44,9 +44,17 @@ def process_schema(shared_datadir, load_schema_from_file) -> OcxParser:
     return parser
 
 @pytest.fixture
-def transformer(shared_datadir, load_schema_from_file) -> Transformer:
+def transformer_from_folder(shared_datadir, load_schema_from_file) -> Transformer:
     """Process the schema and make it available for testing."""
     transformer = Transformer()
     transformer.transform_schema_from_folder(shared_datadir)
+    assert transformer.is_transformed() is True
+    return transformer
+
+@pytest.fixture
+def transformer_from_url(shared_datadir, load_schema_from_file) -> Transformer:
+    """Process the schema and make it available for testing."""
+    transformer = Transformer()
+    transformer.transform_schema_from_url(WORKING_DRAFT, shared_datadir)
     assert transformer.is_transformed() is True
     return transformer

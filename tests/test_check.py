@@ -8,10 +8,10 @@ from ocx_schema_parser.check import SchemaCheck
 class TestSchemaCheck:
     """Test class for the SchemaCheck methods."""
 
-    def test_check_annotations(self, transformer: Transformer):
+    def test_check_annotations(self, transformer_from_folder: Transformer):
         """Spelling check of a text."""
-        checker = SchemaCheck(transformer)
-        vessel = transformer.get_ocx_element_from_type("ocx:Vessel")
+        checker = SchemaCheck(transformer_from_folder)
+        vessel = transformer_from_folder.get_ocx_element_from_type("ocx:Vessel")
         text = vessel.get_annotation()
         misspelled = checker.check_annotation(text)
         assert len(misspelled) == 0
@@ -24,7 +24,7 @@ class TestSchemaCheck:
         """Dromedary case conformance check."""
         assert SchemaCheck.is_dromedary_case('functionType') is True
 
-    def test_check_schema_name_conformance(self, transformer: Transformer):
-        checker = SchemaCheck(transformer)
+    def test_check_schema_name_conformance(self, transformer_from_folder: Transformer):
+        checker = SchemaCheck(transformer_from_folder)
         result, failures = checker.check_schema_name_conformance()
         assert result is True

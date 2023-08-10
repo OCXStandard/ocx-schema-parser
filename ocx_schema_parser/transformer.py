@@ -87,7 +87,7 @@ class Transformer:
         self._is_transformed: bool = False
 
 
-    def transform_schema_from_url(self, url: str, folder:str) -> bool:
+    def transform_schema_from_url(self, url: str, folder:Path) -> bool:
         """Transform the xsd schema with ``url`` into python objects.
 
         Returns:
