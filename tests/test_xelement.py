@@ -1,5 +1,5 @@
 #  Copyright (c) 2022. OCX Consortium https://3docx.org. See the LICENSE
-from ocx_schema_parser.parser import LxmlElement
+from ocx_schema_parser.xparse import LxmlElement
 
 
 class TestLxmlElement:

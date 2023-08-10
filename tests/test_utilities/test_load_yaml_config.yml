@@ -35,6 +35,7 @@ PROCESS_SCHEMA_TYPES:
 - attributeGroup
 SCHEMA_FOLDER: schema_versions\
 SUB_COMMAND: schema
+TMP_FOLDER: tmp\
 W3C_SCHEMA_BUILT_IN_TYPES:
   '{http://www.w3.org/2001/XMLSchema}ID': https://www.w3.org/TR/xmlschema-2/#ID
   '{http://www.w3.org/2001/XMLSchema}IDREF': https://www.w3.org/TR/xmlschema-2/#IDREF
@@ -48,11 +49,13 @@ W3C_SCHEMA_BUILT_IN_TYPES:
   '{http://www.w3.org/2001/XMLSchema}decimal': https://www.w3.org/TR/xmlschema-2/#decimal
   '{http://www.w3.org/2001/XMLSchema}double': https://www.w3.org/TR/xmlschema-2/#double
   '{http://www.w3.org/2001/XMLSchema}duration': https://www.w3.org/TR/xmlschema-2/#duration
-  '{http://www.w3.org/2001/XMLSchema}float': https://www.w3.org/TR/xmlschema-2/#float
+  '{http://www.w3.org/2001/XMLSchema}float': https://www.w3.org/TR/xmlschema-2/#integer
   '{http://www.w3.org/2001/XMLSchema}gMonthDay': https://www.w3.org/TR/xmlschema-2/#gMonthDay
   '{http://www.w3.org/2001/XMLSchema}gYear': https://www.w3.org/TR/xmlschema-2/#gYear
   '{http://www.w3.org/2001/XMLSchema}gYearMonth': https://www.w3.org/TR/xmlschema-2/#gYearMonth
   '{http://www.w3.org/2001/XMLSchema}hexBinary': https://www.w3.org/TR/xmlschema-2/#hexBinary
+  '{http://www.w3.org/2001/XMLSchema}integer': https://www.w3.org/TR/xmlschema-2/#float
+  '{http://www.w3.org/2001/XMLSchema}normalizedString': https://www.w3.org/TR/xmlschema-2/#normalizedString
   '{http://www.w3.org/2001/XMLSchema}string': https://www.w3.org/TR/xmlschema-2/#string
   '{http://www.w3.org/2001/XMLSchema}token': https://www.w3.org/TR/xmlschema-2/#token
 WORKING_DRAFT: https://raw.githubusercontent.com/OCXStandard/OCX_Schema/working_draft/OCX_Schema.xsd

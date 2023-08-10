@@ -21,19 +21,17 @@ class BaseDataClass:
     def to_dict(self) -> Dict:
         """Output the data class as a dict with field names as keys."""
         my_fields = fields(self)
-        table = {}
-        i = 0
-        for key, value in self.__dict__.items():
-            table[my_fields[i].metadata["header"]] = value
-            i += 1
-        return table
+        return {
+            my_fields[i].metadata["header"]: value
+            for i, (key, value) in enumerate(self.__dict__.items())
+        }
 
 
 @dataclass
 class SchemaChange(BaseDataClass):
     """Class for keeping track of OCX schema changes.
 
-    Args:
+    Parameters:
          version: The schema version the change applies to
          author: The author of the schem change
          date: The date of the schema change
@@ -51,7 +49,7 @@ class SchemaChange(BaseDataClass):
 class SchemaType(BaseDataClass):
     """Class for xsd schema type information.
 
-    Args:
+    Parameters:
          name: The schema type name
          prefix: The schema type namespace prefix
          source_line: The line number in the schema file where the type is defined
@@ -63,13 +61,14 @@ class SchemaType(BaseDataClass):
     name: str = field(metadata={"header": "Name"})
     tag: str = field(metadata={"header": "Tag"})
     source_line: int = field(metadata={"header": "Source Line"})
+    # annotation: str = field(default='', metadata={"header": "Description"})
 
 
 @dataclass
 class SchemaSummary(BaseDataClass):
     """Class for schema summary information.
 
-    Args:
+    Parameters:
          schema_version: The schema version
          schema_types: Tuples of the number of schema types
          schema_namespaces: Tuples of namespace prefixes
@@ -79,13 +78,29 @@ class SchemaSummary(BaseDataClass):
     schema_version: List[Tuple] = field(metadata={"header": "Schema Version"})
     schema_types: List[Tuple] = field(metadata={"header": "Schema Types"})
     schema_namespaces: List[Tuple] = field(metadata={"header": "Namespaces"})
+@dataclass
+class SchemaAttribute(BaseDataClass):
+    """Schema attribute class.
+
+    Parameters:
+        name: The name of the ``xs:attribute`` attribute
+        type: the attribute type
+        facets: ttribute facets
+        namespace: The attribute value default if any
+        description: The attribute annotation
+    """
+
+    name: str = field(metadata={"header": "Attribute"})
+    type: str = field(metadata={"header": "Type"})
+    restriction: str = field(default = "", metadata={"header": "Restriction"})
+    description: str = field(default ="", metadata={"header": "Description"})
 
 
 @dataclass
-class SchemaEnumerator:
+class OcxEnumerator:
     """Enumerator class.
 
-    Args:
+    Parameters:
         name: The name of the ``xs:attribute`` enumerator
         values: Enumeration values
         descriptions: Enumeration descriptions
@@ -93,9 +108,54 @@ class SchemaEnumerator:
 
     prefix: str = field(metadata={"header": "Attribute name"})
     name: str = field(metadata={"header": "Prefix"})
+    tag: str = field(metadata={"header": "Tag"})
     values: List[str] = field(metadata={"header": "Value"}, default_factory=lambda: [])
     descriptions: List[str] = field(metadata={"header": "Description"}, default_factory=lambda: [])
 
 
     def to_dict(self) -> Dict:
-        return {'%%Value%%': self.values, '%%Description%%': self.descriptions}
+        """Output the enumerator values and annotations."""
+        return {'Value': self.values, 'Description': self.descriptions}
+
+@dataclass
+class OcxSchemaAttribute(BaseDataClass):
+    """Attribute class.
+
+    Parameters:
+        name: The name of the ``xs:attribute`` attribute
+        type: the attribute type
+        use: If the attribute is mandatory or not
+        default: The attribute value default if any
+        fixed: The attribute fixed value if any
+        description: The attribute annotation
+    """
+
+    name: str = field(metadata={"header": "Attribute"})
+    type: str = field(metadata={"header": "Type"})
+    use: str = field(metadata={"header": "Use"})
+    default: str = field(default ="", metadata={"header": "Default"})
+    fixed: str = field(default ="", metadata={"header": "Fixed"})
+    description: str = field(default ="", metadata={"header": "Description"})
+
+
+
+
+@dataclass
+class OcxSchemaChild(BaseDataClass):
+    """Child element  class.
+
+    Parameters:
+        name: The name of the ``xs:element`` element
+        type: the element type
+        use: If the element is mandatory or not
+        cardinality: The cardinality of the child element
+        is_choice: Whether the child is a choice element or not
+        description: The child annotation
+    """
+
+    name: str = field(metadata={"header": "Child"})
+    type: str = field(metadata={"header": "Type"})
+    use: str = field(metadata={"header": "Use"})
+    cardinality: str = field(metadata={"header": "Cardinality"})
+    is_choice: bool = field(default=False, metadata={"header": "Choice"})
+    description: str = field(default ="", metadata={"header": "Description"})

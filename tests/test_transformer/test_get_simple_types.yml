@@ -1,0 +1,36 @@
+booleanListType:
+  Attribute: booleanListType
+  Description: Generic list of boolean simple types.
+  Restriction: ''
+  Type: List of type xs:boolean
+classificationSociety:
+  Attribute: classificationSociety
+  Description: Enumeration of abbreviations for all Classification Societies.
+  Restriction: xs:token
+  Type: Restriction of type xs:token
+curveForm_enum:
+  Attribute: curveForm_enum
+  Description: Enumerator of NURBS curve forms.
+  Restriction: xs:string
+  Type: Restriction of type xs:string
+doubleListType:
+  Attribute: doubleListType
+  Description: Generic list of double simple types separated by  a white space.
+  Restriction: ''
+  Type: List of type xs:double
+floatListType:
+  Attribute: floatListType
+  Description: Generic list of float simple types.
+  Restriction: ''
+  Type: List of type xs:float
+guid:
+  Attribute: guid
+  Description: The GUID of the entity referenced, in the form of a string containing
+    32 hex digits, with arbitrary non-hex spacing characters.
+  Restriction: xs:normalizedString
+  Type: Restriction of type xs:normalizedString
+integerListType:
+  Attribute: integerListType
+  Description: Generic list of integer simple types.
+  Restriction: ''
+  Type: List of type xs:integer

@@ -82,6 +82,15 @@ class SchemaHelper:
             base = LxmlElement.find_all_children_with_name_and_attribute(simple_type[0], "restriction", "base")
             if len(base) > 0:
                 schema_type = base[0].get("base")
+        # the element may be a List
+        for item in LxmlElement.iter(element, '{*}list'):
+            type = item.get('itemType')
+            schema_type = f'List of type {type}'
+        # the element may be a restriction
+        for item in LxmlElement.iter(element, '{*}restriction'):
+            type = item.get('base')
+            schema_type = f'Restriction of type {type}'
+
 
         # if schemaType is not None:
         #     # Add any missing prefix

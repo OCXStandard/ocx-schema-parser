@@ -1,55 +1,9 @@
-'{http://data.dnvgl.com/Schemas/ocxXMLSchema}barSectionAttributes':
-  Name: barSectionAttributes
-  Prefix: ocx
-  Source Line: 7091
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}barSectionAttributes'
-'{http://data.dnvgl.com/Schemas/ocxXMLSchema}externalRefAttributes':
-  Name: externalRefAttributes
-  Prefix: ocx
-  Source Line: 2580
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}externalRefAttributes'
-'{http://data.dnvgl.com/Schemas/ocxXMLSchema}header':
-  Name: header
-  Prefix: ocx
-  Source Line: 1880
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}header'
-'{http://data.dnvgl.com/Schemas/ocxXMLSchema}nurbsAttributes':
-  Name: nurbsAttributes
-  Prefix: ocx
-  Source Line: 5123
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}nurbsAttributes'
-'{http://www.w3.org/XML/1998/namespace}specialAttrs':
-  Name: specialAttrs
-  Prefix: xml
-  Source Line: 157
-  Tag: '{http://www.w3.org/XML/1998/namespace}specialAttrs'
-'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}dimensionURL':
-  Name: dimensionURL
-  Prefix: null
-  Source Line: 189
-  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}dimensionURL'
-'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}initialUnit':
-  Name: initialUnit
-  Prefix: null
-  Source Line: 107
-  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}initialUnit'
-'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}powerRational':
-  Name: powerRational
-  Prefix: null
-  Source Line: 137
-  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}powerRational'
-'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}prefix':
-  Name: prefix
-  Prefix: null
-  Source Line: 147
-  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}prefix'
-'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}sourceName':
-  Name: sourceName
-  Prefix: null
-  Source Line: 117
-  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}sourceName'
-'{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}sourceURL':
-  Name: sourceURL
-  Prefix: null
-  Source Line: 127
-  Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}sourceURL'
+dimensionURL: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}dimensionURL'
+externalRefAttributes: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}externalRefAttributes'
+header: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}header'
+initialUnit: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}initialUnit'
+nurbsAttributes: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}nurbsAttributes'
+powerRational: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}powerRational'
+sourceName: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}sourceName'
+sourceURL: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}sourceURL'
+specialAttrs: '{http://www.w3.org/XML/1998/namespace}specialAttrs'

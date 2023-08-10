@@ -1,9 +1,13 @@
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
-
-from xsdata.utils.downloader import Downloader, logger
-from ocx_schema_parser.utils.utilities import root_dir
+# System imports
 from typing import Optional
 from pathlib import Path
+# Third part imports
+from xsdata.utils.downloader import Downloader
+from loguru import logger
+#Module imports
+from ocx_schema_parser.utils.utilities import root_dir
+
 
 
 class SchemaDownloader(Downloader):
@@ -30,11 +34,10 @@ class SchemaDownloader(Downloader):
         """
         # Get the uri file name
         name = Path(uri).name
-        file_path = Path(root_dir()) / self.schema_folder / name
-        file_path.parent.mkdir(parents=True, exist_ok=True)
+        file_path = self.schema_folder / name
         file_path.write_text(content, encoding="utf-8")
-
-        logger.debug("Writing %s", file_path)
+        logger.debug(f'Writing schema {file_path.resolve()} to folder {self.schema_folder.resolve()}')
+        # logger.debug(content)
         self.downloaded[uri] = file_path
 
         if location:

@@ -172,7 +172,9 @@ class LxmlElement:
         """
         use = element.get("use")
         if use is None:
-            return "optional"
+            return "opt."
+        if use == 'required':
+            use = 'req.'
         return use
 
     @staticmethod
@@ -188,6 +190,20 @@ class LxmlElement:
 
         """
         return element.get("ref")
+
+    @staticmethod
+    def is_enumeration(element: Element) -> bool:
+        """Whether the attribute is an enumeration or not
+
+        Args:
+            element: The XML parent node
+
+        Returns:
+
+            true if the attribute is an enumeratos, false otherwise
+
+        """
+        return LxmlElement.has_child_with_name(element,'enumeration')
 
     @staticmethod
     def is_reference(element: Element) -> bool:
@@ -220,6 +236,15 @@ class LxmlElement:
             return False
         else:
             return True
+
+
+    @classmethod
+    def cardinality_string(cls,element) -> str:
+        """Return the element cardinality formatted string."""
+        lower, upper = cls.cardinality(element)
+        if upper == "unbounded":
+            upper = "\u221E"  # UTF-8 Infinity symbol
+        return f"[{lower}, {upper}]"
 
     @staticmethod
     def cardinality(element) -> tuple:
@@ -330,6 +355,22 @@ class LxmlElement:
         """
         attributes = LxmlElement.get_xml_attrib(element)
         return attributes.get("substitutionGroup")
+    @staticmethod
+    def get_restriction(element: Element) -> str:
+        """Return the element restriction
+
+        Args:
+            element: the ``etree.Element`` instance
+
+        Returns:
+            restriction type
+
+        """
+        restriction = ''
+        for item in LxmlElement.iter(element, '{*}restriction'):
+            restriction = item.get('base')
+        return restriction
+
 
     @staticmethod
     def get_element_text(element: Element) -> str:

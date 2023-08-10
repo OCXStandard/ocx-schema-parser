@@ -18,14 +18,16 @@ Namespaces:
 Schema Types:
 - - element
   - 334
-- - attribute
-  - 21
 - - complexType
   - 189
 - - simpleType
   - 7
 - - attributeGroup
-  - 11
+  - 9
+- - enumeration
+  - 16
+- - attribute
+  - 7
 Schema Version:
 - - Schema Version
   - 2.8.6

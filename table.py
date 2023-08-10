@@ -5,71 +5,77 @@ from loguru import logger
 from pathlib import Path
 from ocx_schema_parser.parser import OcxSchema
 from ocx_schema_parser.ocxdownloader.downloader import SchemaDownloader
-from ocx_schema_parser import WORKING_DRAFT, SCHEMA_FOLDER
+from ocx_schema_parser import WORKING_DRAFT, TMP_FOLDER, SCHEMA_FOLDER
+from ocx_schema_parser.transformer import Transformer
+from handle_exception import HandleException
 
 
-def print_table(element: str= 'Header'):
 
-    downloader = SchemaDownloader(SCHEMA_FOLDER)
-    downloader.wget(WORKING_DRAFT)
+def ocx_look_up(transformer, type: str= 'ocx:Vessel'):
 
-    file_name = Path(SCHEMA_FOLDER) / Path(WORKING_DRAFT).name
-    url = str(file_name.resolve())
-    schema_folder = Path(SCHEMA_FOLDER)
-    folder = str(schema_folder.resolve())
-    schema_reader = OcxSchema(folder)
-    if result := schema_reader.process_schema(url):
-        elements = schema_reader.get_ocx_elements()
-        result = filter(lambda target: target.get_name() == element, elements)
-        for item in result:
-            if item.get_name() == element:
-                result = item.children_to_dict()
-                print (tabulate(item.attributes_to_dict(), headers="keys"))
+    if transformer.is_transformed():
+        ocx = transformer.get_ocx_element_from_type(type)
+        print(f'Found element: {ocx.get_name()} with prefix {ocx.get_prefix()}')
 
-def print_enum(target: str = 'prefix'):
 
-    downloader = SchemaDownloader(SCHEMA_FOLDER)
-    downloader.wget(WORKING_DRAFT)
+def element_table(transformer, element: str= 'ocx:Vessel'):
 
-    file_name = Path(SCHEMA_FOLDER) / Path(WORKING_DRAFT).name
-    url = str(file_name.resolve())
-    schema_folder = Path(SCHEMA_FOLDER)
-    folder = str(schema_folder.resolve())
-    schema_reader = OcxSchema(folder)
-    if result := schema_reader.process_schema(url):
-        enums = schema_reader.get_schema_enumerators()
+    if transformer.is_transformed():
+        elements = transformer.get_ocx_elements()
+        ocx = transformer.get_ocx_element_from_type(element)
+        if ocx:
+            print(f'Table of {element}:')
+            print (tabulate(ocx.children_to_dict(), headers="keys"))
+            print (tabulate(ocx.attributes_to_dict(), headers="keys"))
+
+def enum(transformer, target: str = 'functionType'):
+
+    if transformer.is_transformed():
+        enums = transformer.get_enumerators()
         for key in enums:
             enum = enums[key]
             if enum.name == target:
                 print(tabulate(enum.to_dict(), headers='keys'))
 
-def print_summary():
-
-    downloader = SchemaDownloader(SCHEMA_FOLDER)
-    downloader.wget(WORKING_DRAFT)
-
-    file_name = Path(SCHEMA_FOLDER) / Path(WORKING_DRAFT).name
-    url = str(file_name.resolve())
-    schema_folder = Path(SCHEMA_FOLDER)
-    folder = str(schema_folder.resolve())
-    schema_reader = OcxSchema(folder)
-    if result := schema_reader.process_schema(url):
-        print(tabulate(schema_reader.tbl_summary(), headers='keys'))
+@HandleException
+def summary(transformer):
 
 
-def print_attributes():
+    if transformer.is_transformed():
+        print(transformer.parser.tbl_summary())
 
-    downloader = SchemaDownloader(SCHEMA_FOLDER)
-    downloader.wget(WORKING_DRAFT)
 
-    file_name = Path(SCHEMA_FOLDER) / Path(WORKING_DRAFT).name
-    url = str(file_name.resolve())
-    schema_folder = Path(SCHEMA_FOLDER)
-    folder = str(schema_folder.resolve())
-    schema_reader = OcxSchema(folder)
-    if result := schema_reader.process_schema(url):
-        print(tabulate(schema_reader.tbl_summary(), headers='keys'))
+
+
+def simple_type(transformer, target = 'all'):
+
+    if transformer.is_transformed():
+        if target == 'all':
+            for type in transformer.get_simple_types():
+                print(type.to_dict())
+        else:
+            for type in transformer.get_simple_types():
+                if type.name == target:
+                    print(type.to_dict())
+
+
+def elements(transformer, target = 'Vessel'):
+
+   if transformer.is_transformed():
+        for ocx in transformer.get_ocx_elements():
+            print(f'{ocx.get_prefix()}:{ocx.get_name()}')
+
+def attribute(transformer, target = 'GUIDRef'):
+
+    if transformer.is_transformed():
+        for type in transformer.get_global_attributes():
+            if type.name == target:
+                print(type)
+
 
 
 if __name__ == "__main__":
-    print_enum()
+    transformer = Transformer()
+    # transformer.transform_schema_from_folder(SCHEMA_FOLDER)
+    transformer.transform_schema_from_url(WORKING_DRAFT, Path(TMP_FOLDER))
+    element_table(transformer, 'ocx:Vessel')

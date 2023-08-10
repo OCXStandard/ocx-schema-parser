@@ -102,6 +102,15 @@ build-exe:   ## Build a bundled package (on windows: an exe file) executable usi
 	@pyinstaller main.spec
 .PHONY: build-exe
 
+build:   ## Build the package dist with poetry
+	@poetry update
+	@poetry build
+.PHONY: build
+
+publish:   ## Build the package dist with poetry
+	@poetry publish
+.PHONY: publish
+
 
 # HELP ########################################################################
 

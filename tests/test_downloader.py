@@ -9,5 +9,5 @@ from ocx_schema_parser import WORKING_DRAFT
 def test_download(datadir: Path):
     downloader = SchemaDownloader(datadir)
     downloader.wget(WORKING_DRAFT)
-    files = [file for file in datadir.glob('*')]
+    files = list(datadir.glob('*.xsd'))
     assert len(files) == 3
