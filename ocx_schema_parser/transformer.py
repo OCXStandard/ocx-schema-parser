@@ -285,18 +285,22 @@ class Transformer:
             element = self.parser.get_element_from_tag(tag)
             name = LxmlElement.get_name(element)
             type = SchemaHelper.get_type(element)
+            prefix = self.parser.get_prefix_from_namespace(QName(tag).namespace)
             restriction = LxmlElement.get_restriction(element)
             annotation = LxmlElement.get_element_text(element)
-            attribute = SchemaAttribute(name=name,type=type, restriction=restriction, description=annotation)
+            attribute = SchemaAttribute(name=name,type=type, prefix=prefix,restriction=restriction,
+                                        description=annotation)
             self._simple_types.append(attribute)
         # Global attributes
         for tag in self.parser.get_schema_attribute_types():
             element = self.parser.get_element_from_tag(tag)
             name = LxmlElement.get_name(element)
             type = SchemaHelper.get_type(element)
+            prefix = self.parser.get_prefix_from_namespace(QName(tag).namespace)
             restriction = LxmlElement.get_restriction(element)
             annotation = LxmlElement.get_element_text(element)
-            attribute = SchemaAttribute(name=name,type=type, restriction=restriction, description=annotation)
+            attribute = SchemaAttribute(name=name,prefix=prefix,type=type, restriction=restriction,
+                                        description=annotation)
             self._add_global_attribute(attribute)
         return
 

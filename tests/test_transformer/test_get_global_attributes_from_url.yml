@@ -3,37 +3,44 @@ GUIDRef:
   Description: A globally unique ID referring to an entity in the authoring application.
     The sending application creates and holds the GUID. Used to establish a unique
     reference to an entity persistent  between applications.
+  Namespace: ocx
   Restriction: ocx:guid
   Type: Restriction of type ocx:guid
 base:
   Attribute: base
   Description: ''
+  Namespace: xml
   Restriction: ''
   Type: xs:anyURI
 externalRef:
   Attribute: externalRef
   Description: URI specifying the file location of the referenced entity.
+  Namespace: ocx
   Restriction: ''
   Type: xs:string
 hasEdgeReinforcement:
   Attribute: hasEdgeReinforcement
   Description: Boolean. False if bracket has no reinforcement (Default).
+  Namespace: ocx
   Restriction: ''
   Type: xs:boolean
 id:
   Attribute: id
   Description: ''
+  Namespace: xml
   Restriction: ''
   Type: xs:ID
 newbuildingSociety:
   Attribute: newbuildingSociety
   Description: The name and organizational details of the classification society whose
     rules and regulations are being used to assess the ship during construction.
+  Namespace: ocx
   Restriction: ''
   Type: ocx:classificationSociety
 society:
   Attribute: society
   Description: The name and organizational details of the classification society whose
     rules and regulations are being used to assess the ship during current operation.
+  Namespace: ocx
   Restriction: ''
   Type: ocx:classificationSociety

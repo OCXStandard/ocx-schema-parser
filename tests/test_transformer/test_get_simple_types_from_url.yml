@@ -1,36 +1,43 @@
 booleanListType:
   Attribute: booleanListType
   Description: Generic list of boolean simple types.
+  Namespace: ocx
   Restriction: ''
   Type: List of type xs:boolean
 classificationSociety:
   Attribute: classificationSociety
   Description: Enumeration of abbreviations for all Classification Societies.
+  Namespace: ocx
   Restriction: xs:token
   Type: Restriction of type xs:token
 curveForm_enum:
   Attribute: curveForm_enum
   Description: Enumerator of NURBS curve forms.
+  Namespace: ocx
   Restriction: xs:string
   Type: Restriction of type xs:string
 doubleListType:
   Attribute: doubleListType
   Description: Generic list of double simple types separated by  a white space.
+  Namespace: ocx
   Restriction: ''
   Type: List of type xs:double
 floatListType:
   Attribute: floatListType
   Description: Generic list of float simple types.
+  Namespace: ocx
   Restriction: ''
   Type: List of type xs:float
 guid:
   Attribute: guid
   Description: The GUID of the entity referenced, in the form of a string containing
     32 hex digits, with arbitrary non-hex spacing characters.
+  Namespace: ocx
   Restriction: xs:normalizedString
   Type: Restriction of type xs:normalizedString
 integerListType:
   Attribute: integerListType
   Description: Generic list of integer simple types.
+  Namespace: ocx
   Restriction: ''
   Type: List of type xs:integer

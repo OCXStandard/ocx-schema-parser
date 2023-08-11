@@ -10,7 +10,7 @@ from lxml.etree import QName
 
 # Application imports
 from ocx_schema_parser import DEFAULT_SCHEMA, PROCESS_SCHEMA_TYPES, TMP_FOLDER, W3C_SCHEMA_BUILT_IN_TYPES
-from ocx_schema_parser.data_classes import SchemaSummary, SchemaType, OcxEnumerator
+from ocx_schema_parser.data_classes import SchemaSummary
 from ocx_schema_parser.helpers import SchemaHelper
 from ocx_schema_parser.xparse import LxmlElement, LxmlParser
 from ocx_schema_parser.errors import OcxParserError

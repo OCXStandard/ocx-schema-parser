@@ -80,18 +80,19 @@ class SchemaSummary(BaseDataClass):
     schema_namespaces: List[Tuple] = field(metadata={"header": "Namespaces"})
 @dataclass
 class SchemaAttribute(BaseDataClass):
-    """Schema attribute class.
+    """Schema attribute type class.
 
     Parameters:
         name: The name of the ``xs:attribute`` attribute
         type: the attribute type
-        facets: ttribute facets
-        namespace: The attribute value default if any
+        prefix: The namespace prefix
+        restriction: attribute restriction if any
         description: The attribute annotation
     """
 
     name: str = field(metadata={"header": "Attribute"})
-    type: str = field(metadata={"header": "Type"})
+    prefix: str = field(default = "", metadata={"header": "Namespace"})
+    type: str = field(default="", metadata={"header": "Type"})
     restriction: str = field(default = "", metadata={"header": "Restriction"})
     description: str = field(default ="", metadata={"header": "Description"})
 
