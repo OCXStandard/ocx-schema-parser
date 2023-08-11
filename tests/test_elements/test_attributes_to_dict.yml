@@ -1,0 +1,45 @@
+GUIDRef:
+  Attribute: GUIDRef
+  Default: null
+  Description: A globally Unique ID referring an entity in the sending application.
+  Fixed: null
+  Namespace: ocx
+  Type: Restriction of type ocx:guid
+  Use: req.
+functionType:
+  Attribute: functionType
+  Default: null
+  Description: The structure function type giving the structure property function.
+    Follows STEP AP218 coding and IACS Rec 82 Glossary.  Enumerator of structure functions
+    which shall be assigned to the parent structure concept.
+  Fixed: null
+  Namespace: ocx
+  Type: Restriction of type xs:string
+  Use: req.
+id:
+  Attribute: id
+  Default: null
+  Description: An identifier for an element unique within the scope of the XML file.
+    Each id must be unique within a document. The attribute uses the standard XML
+    1.0 ID type as defined in the XML Schema specification. This attribute is required
+    in many OCX XML elements and an application should generate them automatically.
+  Fixed: null
+  Namespace: ocx
+  Type: xs:ID
+  Use: req.
+name:
+  Attribute: name
+  Default: null
+  Description: An optional descriptive or display name.
+  Fixed: null
+  Namespace: ocx
+  Type: xs:string
+  Use: opt.
+tightness:
+  Attribute: tightness
+  Default: null
+  Description: A tightness attribute which can be assigned to a Panel or Plate.
+  Fixed: null
+  Namespace: ocx
+  Type: Restriction of type xs:string
+  Use: req.

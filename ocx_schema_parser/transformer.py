@@ -330,15 +330,16 @@ class Transformer:
         """
 
         # Process all xs:attribute elements including all supertypes
+        ns = ocx.get_namespace()
         attributes = LxmlElement.find_attributes(ocx.get_schema_element())
         for a in attributes:
-            ocx.add_attribute(self._process_attribute(a))
+            ocx.add_attribute(self._process_attribute(a, ns))
         # Iterate over parents
         parents = ocx.get_parents()
         for t in parents:
             attributes = LxmlElement.find_attributes(parents[t])
             for a in attributes:
-                ocx.add_attribute(self._process_attribute(a))
+                ocx.add_attribute(self._process_attribute(a, ns))
         # Process all xs:attributeGroup elements including all supertypes attributeGroups
         groups = LxmlElement.find_attribute_groups(ocx.get_schema_element())
         for group in groups:
@@ -349,7 +350,7 @@ class Transformer:
                 if at_group is not None:
                     attributes = LxmlElement.find_attributes(at_group)
                     for a in attributes:
-                        ocx.add_attribute(self._process_attribute(a))
+                        ocx.add_attribute(self._process_attribute(a, ns))
                 else:
                     logger.error(f"Attribute group {ref} is not found in the global look-up table")
         # Iterate over parents
@@ -364,7 +365,7 @@ class Transformer:
                     if at_group is not None:
                         attributes = LxmlElement.find_attributes(at_group)
                         for a in attributes:
-                            ocx.add_attribute(self._process_attribute(a))
+                            ocx.add_attribute(self._process_attribute(a, ns))
                     else:
                         logger.error(f"Attribute group {ref} is not found in the global look-up table")
         return
@@ -412,8 +413,11 @@ class Transformer:
                 ocx.add_child(child)
         return
 
-    def _process_attribute(self, xs_attribute: Element) -> OcxSchemaAttribute:
+    def _process_attribute(self, xs_attribute: Element, target_ns: str) -> OcxSchemaAttribute:
         """Process an xs:attribute element
+        Arguments:
+            xs_attribute: The schema attribute
+            target_ns: attribute target namespace
 
         Returns:
             An instance of the OcxSchemaAttribute
@@ -425,8 +429,9 @@ class Transformer:
         fixed= xs_attribute.get("fixed")
         default= xs_attribute.get("default")
         annotation= LxmlElement.get_element_text(xs_attribute)
-
-        attribute = OcxSchemaAttribute(name=name, type=type, fixed=fixed, use=use, default=default, description=annotation)
+        prefix = self.parser.get_prefix_from_namespace(target_ns)
+        attribute = OcxSchemaAttribute(name=name, prefix=prefix, type=type, fixed=fixed, use=use,
+                                       default=default, description=annotation)
         reference = LxmlElement.get_reference(xs_attribute)
         if reference is not None:
             # Get the referenced element

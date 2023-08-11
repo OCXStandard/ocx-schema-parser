@@ -1,0 +1,79 @@
+ComposedOf:
+  Cardinality: '[1, 1]'
+  Child: ComposedOf
+  Choice: false
+  Description: The element representing the structural concepts which composes the
+    structural Panel. If no ComposedOf definition is given, the Panel is treated as
+    a virtual panel. A virtual panel is used to limit other objects defining the model
+    topology.
+  Type: ocx:ComposedOf_T
+  Use: req.
+CutBy:
+  Cardinality: '[1, 1]'
+  Child: CutBy
+  Choice: false
+  Description: A structural concept defining a cut-out in a surface defined by a parametric
+    hole or a set of generic trim curves. Cut-out on panels will cut material on all
+    the panel plates touched by the cut-out shape.
+  Type: ocx:CutBy_T
+  Use: req.
+Description:
+  Cardinality: '[0, 1]'
+  Child: Description
+  Choice: false
+  Description: Contains a description of the component its parent represents. The
+    description is stored as a string. You can use this element for whatever purposes
+    you require. This element can be used inside many OCX XML elements but is optional.
+  Type: xs:string
+  Use: opt.
+LimitedBy:
+  Cardinality: '[1, 1]'
+  Child: LimitedBy
+  Choice: false
+  Description: The references to limiting objects forming a closed contour of the
+    parent element. It is not requiredthat the set of objects is ordered in the correct
+    sequence.
+  Type: ocx:LimitedBy_T
+  Use: req.
+OuterContour:
+  Cardinality: '[1, 1]'
+  Child: OuterContour
+  Choice: false
+  Description: The geometry of the outer closed contour limiting a surface, represented
+    by a set of trim curves or a closed curve primitive.
+  Type: ocx:Contour3D_T
+  Use: req.
+PhysicalProperties:
+  Cardinality: '[1, 1]'
+  Child: PhysicalProperties
+  Choice: false
+  Description: Basic physical properties of structure objects (weight and centre of
+    gravity). These properties are provided by the exporting application and can be
+    used as a quality measure by the receiving application to ensure correctness of
+    the import.
+  Type: ocx:PhysicalProperties_T
+  Use: req.
+SplitBy:
+  Cardinality: '[1, 1]'
+  Child: SplitBy
+  Choice: false
+  Description: Structural concepts defining the subdivision of a panel into plates
+    split by one or more seams.
+  Type: ocx:SplitBy_T
+  Use: req.
+StiffenedBy:
+  Cardinality: '[1, 1]'
+  Child: StiffenedBy
+  Choice: false
+  Description: Structural concept defining the stiffeners which is belonging to a
+    panel.
+  Type: ocx:StiffenedBy_T
+  Use: req.
+UnboundedGeometry:
+  Cardinality: '[1, 1]'
+  Child: UnboundedGeometry
+  Choice: false
+  Description: The unbounded surface geometry of the parent element. Can be a patch
+    of connected surfaces.
+  Type: ocx:UnboundedGeometry_T
+  Use: req.

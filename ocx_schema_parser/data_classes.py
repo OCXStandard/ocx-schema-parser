@@ -124,6 +124,7 @@ class OcxSchemaAttribute(BaseDataClass):
 
     Parameters:
         name: The name of the ``xs:attribute`` attribute
+        prefix: The Attribute namespace prefix
         type: the attribute type
         use: If the attribute is mandatory or not
         default: The attribute value default if any
@@ -132,6 +133,7 @@ class OcxSchemaAttribute(BaseDataClass):
     """
 
     name: str = field(metadata={"header": "Attribute"})
+    prefix: str = field(metadata={"header": "Namespace"})
     type: str = field(metadata={"header": "Type"})
     use: str = field(metadata={"header": "Use"})
     default: str = field(default ="", metadata={"header": "Default"})
