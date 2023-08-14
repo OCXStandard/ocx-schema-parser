@@ -73,4 +73,4 @@ if __name__ == "__main__":
     transformer = Transformer()
     # transformer.transform_schema_from_folder(SCHEMA_FOLDER)
     transformer.transform_schema_from_url(WORKING_DRAFT, Path(TMP_FOLDER))
-    element_table(transformer, 'ocx:Vessel')
+    ocx_look_up(transformer, 'ocx:Vessel')

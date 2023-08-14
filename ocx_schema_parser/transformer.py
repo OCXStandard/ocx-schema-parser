@@ -383,8 +383,8 @@ class Transformer:
         elements = LxmlElement.find_all_children_with_name(ocx.get_schema_element(), "element")
         for e in elements:
             name = f'{self.parser.get_prefix_from_namespace(target_ns)}:{LxmlElement.get_name(e)}'
-            unique_tag = SchemaHelper.unique_tag(LxmlElement.get_name(e), target_ns)
-            child = self._process_child(e, unique_tag)
+            prefix = self.parser.get_prefix_from_namespace(target_ns)
+            child = self._process_child(e, prefix)
             child.cardinality = LxmlElement.cardinality_string(e)
             child.is_choice = LxmlElement.is_choice(e)
             if name in substitutions:
@@ -400,8 +400,8 @@ class Transformer:
             elements = LxmlElement.find_all_children_with_name(parents[t], "element")
             for e in elements:
                 name = f'{self.parser.get_prefix_from_namespace(target_ns)}:{LxmlElement.get_name(e)}'
-                unique_tag = SchemaHelper.unique_tag(LxmlElement.get_name(e), target_ns)
-                child = self._process_child(e, unique_tag)
+                prefix = self.parser.get_prefix_from_namespace(target_ns)
+                child = self._process_child(e, prefix)
                 child.cardinality = LxmlElement.cardinality_string(e)
                 child.is_choice = LxmlElement.is_choice(e)
                 if name in substitutions:
@@ -451,7 +451,7 @@ class Transformer:
                 attribute.type = f'{prefix}:{type}'
             return attribute
 
-    def _process_child(self, xs_element: Element, unique_tag: str) -> OcxSchemaChild:
+    def _process_child(self, xs_element: Element, prefix: str) -> OcxSchemaChild:
         """Process an xs:element child element
 
         Arguments:
@@ -473,7 +473,8 @@ class Transformer:
         else:
             use = "req."
 
-        child = OcxSchemaChild(name=name, type=type, use=use, description=annotation, cardinality=cardinality,
+        child = OcxSchemaChild(name=name, prefix=prefix,type=type, use=use, description=annotation,
+                               cardinality=cardinality,
                                is_choice=choice)
         reference = LxmlElement.get_reference(xs_element)
         if reference is not None:

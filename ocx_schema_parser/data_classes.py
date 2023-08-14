@@ -149,6 +149,7 @@ class OcxSchemaChild(BaseDataClass):
 
     Parameters:
         name: The name of the ``xs:element`` element
+        prefix: The namespace prefix
         type: the element type
         use: If the element is mandatory or not
         cardinality: The cardinality of the child element
@@ -157,6 +158,7 @@ class OcxSchemaChild(BaseDataClass):
     """
 
     name: str = field(metadata={"header": "Child"})
+    prefix: str = field(metadata={"header": "Namespace"})
     type: str = field(metadata={"header": "Type"})
     use: str = field(metadata={"header": "Use"})
     cardinality: str = field(metadata={"header": "Cardinality"})
