@@ -4,7 +4,8 @@
 # System imports
 
 from pathlib import Path
-from typing import  Iterator, Dict, List, Union
+from typing import  Iterator, Dict, List, Union, DefaultDict
+from collections import defaultdict
 # Third party imports
 from loguru import logger
 from lxml.etree import Element
@@ -167,7 +168,17 @@ class Transformer:
 
         """
         return self._simple_types
-
+    def get_enumerator_types(self) -> Dict:
+        """Return the schema enumerator types.
+            Returns: All enumerator types
+        """
+        tbl = defaultdict(list)
+        enums = self.get_enumerators()
+        for name, enum in enums.items():
+            tbl['Name'].append(name)
+            tbl['prefix'].append(enum.prefix)
+            tbl['Tag'].append(enum.tag)
+        return tbl
 
     def _transform_schema_from_url(self, url: str, folder:Path) -> bool:
         """Transform from a schema location given by a remote url.
@@ -270,7 +281,7 @@ class Transformer:
         for tag in self.parser.get_schema_enumerations():
             e = self.parser.get_element_from_tag(tag)
             name = LxmlElement.get_name(e)
-            prefix = self.parser.get_prefix_from_namespace(QName(e).namespace)
+            prefix = self.parser.get_prefix_from_namespace(QName(tag).namespace)
             enum = OcxEnumerator(name=name, prefix = prefix, tag=tag)
             values = []
             descriptions = []

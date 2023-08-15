@@ -1,5 +1,5 @@
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
-
+from collections import defaultdict
 from tabulate import tabulate
 from pathlib import Path
 from ocx_schema_parser import WORKING_DRAFT, TMP_FOLDER, SCHEMA_FOLDER
@@ -24,7 +24,7 @@ def element_table(transformer, element: str= 'ocx:Vessel'):
             print (tabulate(ocx.children_to_dict(), headers="keys"))
             print (tabulate(ocx.attributes_to_dict(), headers="keys"))
 
-def enum(transformer, target: str = 'functionType'):
+def enum_values(transformer, target: str = 'functionType'):
 
     if transformer.is_transformed():
         enums = transformer.get_enumerators()
@@ -33,13 +33,24 @@ def enum(transformer, target: str = 'functionType'):
             if enum.name == target:
                 print(tabulate(enum.to_dict(), headers='keys'))
 
+def enum_types(transformer):
+
+    tbl = defaultdict(list)
+    if transformer.is_transformed():
+        enums = transformer.get_enumerators()
+        for name, enum in enums.items():
+            tbl['Name'].append(name)
+            tbl['prefix'].append(enum.prefix)
+            tbl['Tag'].append(enum.tag)
+        print(tabulate(tbl, headers='keys'))
+
 def summary(transformer):
 
 
     if transformer.is_transformed():
-        print(transformer.parser.tbl_summary())
-
-
+        for ns, tbl in transformer.parser.tbl_summary().items():
+            print(f'Content of namespace {ns}:\n')
+            print(tabulate(tbl, headers='keys'),'\n')
 
 
 def simple_type(transformer, target = 'all'):
@@ -73,4 +84,4 @@ if __name__ == "__main__":
     transformer = Transformer()
     # transformer.transform_schema_from_folder(SCHEMA_FOLDER)
     transformer.transform_schema_from_url(WORKING_DRAFT, Path(TMP_FOLDER))
-    ocx_look_up(transformer, 'ocx:Vessel')
+    enum_types(transformer)

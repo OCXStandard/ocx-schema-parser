@@ -1,5 +1,7 @@
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
-from collections import defaultdict, Counter
+from collections import defaultdict
+import itertools
+
 from pathlib import Path
 from typing import Any, Iterator, Dict, List, Tuple, Union, DefaultDict
 # Third party imports
@@ -10,7 +12,6 @@ from lxml.etree import QName
 
 # Application imports
 from ocx_schema_parser import DEFAULT_SCHEMA, PROCESS_SCHEMA_TYPES, TMP_FOLDER, W3C_SCHEMA_BUILT_IN_TYPES
-from ocx_schema_parser.data_classes import SchemaSummary
 from ocx_schema_parser.helpers import SchemaHelper
 from ocx_schema_parser.xparse import LxmlElement, LxmlParser
 from ocx_schema_parser.errors import OcxParserError
@@ -26,7 +27,6 @@ class OcxParser:
     Attributes:
         _schema_namespaces: All namespaces on the form (prefix, namespace) key-value pairs resulting from
             parsing all schema files, `W3C <https://www.w3.org/TR/xml-names/#sec-namespaces>`_.
-        _ocx_global_elements: Hash table as key-value pairs `(tag, OcxSchemaElement)` for all parsed schema elements
         _is_parsed: True if a schema has been parsed, False otherwise
         _schema_version: The version of the parsed schema
        _schema_changes: A list of all schema changes described by the tag SchemaChange contained in the xsd file.
@@ -47,9 +47,8 @@ class OcxParser:
         self._is_parsed: bool = False
         self._root : lxml.etree.Element = None
         self._all_schema_elements: Dict = {}  # Hash table with tag as key schema_elements[tag] = lxml.etree.Element
-        self._ocx_global_elements: Dict = {}  # Hash table with tag as key, value pairs(tag, OcxGlobalElement)
         self._all_types: DefaultDict[List]  = defaultdict(list)  # Hash table with tag as key: all_types[tag] = lxml.etree.Element
-        self._schema_types: List = PROCESS_SCHEMA_TYPES
+        self._schema_types: List = []
         self._schema_version: Any[str, None] = None
         self._schema_changes: DefaultDict[List] = defaultdict(list)
         self._substitution_groups: DefaultDict[List] = defaultdict(list)
@@ -111,18 +110,25 @@ class OcxParser:
         yield iter(self._all_schema_elements)
 
     def get_prefix_from_namespace(self, namespace: str) -> str:
-        """Return the namespace prefix
+        """Find the namespace prefix.
 
         Returns:
-            the namespace prefix
+            The namespace prefix
 
         """
-        prefix = "None"
-        if namespace not in list(self._schema_namespaces.values()):
-            logger.debug(f"The _namespace {namespace} is not in the global _namespace dict")
-        for item in self._schema_namespaces:
-            if namespace == self._schema_namespaces[item]:
-                prefix = item
+        nsprefix = list(iter(self._schema_namespaces))
+        nstags = list(iter(self._schema_namespaces.values()))
+        prefix = ''
+        try:
+            index = nstags.index(namespace)
+            prefix = nsprefix[index]
+            if prefix is None:
+                nstags.pop(index)
+                nsprefix.pop(index)
+                index = nstags.index(namespace)
+                prefix = nsprefix.index(index)
+        except ValueError as e:
+            logger.error(f'{namespace} is not in the namespace list: {e}')
         return prefix
 
     def _add_namespace(self, namespace: Dict) -> int:
@@ -175,22 +181,29 @@ class OcxParser:
 
         return result
 
-
     def _create_lookup_tables(self) -> None:
         """Create the global lookup tables of Schema data classes with the tag as key."""
 
         root = self._root
         # Add all global elements
-        for e in LxmlElement.find_all_children_with_name_and_attribute(root, 'element', "name"):
+        type = 'element'
+        self._schema_types.append(type)
+        for e in LxmlElement.find_all_children_with_name_and_attribute(root, type, "name"):
             self._add_element_to_lookup_table(e,self.get_target_namespace() )
         # Add all complex elements
-        for e in LxmlElement.find_all_children_with_name_and_attribute(root, 'complexType', "name"):
+        type = 'complexType'
+        self._schema_types.append(type)
+        for e in LxmlElement.find_all_children_with_name_and_attribute(root,type , "name"):
             self._add_element_to_lookup_table(e, self.get_target_namespace())
         # Add all simple types
-        for e in LxmlElement.find_all_children_with_name_and_attribute(root, 'simpleType', "name"):
+        type = 'simpleType'
+        self._schema_types.append(type)
+        for e in LxmlElement.find_all_children_with_name_and_attribute(root, type, "name"):
             self._add_element_to_lookup_table(e, self.get_target_namespace())
         # Add all attributGroups
-        for e in LxmlElement.find_all_children_with_name_and_attribute(root, 'attributeGroup', "name"):
+        type = 'attributeGroup'
+        self._schema_types.append(type)
+        for e in LxmlElement.find_all_children_with_name_and_attribute(root, type, "name"):
             self._add_element_to_lookup_table(e, self.get_target_namespace())
         # Add all global attributes (these are refs)
         glob_attr = LxmlElement.find_all_children_with_name_and_attribute(root, 'attribute', "ref")
@@ -402,17 +415,25 @@ class OcxParser:
         logger.debug(f"{__class__}: The tag {tag} is not in the look-up table")
         return None, None
 
-    def tbl_summary(self) -> Dict:
+    def tbl_summary(self, short: bool = True) -> Dict:
         """The summary of the parsed schema and any referenced schemas'
 
+        Arguments:
+            short: If true, only report number of schema types, otherwise report names of types.
         Returns:
-            The schema summary as a dataclass
+            The schema summary content dataclasses
         """
-
-        schema_version = [("Schema Version", self.get_schema_version())]
-        schema_types = [(schema_type, len(self._all_types[schema_type])) for schema_type in self._all_types]
-        namespaces = [(ns, self._schema_namespaces[ns]) for ns in self._schema_namespaces]
-        return SchemaSummary(schema_version, schema_types, namespaces).to_dict()
+        summary = {}
+        for prefix, namespace in self._schema_namespaces.items():
+            content = {'Version': [self.get_schema_version()], 'Prefix': [prefix]}
+            for type in self._all_types:
+                items = list(filter(lambda x: QName(x).namespace == namespace, self._all_types[type]))
+                if short:
+                    content[type] = [len(list(map(lambda name: QName(name).localname, items)))]
+                else:
+                    content[type] = list(map(lambda name: QName(name).localname, items))
+            summary[namespace] = content
+        return summary
 
     def tbl_attribute_groups(self) -> Dict:
         """All parsed ``attributeGroup`` types in the schema and any referenced schemas.

@@ -1,3 +1,5 @@
+#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+
 """ Tests for the OCXSchema class"""
 from ocx_schema_parser.ocxparser import OcxParser
 
@@ -28,3 +30,6 @@ class TestOcxParser:
         result = process_schema.tbl_attribute_types()
         data_regression.check(result)
 
+    def test_get_xs_types(self,  data_regression, process_schema: OcxParser):
+        result = process_schema.get_xs_types()
+        data_regression.check(result)
