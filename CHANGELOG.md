@@ -1,6 +1,7 @@
 # ocx-schema-parser: Changelog
 
 ## 1.0.0 - 2023-09-27
+bump to [v1.0.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.0.0)
 ### Changed
   - Fix missing substitution groups
   - Add test for substitution groups
