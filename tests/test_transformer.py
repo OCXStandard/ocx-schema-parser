@@ -40,12 +40,21 @@ class TestTransformer:
     def test_is_transformed_from_url(self, transformer_from_url: Transformer):
         assert transformer_from_url.is_transformed()
 
-    def test_get_ocx_elementsfrom_url(self, transformer_from_url: Transformer):
+    def test_transform_ocx_elements_from_url(self, transformer_from_url: Transformer):
         assert len(transformer_from_url.get_ocx_elements()) == 327
 
     def test_get_ocx_element_from_type_from_url(self, transformer_from_url: Transformer):
         vessel = transformer_from_url.get_ocx_element_from_type('ocx:Vessel')
         assert vessel
+
+    def test_get_ocx_element_properties_from_type_from_url(self, data_regression, transformer_from_url: Transformer):
+        element = transformer_from_url.get_ocx_element_from_type('ocx:TraceLine')
+        children = element.children_to_dict()
+        result = {
+            f'Children of {element.get_name()}': children['Child']
+        }
+        data_regression.check(result)
+
 
     def test_get_enumerators_from_url(self, data_regression, transformer_from_url: Transformer):
         enums = transformer_from_url.get_enumerators()

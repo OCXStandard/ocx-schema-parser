@@ -19,16 +19,6 @@ CutBy:
   Namespace: ocx
   Type: ocx:CutBy_T
   Use: req.
-Description:
-  Cardinality: '[0, 1]'
-  Child: Description
-  Choice: false
-  Description: Contains a description of the component its parent represents. The
-    description is stored as a string. You can use this element for whatever purposes
-    you require. This element can be used inside many OCX XML elements but is optional.
-  Namespace: ocx
-  Type: xs:string
-  Use: opt.
 LimitedBy:
   Cardinality: '[1, 1]'
   Child: LimitedBy

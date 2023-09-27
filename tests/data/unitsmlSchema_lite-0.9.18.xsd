@@ -5,11 +5,9 @@
     Version History: http://unitsml.nist.gov/Schema/schema_changes.txt
 -->
 <xsd:schema xmlns="urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18"
-			xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xml="http://www.w3.org/XML/1998/namespace"
-			targetNamespace="urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18"
-			elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.9.18">
-	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="https://www.w3.org/2009/01/xml.xsd"/>
-
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xml="http://www.w3.org/XML/1998/namespace"
+            targetNamespace="urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.9.18">
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="file://xml.xsd"/>
 	<!--=== Root-Node of an UnitsML document ===-->
 	<xsd:element name="UnitsML" type="UnitsMLType">
 		<xsd:annotation>
@@ -154,34 +152,141 @@
 			</xsd:annotation>
 			<xsd:simpleType>
 				<xsd:restriction base="xsd:token">
-					<xsd:enumeration value="Y"/>
-					<xsd:enumeration value="Z"/>
-					<xsd:enumeration value="E"/>
-					<xsd:enumeration value="P"/>
-					<xsd:enumeration value="T"/>
-					<xsd:enumeration value="G"/>
-					<xsd:enumeration value="M"/>
-					<xsd:enumeration value="k"/>
-					<xsd:enumeration value="h"/>
-					<xsd:enumeration value="da"/>
-					<xsd:enumeration value="d"/>
-					<xsd:enumeration value="c"/>
-					<xsd:enumeration value="m"/>
-					<xsd:enumeration value="u"/>
-					<xsd:enumeration value="n"/>
-					<xsd:enumeration value="p"/>
-					<xsd:enumeration value="f"/>
-					<xsd:enumeration value="a"/>
-					<xsd:enumeration value="z"/>
-					<xsd:enumeration value="y"/>
-					<xsd:enumeration value="Ki"/>
-					<xsd:enumeration value="Mi"/>
-					<xsd:enumeration value="Gi"/>
-					<xsd:enumeration value="Ti"/>
-					<xsd:enumeration value="Pi"/>
-					<xsd:enumeration value="Ei"/>
-					<xsd:enumeration value="Zi"/>
-					<xsd:enumeration value="Yi"/>
+				<xsd:enumeration value="Y">
+					<xsd:annotation>
+						<xsd:documentation>yotta: septillion</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="Z">
+					<xsd:annotation>
+						<xsd:documentation>zetta: sextillion</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="P">
+					<xsd:annotation>
+						<xsd:documentation>exa: quintillion</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="T">
+					<xsd:annotation>
+						<xsd:documentation>peta: quadrillion</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="G">
+					<xsd:annotation>
+						<xsd:documentation>tera: trillion</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="M">
+					<xsd:annotation>
+						<xsd:documentation>giga: billion</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="k">
+					<xsd:annotation>
+						<xsd:documentation>mega: million</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="h">
+					<xsd:annotation>
+						<xsd:documentation>kilo: thousand</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="da">
+					<xsd:annotation>
+						<xsd:documentation>hecto: hundred</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="d">
+					<xsd:annotation>
+						<xsd:documentation>deca: ten</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="c">
+					<xsd:annotation>
+						<xsd:documentation>deci: tenth</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="m">
+					<xsd:annotation>
+						<xsd:documentation>centi: hundredth</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="u">
+					<xsd:annotation>
+						<xsd:documentation>milli: thousandth</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="n">
+					<xsd:annotation>
+						<xsd:documentation>micro: millonth</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="p">
+					<xsd:annotation>
+						<xsd:documentation>nano: billonth</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="f">
+					<xsd:annotation>
+						<xsd:documentation>pico: trillionth</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="a">
+					<xsd:annotation>
+						<xsd:documentation>femto: quadrillionth</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="z">
+					<xsd:annotation>
+						<xsd:documentation>atto: quintillionth</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="y">
+					<xsd:annotation>
+						<xsd:documentation>zepto: sextillionth:</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="Ki">
+					<xsd:annotation>
+						<xsd:documentation>yocto: septillionth</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="Mi">
+					<xsd:annotation>
+						<xsd:documentation>kibi: kilobinary</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+					<xsd:enumeration value="Gi">
+					<xsd:annotation>
+						<xsd:documentation>mebi: magabinary</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="Ti">
+					<xsd:annotation>
+						<xsd:documentation>gibi: gigabinary</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="Pi">
+					<xsd:annotation>
+						<xsd:documentation>tebi: terabinary</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="Ei">
+					<xsd:annotation>
+						<xsd:documentation>exbi: exabinary</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="Zi">
+					<xsd:annotation>
+						<xsd:documentation>pebi: petabinary</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="Yi">
+					<xsd:annotation>
+						<xsd:documentation>yobi: yottabinary</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
 				</xsd:restriction>
 			</xsd:simpleType>
 		</xsd:attribute>
@@ -637,7 +742,7 @@
 		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
 			<xsd:any processContents="skip" maxOccurs="unbounded"/>
 		</xsd:sequence>
-		<xsd:attribute name="type" use="required">
+		<xsd:attribute name="type" type="xsd:string" use="required">
 			<xsd:annotation>
 				<xsd:documentation>Type of symbol representation.  Examples include ASCII, unicode, HTML, and MathML.</xsd:documentation>
 			</xsd:annotation>

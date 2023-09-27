@@ -1,6 +1,6 @@
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+"""ocxparser module."""
 from collections import defaultdict
-import itertools
 
 from pathlib import Path
 from typing import Any, Iterator, Dict, List, Tuple, Union, DefaultDict
@@ -14,13 +14,14 @@ from lxml.etree import QName
 from ocx_schema_parser import DEFAULT_SCHEMA, PROCESS_SCHEMA_TYPES, TMP_FOLDER, W3C_SCHEMA_BUILT_IN_TYPES
 from ocx_schema_parser.helpers import SchemaHelper
 from ocx_schema_parser.xparse import LxmlElement, LxmlParser
-from ocx_schema_parser.errors import OcxParserError
+
 
 
 
 
 class OcxParser:
-    """The OcxSchema provides functionality for parsing the OCX xsd schema and storing all the elements.
+    """
+    The OcxSchema provides functionality for parsing the OCX xsd schema and storing all the elements.
 
     Args:
 
@@ -36,7 +37,6 @@ class OcxParser:
         _builtin_xs_types: W3C primitive data types.
             `www.w3.org <https://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes>`_. Defined in ``config.yaml``
         _schema_ns: The schema target ns with the schema version as key
-
 
     """
 
@@ -57,7 +57,6 @@ class OcxParser:
         self._schema_ns: Dict = {} # Store the schema target ns with the schema version as key
         self._schema_enumerators: Dict = {}
         self._simple_types: List = []
-        self._schema_ns: Dict = {} # Store the schema target ns with the schema version as key
 
 
 
@@ -69,6 +68,7 @@ class OcxParser:
 
         Returns:
             True if processed, False otherwise.
+
         """
         if self._parse_xsd_from_file(file):
             self._create_lookup_tables()
@@ -80,6 +80,7 @@ class OcxParser:
 
         Args:
             target_ns: the target name space of the parsed schema
+
         """
         self._target_ns = target_ns
 
@@ -88,6 +89,7 @@ class OcxParser:
 
         Returns:
             The target namespace.
+
         """
         return self._target_ns
 
@@ -132,7 +134,7 @@ class OcxParser:
         return prefix
 
     def _add_namespace(self, namespace: Dict) -> int:
-        """Add new namespaces to the global namespace dict'
+        """Add new namespaces to the global namespace dict
 
         Returns:
             The number of new namespaces added
@@ -160,6 +162,7 @@ class OcxParser:
 
         Returns:
             True if parsed successfully, false otherwise
+
         """
         parser = LxmlParser()
         if result := parser.parse(file):
@@ -178,7 +181,6 @@ class OcxParser:
             if version != "Missing":
                 self._schema_version = version
                 self._schema_ns[version] = target_ns
-
         return result
 
     def _create_lookup_tables(self) -> None:
@@ -200,7 +202,7 @@ class OcxParser:
         self._schema_types.append(type)
         for e in LxmlElement.find_all_children_with_name_and_attribute(root, type, "name"):
             self._add_element_to_lookup_table(e, self.get_target_namespace())
-        # Add all attributGroups
+        # Add all attributeGroups
         type = 'attributeGroup'
         self._schema_types.append(type)
         for e in LxmlElement.find_all_children_with_name_and_attribute(root, type, "name"):
@@ -220,7 +222,7 @@ class OcxParser:
             element: The schema element to be added.
             target_ns: The target namespace of the element
 
-            """
+        """
         name = LxmlElement.get_name(element)
         if name is not None:
             # add the schema type
@@ -241,7 +243,7 @@ class OcxParser:
                                                                                       target_ns))
 
     def _add_schema_element(self, tag: str, element: Element):
-        """Add a new schema element to the hash table
+        """Add a new schema element to the hash table.
 
         Args:
             tag: The hash key
@@ -251,7 +253,7 @@ class OcxParser:
         self._all_schema_elements[tag] = element
 
     def _add_schema_type(self, schema_type: str, tag: str):
-        """Add a new schema type to the hash table
+        """Add a new schema type to the hash table.
 
         Args:
             tag: The hash key
@@ -261,7 +263,7 @@ class OcxParser:
         self._all_types[schema_type].append(tag)
 
     def _add_member_to_substitution_group(self, group: str, element: Element):
-        """Add an ``xs:element`` to a substitution group collection
+        """Add an ``xs:element`` to a substitution group collection.
 
         Args:
             group: The name of the substitution group
@@ -280,7 +282,7 @@ class OcxParser:
         elements = list(self._all_types[schema_type])
         return sorted(elements)
     def get_schema_version(self) -> str:
-        """The OCX schema version
+        """The OCX schema version.
 
         Returns:
             The coded version string of the OCX schema
@@ -288,7 +290,7 @@ class OcxParser:
         """
         return self._schema_version
     def get_namespaces(self) -> Dict:
-        """The parsed namespaces'
+        """The parsed namespaces.
 
         Returns:
             The dict of namespaces as (namespace,prefix) key-value pairs
@@ -296,7 +298,7 @@ class OcxParser:
         """
         return self._schema_namespaces
     def get_schema_namespace(self, version: str) -> str:
-        """The schema namespace of the schema with ``version``
+        """The schema namespace of the schema with ``version``.
 
         Returns:
             The target namespace
@@ -364,20 +366,22 @@ class OcxParser:
 
         Returns:
             The list of all etree.Element of type ``attributeGroup``
+
         """
         return self._get_schema_types("attributeGroup")
 
 
-    def get_substitution_groups(self):
+    def get_substitution_groups(self) -> Dict:
         """The collection of the schema  ``substitutionGroup``.
 
         Returns:
             Substitution groups with members
+
         """
         return self._substitution_groups
 
     def get_element_from_tag(self, tag: str) -> Union[Element, None]:
-        """Return get the ``etree.Element`` with the key 'tag'
+        """Return get the ``etree.Element`` with the key ``tag``.
 
         Returns:
             The schema element instance
@@ -391,7 +395,7 @@ class OcxParser:
             return None
         return self._all_schema_elements.get(tag)
     def get_element_from_type(self, schema_type: str) -> Tuple[Any, Any]:
-        """Retrieve the schema element ``etree.Element`` with the key 'schema_type'
+        """Retrieve the schema element ``etree.Element`` with the key ``schema_type``.
 
         Args:
             schema_type: The schema type to retrive on the form ``ns_prefix:name``
@@ -416,12 +420,14 @@ class OcxParser:
         return None, None
 
     def tbl_summary(self, short: bool = True) -> Dict:
-        """The summary of the parsed schema and any referenced schemas'
+        """The summary of the parsed schema and any referenced schemas.
 
         Arguments:
             short: If true, only report number of schema types, otherwise report names of types.
+
         Returns:
             The schema summary content dataclasses
+
         """
         summary = {}
         for prefix, namespace in self._schema_namespaces.items():
@@ -439,8 +445,8 @@ class OcxParser:
         """All parsed ``attributeGroup`` types in the schema and any referenced schemas.
 
         Returns:
-
              List of  ``SchemaType`` data class holding ``attributeGroup`` attributes.
+
         """
 
         elements = self.get_schema_attribute_group_types()
@@ -453,7 +459,6 @@ class OcxParser:
         """The table of all parsed ``simpleType`` elements in the schema and any referenced schemas.
 
         Returns:
-
             The ``SchemaType`` data class attributes of ``simpleType``
 
         """
@@ -485,6 +490,7 @@ class OcxParser:
         Returns:
 
             The ``SchemaType`` data class attributes of ``attributeType``
+
         """
 
         elements = self.get_schema_attribute_types()
@@ -499,6 +505,7 @@ class OcxParser:
         Returns:
 
             The ``SchemaType`` data class attributes of ``element``
+
         """
 
         elements = self.get_schema_element_types()
@@ -513,6 +520,7 @@ class OcxParser:
         Returns:
 
             The ``SchemaType`` data class attributes of ``complexType``
+
         """
 
         elements = self.get_schema_complex_types()

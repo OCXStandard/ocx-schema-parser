@@ -1,21 +1,21 @@
-parser classes
-==============
+transformer classes
+===================
 
-The ''OcxSchema'' class
-***********************
+The ''Transformer'' class
+*************************
 
-.. autoclass:: ocx_schema_parser.parser.OcxSchema
+.. autoclass:: ocx_schema_parser.transformer.Transformer
    :members:
    :undoc-members:
    :show-inheritance:
 
-helpers classes
-===============
+parser classes
+==============
 
-The ''SchemaHelper'' class
-**************************
+The ''OcxParser'' class
+***********************
 
-.. autoclass:: ocx_schema_parser.helpers.SchemaHelper
+.. autoclass:: ocx_schema_parser.ocxparser.OcxParser
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,18 +23,18 @@ The ''SchemaHelper'' class
 data_classes classes
 ====================
 
-The ''SchemaType'' class
-************************
-
-.. autoclass:: ocx_schema_parser.data_classes.SchemaType
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 The ''BaseDataClass'' class
 ***************************
 
 .. autoclass:: ocx_schema_parser.data_classes.BaseDataClass
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+The ''SchemaType'' class
+************************
+
+.. autoclass:: ocx_schema_parser.data_classes.SchemaType
    :members:
    :undoc-members:
    :show-inheritance:
@@ -55,10 +55,10 @@ The  ''SchemaChange'' class
    :undoc-members:
    :show-inheritance:
 
-The  ''SchemaEnumerator'' class
+The  ''OcxEnumerator'' class
 *******************************
 
-.. autoclass:: ocx_schema_parser.data_classes.SchemaEnumerator
+.. autoclass:: ocx_schema_parser.data_classes.OcxEnumerator
    :members:
    :undoc-members:
    :show-inheritance:
@@ -70,22 +70,6 @@ The ''OcxGlobalElement'' class
 ******************************
 
 .. autoclass:: ocx_schema_parser.elements.OcxGlobalElement
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-The ''OcxChildElement'' class
-*****************************
-
-.. autoclass:: ocx_schema_parser.elements.OcxChildElement
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-The ''OcxAttribute'' class
-**************************
-
-.. autoclass:: ocx_schema_parser.elements.OcxAttribute
    :members:
    :undoc-members:
    :show-inheritance:
@@ -112,3 +96,27 @@ The ''OcxDownloader'' class
    :members:
    :undoc-members:
    :show-inheritance:
+
+helpers classes
+===============
+
+The ''SchemaHelper'' class
+**************************
+
+.. autoclass:: ocx_schema_parser.helpers.SchemaHelper
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+xparse classes
+===============
+
+The ''LxmlParser'' class
+**************************
+
+.. autoclass:: ocx_schema_parser.xparse.LxmlParser
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+

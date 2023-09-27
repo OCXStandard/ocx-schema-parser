@@ -12,6 +12,7 @@ def ocx_look_up(transformer, type: str= 'ocx:Vessel'):
     if transformer.is_transformed():
         ocx = transformer.get_ocx_element_from_type(type)
         print(f'Found element: {ocx.get_name()} with prefix {ocx.get_prefix()}')
+        print(f'Children: {ocx.children_to_dict()}')
 
 
 def element_table(transformer, element: str= 'ocx:Vessel'):
@@ -78,10 +79,17 @@ def attribute(transformer, target = 'GUIDRef'):
             if type.name == target:
                 print(type)
 
+def substitution_groups(transformer):
+
+    if transformer.is_transformed():
+        groups = transformer.parser.get_substitution_groups()
+        print(groups)
+
 
 
 if __name__ == "__main__":
     transformer = Transformer()
-    # transformer.transform_schema_from_folder(SCHEMA_FOLDER)
-    transformer.transform_schema_from_url(WORKING_DRAFT, Path(TMP_FOLDER))
-    enum_types(transformer)
+    #transformer.transform_schema_from_folder(Path(SCHEMA_FOLDER))
+    transformer.transform_schema_from_url(WORKING_DRAFT, Path(SCHEMA_FOLDER))
+    # substitution_groups(transformer)
+    ocx_look_up(transformer, 'ocx:UnboundedGeometry')

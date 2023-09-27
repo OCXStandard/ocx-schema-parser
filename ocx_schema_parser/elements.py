@@ -45,10 +45,10 @@ class OcxGlobalElement:
         self._namespaces: Dict = namespaces
 
     def add_attribute(self, attribute: OcxSchemaAttribute):
-        """Add attributes to the global element
+        """Add attributes to the global element.
 
         Arguments:
-            attribute : The `attribute instance to be added
+            attribute : The attribute instance to be added
 
         """
         self._attributes.append(attribute)
@@ -315,7 +315,7 @@ class OcxGlobalElement:
         """A dictionary of all ``OcxGlobalElement`` property values
 
         Returns:
-           table: A dictionary of property values with heading keys:
+           main: A dictionary of property values with heading keys:
 
             .. list-table:: Heading keys
                :widths: 25 25 25 25 25 50
@@ -364,7 +364,7 @@ class OcxGlobalElement:
         """A dictionary of all ``OcxGlobalElement`` children values
 
         Returns:
-            table: A dictionary of attribute values with heading keys:
+            main: A dictionary of attribute values with heading keys:
 
             .. list-table:: Heading keys
                :widths: 25 25 25 25 50

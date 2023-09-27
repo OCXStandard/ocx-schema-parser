@@ -17,7 +17,7 @@ externalRef:
   Description: URI specifying the file location of the referenced entity.
   Namespace: ocx
   Restriction: ''
-  Type: xs:string
+  Type: xs:anyURI
 hasEdgeReinforcement:
   Attribute: hasEdgeReinforcement
   Description: Boolean. False if bracket has no reinforcement (Default).

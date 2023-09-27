@@ -1,0 +1,9 @@
+Children of TraceLine:
+- Circle3D
+- CircumArc3D
+- CircumCircle3D
+- CompositeCurve3D
+- Ellipse3D
+- Line3D
+- NURBS3D
+- PolyLine3D

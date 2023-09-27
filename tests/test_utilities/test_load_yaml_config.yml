@@ -58,4 +58,4 @@ W3C_SCHEMA_BUILT_IN_TYPES:
   '{http://www.w3.org/2001/XMLSchema}normalizedString': https://www.w3.org/TR/xmlschema-2/#normalizedString
   '{http://www.w3.org/2001/XMLSchema}string': https://www.w3.org/TR/xmlschema-2/#string
   '{http://www.w3.org/2001/XMLSchema}token': https://www.w3.org/TR/xmlschema-2/#token
-WORKING_DRAFT: https://raw.githubusercontent.com/OCXStandard/OCX_Schema/working_draft/OCX_Schema.xsd
+WORKING_DRAFT: https://3docx.org/fileadmin//ocx_schema//V300b0//OCX_Schema.xsd

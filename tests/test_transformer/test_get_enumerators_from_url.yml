@@ -1,9 +1,16 @@
+barSectionAttributes:
+  Description:
+  - ''
+  - ''
+  Value:
+  - Rolled
+  - Welded
 bulkCargoType:
   Description:
   - The bulk cargo is cement.
   - The bulk cargo is coal.
   - The bulk cargo is fish.
-  - The bulk cargo is of a general,non-specific type.
+  - The bulk cargo is of ageneral,non-specific type.
   - The bulk cargo is grain.
   - The bulk cargo is mud.
   - The bulk cargo is ore.
@@ -35,7 +42,7 @@ compartmentPurpose:
     the ship, or to provide emergency access to other spaces.
   - Storage of equipment, e.g. ropes.
   - The compartment is a watertight compartment to hold fresh lube oil.
-  - The compartment is designed for use as passageway.
+  - The compartment is designe for use as passageway.
   - The compartment is designed to be used for access.
   - Storage of miscellaneous fluids, e.g.sewage.
   Value:
@@ -53,7 +60,7 @@ compartmentPurpose:
 edgeReinforcement:
   Description:
   - The bracket edge has a flanged stiffening with a bend radius.
-  - The bracket edge has a faceplate.
+  - The bracket edge has a face plate.
   - The bracket edge has a buckling stiffener.
   Value:
   - Flanged
@@ -74,7 +81,7 @@ functionType:
   - A supporting plate.
   - A bracket attached to the end of stiffener.
   - A bracket used to support a load bearing element in between primary supporting
-    members.
+    memebers.
   - Casing is the covering or bulkhead around or about any space for protection.
   - Casing is the covering or bulkhead protection.
   - Deck Structure is the deck plating with stiffeners, girders and supporting pillars.
@@ -86,9 +93,9 @@ functionType:
   - Floor is a bottom transverse member.
   - Weather deck is normally the uppermost complete deck exposed to weather and sea,
     which has permanent means of closing all exposed openings.
-  - Forecastle deck is a deck attached to the short superstructure situated at the
-    bow.
-  - Freeboard deck is the first deck above the waterline.
+  - Forecastle deck is a the deck attached to the short superstructure situated at
+    the bow.
+  - Freeboard deck is the first deck abowe the waterline.
   - Deck Structure is the deck plating with primary girder memebers.
   - Deck Structure is the deck plating with stiffeners, girders and supporting pillars.
   - Deck Structure is the deck plating with stiffeners, girders and supporting pillars.
@@ -100,7 +107,7 @@ functionType:
   - Deck Structure is the deck plating with stiffeners, girders and supporting pillars.
   - Tween Decks is an abbreviation of between decks, placed between the upper deck
     and the tank top in the cargo holds.
-  - Deck House is a structure on the free-board or superstructure deck not extending
+  - Deck House is a structure on the freeboard or superstructure deck not extending
     from side to side of the ship.
   - Supporting foundation structure .
   - Engine foundation including foundation top plate .
@@ -140,7 +147,7 @@ functionType:
   - Supporting structure for transverse bulkhead.
   - Wash Bulkhead is a perforated or partial bulkhead in a tank.
   - A lug or collar plate used to support a stiffener penetrating a primary supporting
-    member.
+    memeber.
   - Gusset is a triangular plate, usually fitted to distribute forces at a strength
     connection between two structural members.
   - Shedder Plates are slanted plates fitted in dry cargo holds to prevent undesired
@@ -173,7 +180,7 @@ functionType:
   - Transverse stiffening system in the collision bulkhead.
   - Transverse stiffening system in the form of plate corrugations.
   - The lower stool supporting structure of the transverse cargo hold and tank bulkheads.
-  - A partial transverse bulkhead stiffening system.
+  - A partial trnsverse bulkead stiffening system.
   - The upper stool supporting structure of the transverse cargo hold and tank bulkheads.
   - Wash Bulkhead is a perforated or partial bulkhead in a tank.
   - Undefined structure function.
@@ -202,7 +209,7 @@ functionType:
   - 'DECK: Cross deck'
   - 'DECK: Cross ties'
   - 'DECK: Floor'
-  - 'DECK: Weather deck'
+  - 'DECK: Weateher deck'
   - 'DECK: Forecastle deck'
   - 'DECK: Freeboard deck'
   - 'DECK: Girder'
@@ -212,8 +219,8 @@ functionType:
   - 'DECK: Strength deck'
   - 'DECK: Superstructure deck'
   - 'DECK: Trunk deck'
-  - 'DECK: Tween deck'
-  - 'DECK: Wheelhouse deck'
+  - 'DECK: Tweeen deck'
+  - 'DECK: Weelhouse deck'
   - FOUNDATION
   - 'FOUNDATION: Engine'
   - HATCHWAY_COAMING
@@ -275,7 +282,7 @@ functionType:
   - 'WEB_FRAME: Bilge'
   - 'WEB_FRAME: Deck transverse frame'
   - 'WEB_FRAME: Floor frame'
-  - 'WEB_FRAME: General web-frame'
+  - 'WEB_FRAME: General webframe'
   - 'WEB_FRAME: Horizontal'
   - 'WEB_FRAME: Vertical'
   - 'WEB_FRAME: Main frame'
@@ -344,10 +351,10 @@ liquidCargoType:
   - The cargo is liquid cement.
   - The cargo is a liquid chemical.
   - The cargo is crude oil.
-  - The cargo is edible oil.
+  - The cargo is deible oil.
   - The cargo is fuel oil.
   - The cargo is fresh water.
-  - The cargo is hydrochloride acid.
+  - The cargo is hydroclorid acid.
   - The cargo is lubrication oil.
   - The cargo is methanol.
   - The cargo is molasses.
@@ -367,13 +374,13 @@ liquidCargoType:
   - aviation oil
   - caustic soda
   - cement
-  - chemical
+  - chemichal
   - crude oil
   - edible oil
   - fuel oil
   - fresh water
-  - hydrochloride acid
-  - lubricating oil
+  - hydroclorid acid
+  - lubricationg oil
   - methanol
   - molasses
   - product oil
@@ -385,13 +392,6 @@ liquidCargoType:
   - water ballast
   - wine
   - unspecified
-manufacture:
-  Description:
-  - ''
-  - ''
-  Value:
-  - Rolled
-  - Welded
 position:
   Description:
   - The bracket is at the near side of a penetration.
@@ -401,38 +401,36 @@ position:
   - Far side
 prefix:
   Description:
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
+  - 'yotta: septillion'
+  - 'zetta: sextillion'
+  - 'exa: quintillion'
+  - 'peta: quadrillion'
+  - 'tera: trillion'
+  - 'giga: billion'
+  - 'mega: million'
+  - 'kilo: thousand'
+  - 'hecto: hundred'
+  - 'deca: ten'
+  - 'deci: tenth'
+  - 'centi: hundredth'
+  - 'milli: thousandth'
+  - 'micro: millonth'
+  - 'nano: billonth'
+  - 'pico: trillionth'
+  - 'femto: quadrillionth'
+  - 'atto: quintillionth'
+  - 'zepto: sextillionth:'
+  - 'yocto: septillionth'
+  - 'kibi: kilobinary'
+  - 'mebi: magabinary'
+  - 'gibi: gigabinary'
+  - 'tebi: terabinary'
+  - 'exbi: exabinary'
+  - 'pebi: petabinary'
+  - 'yobi: yottabinary'
   Value:
   - Y
   - Z
-  - E
   - P
   - T
   - G
@@ -460,9 +458,9 @@ prefix:
   - Yi
 refType:
   Description:
-  - A reference to an instantiated  structure composition of type Panel.
+  - A reference to an instantiated  structure composision of type Panel.
   - A reference to an instantiated structure part of type Plate.
-  - A reference to an instantiated structure composition of type Seam.
+  - A reference to an instantiated structurecomposision of type Seam.
   - A reference to an instantiated structure part of type Bracket.
   - A reference to an instantiated structure part of type Stiffener.
   - A reference to an instantiated structure part of type Pillar.
@@ -477,8 +475,7 @@ refType:
   - A reference to an instantiated surface.
   - A reference to a stiffener end cut.
   - A reference to an occurrence group in a design view.
-  - A reference to an an edge reinforecement.
-  - A reference to a hole/cut-out contour.
+  - ''
   Value:
   - ocx:Panel
   - ocx:Plate
@@ -496,16 +493,8 @@ refType:
   - ocx:FreeEdgeCurve3D
   - ocx:Surface
   - ocx:EndCut
-  - ocx:OccurrenceGroup
+  - ocx:OccurenceGroup
   - ocx:EdgeReinforcement
-  - ocx:Hole2DContour
-slotType:
-  Description:
-  - ''
-  - ''
-  Value:
-  - Slit
-  - Open
 space:
   Description:
   - ''
@@ -533,7 +522,7 @@ unitCargoType:
   - The unit cargo is drums.
   - The unit cargo is livestock.
   - The unit cargo is pallet.
-  - The unit cargo is trailer.
+  - The unit cargo is tariler.
   - The unit cargo is vehicle.
   - The unit cargo is of unspecified type.
   Value:

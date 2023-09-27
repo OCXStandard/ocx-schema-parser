@@ -39,7 +39,7 @@ def resolve_source(source: str, recursive: bool) -> Iterator[str]:
             yield path.as_uri()
 
 
-def download_schema_from_url(url: str , schema_folder: Path ) -> bool:
+def download_schema_from_url(url: str , schema_folder: Path ) -> List:
     """"Download the schemas from an url before processing.
 
     Args:
@@ -59,9 +59,15 @@ def download_schema_from_url(url: str , schema_folder: Path ) -> bool:
         Path(file).unlink()
     downloader = SchemaDownloader(schema_folder)
     downloader.wget(url)
+    uris = []
+    for key in downloader.downloaded:
+        if key is not None:
+            uris.append(key)
+            logger.debug(f'Downloading from uri: {key}')
     files = list(schema_folder.glob('*.xsd'))
-    logger.debug(f'Downloaded schema files: {[x.name for x in files]}')
-    return len(files) > 0
+    for file in files:
+        logger.debug(f'Downloaded schema file: {file}')
+    return uris
 
 
 def filter_ocx(name: str, prefix: str, ocx:OcxGlobalElement)->bool:
@@ -401,10 +407,17 @@ class Transformer:
             if name in substitutions:
                 for tag in substitutions[name]:
                     element = self.parser.get_element_from_tag(tag)
-                    child.name = LxmlElement.get_name(element)
-                    child.type = SchemaHelper.get_type(element)
-                    child.description = LxmlElement.get_element_text(element)
-            ocx.add_child(child)
+                    subst = self._process_child(element,prefix)
+                    subst.name = LxmlElement.get_name(element)
+                    subst.type = SchemaHelper.get_type(element)
+                    subst.description = LxmlElement.get_element_text(element)
+                    subst.cardinality = child.cardinality
+                    subst.is_choice = child.is_choice
+                    ocx.add_child(subst)
+                    logger.debug(f'{ocx.get_name()}: Adding child {subst.name}')
+                else:
+                    ocx.add_child(child)
+                    logger.debug(f'{ocx.get_name()}: Adding child {child.name}')
         # Iterate over parents
         parents = ocx.get_parents()
         for t in parents:
@@ -418,11 +431,18 @@ class Transformer:
                 if name in substitutions:
                     for tag in substitutions[name]:
                         element = self.parser.get_element_from_tag(tag)
-                        child.name = LxmlElement.get_name(element)
-                        child.type = SchemaHelper.get_type(element)
-                        child.description = LxmlElement.get_element_text(element)
-                ocx.add_child(child)
-        return
+                        subst = self._process_child(element, prefix)
+                        subst.name = LxmlElement.get_name(element)
+                        subst.type = SchemaHelper.get_type(element)
+                        subst.description = LxmlElement.get_element_text(element)
+                        subst.cardinality = child.cardinality
+                        subst.is_choice = child.is_choice
+                        ocx.add_child(subst)
+                        logger.debug(f'{ocx.get_name()}: Adding child {subst.name}')
+                else:
+                        ocx.add_child(child)
+                        logger.debug(f'{ocx.get_name()}: Adding child {child.name}')
+            return
 
     def _process_attribute(self, xs_attribute: Element, target_ns: str) -> OcxSchemaAttribute:
         """Process an xs:attribute element

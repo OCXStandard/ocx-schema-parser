@@ -1,4 +1,5 @@
 #  Copyright (c) 2023.  OCX Consortium https://3docx.org. See the LICENSE
+"""xparse module."""
 # System imports
 from typing import Dict
 # Third party imports
@@ -22,7 +23,8 @@ class LxmlParser:
         self._tree: Element = None
 
     def parse(self, file: str, store_ids: bool = False) -> bool:
-        """Parses an XML file
+        """Parses an XML file.
+
         Args:
             file: The file name of the xml document to be parsed. The parser can only parse from a local file.
             store_ids: If set to True, the parser will create a hash table of the xml IDs
@@ -49,7 +51,7 @@ class LxmlParser:
         return parsed
 
     def get_root(self) -> Element:
-        """The XML root
+        """The XML root.
 
         Returns:
             The XML root node
@@ -58,7 +60,7 @@ class LxmlParser:
         return self._tree.getroot()
 
     def lxml_version(self) -> str:
-        """lxml version tag
+        """lxml version tag.
 
         Returns:
             The lxml version tag
@@ -120,7 +122,7 @@ class LxmlParser:
         return self._tree.docinfo.xml_version
 
     def get_namespaces(self) -> Dict:
-        """The dict of the defined namespaces of (prefix, namespace) as (key,value) pairs
+        """The dict of the defined namespaces of (prefix, namespace) as (key,value) pairs.
 
         Returns:
             (prefix, namespace) as (key,value) pairs
@@ -133,7 +135,7 @@ class LxmlParser:
         return root.nsmap
 
     def get_target_namespace(self) -> str:
-        """The target namespace of the schema
+        """The target namespace of the schema.
 
         Returns:
             The target namespace as a str
@@ -146,10 +148,11 @@ class LxmlParser:
         return root.get("targetNamespace")
 
     def get_referenced_files(self) -> Dict:
-        """The XML imports  (xs:import tags)
+        """The XML imports  (xs:import tags).
 
         Returns:
             A dict of key, value pairs (namespace: location/URL) of all xs:import tags.
+
         """
         root = self.get_root()
         if __debug__:

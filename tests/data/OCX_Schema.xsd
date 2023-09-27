@@ -9,7 +9,7 @@
     targetNamespace="http://data.dnvgl.com/Schemas/ocxXMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.0">
 	<!-- Import the NIST unitsML lite schema -->
 	<xs:import namespace="urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18"
-               schemaLocation="https://3docx.org/fileadmin/ocx_schema/unitsml/unitsmlSchema_lite-0.9.18.xsd"/>
+               schemaLocation="file://unitsmlSchema_lite-0.9.18.xsd"/>
 	<xs:annotation>
 		<xs:documentation>
 		The Open Class Exchange specification (OCX) for 3D model exchange between Classification Societies and early design systems.

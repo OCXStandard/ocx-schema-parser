@@ -33,3 +33,9 @@ class TestOcxParser:
     def test_get_xs_types(self,  data_regression, process_schema: OcxParser):
         result = process_schema.get_xs_types()
         data_regression.check(result)
+
+    def test_get_substituition_groups(self, data_regression, process_schema: OcxParser):
+        result = {
+            name: groups for name, groups in process_schema.get_substitution_groups().items()
+        }
+        data_regression.check(result)

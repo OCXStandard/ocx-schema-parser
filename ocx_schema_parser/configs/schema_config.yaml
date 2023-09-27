@@ -4,7 +4,7 @@ SCHEMA_FOLDER: 'schema_versions\'
 TMP_FOLDER: 'tmp\'
 # DEFAULT_SCHEMA: 'https://3docx.org/fileadmin/ocx_schema/V286/OCX_Schema.xsd'
 # The working draft version on github:
-WORKING_DRAFT: 'https://raw.githubusercontent.com/OCXStandard/OCX_Schema/working_draft/OCX_Schema.xsd'
+WORKING_DRAFT: 'https://3docx.org/fileadmin//ocx_schema//V300b0//OCX_Schema.xsd'
 DEFAULT_SCHEMA: 'https://3docx.org/fileadmin/ocx_schema/V286/OCX_Schema.xsd'
 SUB_COMMAND: 'schema'
 # w3c primitive data types. ref https://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes

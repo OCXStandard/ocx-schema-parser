@@ -1,0 +1,42 @@
+ocx:Curve3D:
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}PolyLine3D'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Line3D'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}CompositeCurve3D'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Circle3D'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}CircumCircle3D'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Ellipse3D'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}NURBS3D'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}CircumArc3D'
+ocx:DescriptionBase:
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}EntityBase'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}GeometryRepresentation'
+ocx:DocumentBase:
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}ocxXML'
+ocx:Form:
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Equipment'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Vessel'
+ocx:GeometryRepresentation:
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Hole2DContour'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Surface'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Curve3D'
+ocx:IdBase:
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}DescriptionBase'
+ocx:Member:
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Pillar'
+ocx:ParametricHole2D:
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}ParametricCircle'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}SymmetricalHole'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}SuperElliptical'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}RectangularHole'
+ocx:ReferencePlane:
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}XRefPlanes'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}YRefPlanes'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}ZRefPlanes'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}RadialPlanes'
+ocx:Surface:
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Cylinder3D'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Cone3D'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Sphere3D'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}ExtrudedSurface'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}NURBSSurface'
+- '{http://data.dnvgl.com/Schemas/ocxXMLSchema}Plane3D'

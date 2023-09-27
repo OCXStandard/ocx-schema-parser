@@ -33,8 +33,8 @@ project = 'ocx_schema_parser'
 year = '2023'
 author = '3Docx.org'
 copyright = '{0}, {1}'.format(year, author)
-version = release = '0.4.0'
-
+version = '0.8.0'
+release = version
 pygments_style = 'trac'
 templates_path = ['_templates']
 extlinks = {

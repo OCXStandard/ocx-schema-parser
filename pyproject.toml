@@ -80,6 +80,9 @@ src = "pyproject.toml"
 [[tool.tbump.file]]
 src = "./ocx_schema_parser/__init__.py"
 
+[[tool.tbump.file]]
+src = "./docs/conf.py"
+
 # You can specify a list of commands to
 # run after the files have been patched
 # and before the git commit is made
