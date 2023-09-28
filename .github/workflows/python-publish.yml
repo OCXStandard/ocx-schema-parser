@@ -6,7 +6,8 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Upload Python Package
+
+name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
 on:
   push:
@@ -16,21 +17,49 @@ on:
 permissions:
   contents: read
 
-# .github/workflows/ci-cd.yml
 jobs:
-  pypi-publish:
-    name: Upload release to PyPI
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+  build:
+    name: Build distribution 📦
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    - name: Install pypa/build
+      run: >-
+        python3 -m
+        pip install
+        build
+        --user
+    - name: Build a binary wheel and a source tarball
+      run: python3 -m build
+    - name: Store the distribution packages
+      uses: actions/upload-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+  publish-to-pypi:
+    name: >-
+      Publish Python 🐍 distribution 📦 to PyPI
+    if: startsWith(github.ref, 'refs/tags/')  # only publish to PyPI on tag pushes
+    needs:
+    - build
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/<your-pypi-project-name>
+      url: https://pypi.org/p/ocx-schema-reader  # Replace <package-name> with your PyPI project name
     permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
     steps:
-    # retrieve your distributions here
-
-    - name: Publish package distributions to PyPI
+    - name: Download all the dists
+      uses: actions/download-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish distribution 📦 to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.PYPI_API_TOKEN_OCX_SCHEMA_PARSER }}
