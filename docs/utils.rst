@@ -7,4 +7,3 @@ utils
 
 .. automodule:: ocx_schema_parser.utils.utilities
     :members:
-

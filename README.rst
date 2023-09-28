@@ -79,5 +79,3 @@ Documentation
 
 
 https://ocx_schema_parser.readthedocs.io/en/latest/
-
-

@@ -1,13 +1,16 @@
 """OCX Schema conformance checks"""
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
-from spellchecker import SpellChecker
+
 from collections import defaultdict
+from typing import Dict, Set, Tuple
+
 import inflection
-from typing import Set, Tuple, Dict
-from ocx_schema_parser.xelement import LxmlElement
-from ocx_schema_parser.ocxparser import OcxParser
-from ocx_schema_parser.transformer import Transformer
+
+#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+from spellchecker import SpellChecker
+
 from ocx_schema_parser import ALLOWED_WORDS, NAME_EXCEPTIONS
+from ocx_schema_parser.transformer import Transformer
 
 
 class SchemaCheck:
@@ -35,7 +38,6 @@ class SchemaCheck:
             #  Strip off the namespace
             known_words.append(ocx.get_name())
         self._spell_check.word_frequency.load_words(known_words)
-
 
     def check_annotation(self, text: str) -> Set:
         """Spell check the schema annotation text.
@@ -73,8 +75,8 @@ class SchemaCheck:
     def check_schema_name_conformance(self) -> Tuple[bool, Dict]:
         """Check the conformance of the OCX schema names.
 
-            Returns:
-                True if all names conform, False otherwise and the names that failed the check.
+        Returns:
+            True if all names conform, False otherwise and the names that failed the check.
 
         """
         result = True
@@ -83,19 +85,22 @@ class SchemaCheck:
             name = e.get_name()
             if self.is_camel_case(name) is not True and name not in NAME_EXCEPTIONS:
                 result = False
-                failures['camel_case'].append(name)
+                failures["camel_case"].append(name)
             children = e.get_children()
             for child in children:
                 name = child.name
                 if self.is_camel_case(name) is not True and name not in NAME_EXCEPTIONS:
                     print(name)
-                    failures['camel_case'].append(name)
+                    failures["camel_case"].append(name)
             attributes = e.get_attributes()
             for attr in attributes:
                 name = attr.name
-                if self.is_dromedary_case(name) is not True and name not in NAME_EXCEPTIONS:
+                if (
+                    self.is_dromedary_case(name) is not True
+                    and name not in NAME_EXCEPTIONS
+                ):
                     print(name)
-                    failures['dromedary_case'].append(name)
+                    failures["dromedary_case"].append(name)
         return result, failures
 
     def check_schema_conformance(self, namespace: str) -> bool:

@@ -1,13 +1,10 @@
-#  Copyright (c) 2022-2023.  OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2022-2023. OCX Consortium https://3docx.org. See the LICENSE
 
 import re
 from dataclasses import asdict
-from typing import Dict
-from typing import List
-from typing import Union
+from typing import Dict, List, Union
 
-from lxml.etree import Element
-from lxml.etree import ElementTextIterator
+from lxml.etree import Element, ElementTextIterator
 
 from .data_classes import SchemaChange
 from .xelement import LxmlElement
@@ -43,7 +40,7 @@ class SchemaHelper:
         return ref
 
     @staticmethod
-    def get_type(element: Element) -> str:
+    def get_type(element: Element) -> str:  # ToDo: Simplify function
         """The element type given by the element attribute or by its ``complexContent``
 
         Returns:
@@ -63,11 +60,15 @@ class SchemaHelper:
         if len(LxmlElement.find_all_children_with_name(element, "complexContent")) > 0:
             # complexContent has either an extension or a restriction
             # extension
-            base = LxmlElement.find_all_children_with_name_and_attribute(element, "extension", "base")
+            base = LxmlElement.find_all_children_with_name_and_attribute(
+                element, "extension", "base"
+            )
             if len(base) > 0:
                 schema_type = base[0].get("base")
             # restriction
-            base = LxmlElement.find_all_children_with_name_and_attribute(element, "restriction", "base")
+            base = LxmlElement.find_all_children_with_name_and_attribute(
+                element, "restriction", "base"
+            )
             if len(base) > 0:
                 schema_type = base[0].get("base")
         # the element may be a simpleType
@@ -75,22 +76,25 @@ class SchemaHelper:
         if len(simple_type) > 0:
             # simpleType may have either an extension or a restriction
             # extension
-            base = LxmlElement.find_all_children_with_name_and_attribute(simple_type[0], "extension", "base")
+            base = LxmlElement.find_all_children_with_name_and_attribute(
+                simple_type[0], "extension", "base"
+            )
             if len(base) > 0:
                 schema_type = base[0].get("base")
             # restriction
-            base = LxmlElement.find_all_children_with_name_and_attribute(simple_type[0], "restriction", "base")
+            base = LxmlElement.find_all_children_with_name_and_attribute(
+                simple_type[0], "restriction", "base"
+            )
             if len(base) > 0:
                 schema_type = base[0].get("base")
         # the element may be a List
-        for item in LxmlElement.iter(element, '{*}list'):
-            type = item.get('itemType')
-            schema_type = f'List of type {type}'
+        for item in LxmlElement.iter(element, "{*}list"):
+            type = item.get("itemType")
+            schema_type = f"List of type {type}"
         # the element may be a restriction
-        for item in LxmlElement.iter(element, '{*}restriction'):
-            type = item.get('base')
-            schema_type = f'Restriction of type {type}'
-
+        for item in LxmlElement.iter(element, "{*}restriction"):
+            type = item.get("base")
+            schema_type = f"Restriction of type {type}"
 
         # if schemaType is not None:
         #     # Add any missing prefix
@@ -132,7 +136,9 @@ class SchemaHelper:
         """
         version = "Missing"
         # root.findall('.//{*}attribute[@name="schemaVersion"]'
-        element = LxmlElement.find_all_children_with_attribute_value(root, "attribute", "name", "schemaVersion")
+        element = LxmlElement.find_all_children_with_attribute_value(
+            root, "attribute", "name", "schemaVersion"
+        )
         if len(element) > 0:
             version = element[0].get("fixed")
         return version

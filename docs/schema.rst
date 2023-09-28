@@ -118,5 +118,3 @@ The ''LxmlParser'' class
    :members:
    :undoc-members:
    :show-inheritance:
-
-

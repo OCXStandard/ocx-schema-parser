@@ -1,17 +1,18 @@
 """The OCX Schema content classes."""
 #  Copyright (c) 2022-2023. OCX Consortium https://3docx.org. See the LICENSE
-# System imports
 from collections import defaultdict
+from typing import Dict, List, Union
+
 from loguru import logger
-from typing import Dict,  List, Union
-#Third party imports
-from lxml.etree import Element
-from lxml.etree import QName
+
+# Third party imports
+from lxml.etree import Element, QName
+
+from ocx_schema_parser.data_classes import OcxSchemaAttribute, OcxSchemaChild
+
 # Module imports
 from ocx_schema_parser.helpers import SchemaHelper
 from ocx_schema_parser.xelement import LxmlElement
-from ocx_schema_parser.data_classes import  OcxSchemaChild, OcxSchemaAttribute
-
 
 
 class OcxGlobalElement:
@@ -36,8 +37,8 @@ class OcxGlobalElement:
         # Private
         self._element: Element = xsd_element
         self._attributes: List[OcxSchemaAttribute] = []
-        self._namespace:str  = QName(unique_tag).namespace
-        self._tag:str  = unique_tag
+        self._namespace: str = QName(unique_tag).namespace
+        self._tag: str = unique_tag
         self._cardinality: tuple = LxmlElement.cardinality(xsd_element)
         self._children: List = []
         self._parents: Dict = {}
@@ -191,19 +192,19 @@ class OcxGlobalElement:
         """
         nsprefix = list(iter(self._namespaces))
         nstags = list(iter(self._namespaces.values()))
-        prefix =''
+        prefix = ""
         try:
             index = nstags.index(self._namespace)
-            prefix =  nsprefix[index]
+            prefix = nsprefix[index]
             if prefix is None:
                 nstags.pop(index)
                 nsprefix.pop(index)
                 index = nstags.index(self._namespace)
                 prefix = nsprefix.index(index)
         except ValueError as e:
-            logger.error(f'{self._namespace} is not in the namespace list: {e}')
-        if prefix == '':
-            logger.debug(f'Empty namespace prefix in global elem,ent {self.get_name()}')
+            logger.error(f"{self._namespace} is not in the namespace list: {e}")
+        if prefix == "":
+            logger.debug(f"Empty namespace prefix in global elem,ent {self.get_name()}")
         return prefix
 
     def get_schema_element(self) -> Element:

@@ -5,7 +5,6 @@ from ocx_schema_parser.ocxparser import OcxParser
 
 
 class TestOcxParser:
-
     def test_summary_table(self, data_regression, process_schema: OcxParser):
         summary = process_schema.tbl_summary()
         data_regression.check(summary)
@@ -30,12 +29,13 @@ class TestOcxParser:
         result = process_schema.tbl_attribute_types()
         data_regression.check(result)
 
-    def test_get_xs_types(self,  data_regression, process_schema: OcxParser):
+    def test_get_xs_types(self, data_regression, process_schema: OcxParser):
         result = process_schema.get_xs_types()
         data_regression.check(result)
 
     def test_get_substituition_groups(self, data_regression, process_schema: OcxParser):
         result = {
-            name: groups for name, groups in process_schema.get_substitution_groups().items()
+            name: groups
+            for name, groups in process_schema.get_substitution_groups().items()
         }
         data_regression.check(result)

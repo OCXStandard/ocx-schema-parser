@@ -21,22 +21,25 @@ python = "^3.10"
 xsdata = "23.6"
 lxml = "*"
 ocx = "3.0.0a0"
-pyspellchecker ="*"
+pyspellchecker = "*"
 inflection = "*"
 loguru = "*"
 sphinx = "<=6.2.1"
 fuzzywuzzy = "^0.18.0"
 pyyaml = "*"
 
+[tool.poetry.group.development.dependencies]
+pre-commit = "*"
+
 [tool.poetry.group.test.dependencies]
 pytest = "*"
-pytest-regressions ="*"
+pytest-regressions = "*"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "*"
 sphinx-autodoc-typehints = "*"
-sphinx_rtd_theme= "*"
-sphinx-click= "*"
+sphinx_rtd_theme = "*"
+sphinx-click = "*"
 sphinx_automodapi = "*"
 
 [tool.tbump]

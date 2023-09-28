@@ -198,14 +198,16 @@ def load_yaml_config(config: Path) -> dict:
             app_config = yaml.safe_load(f)
         return app_config
     else:
-        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), config.absolute())
+        raise FileNotFoundError(
+            errno.ENOENT, os.strerror(errno.ENOENT), config.absolute()
+        )
 
 
 def camel_case_split(str) -> List:
     """Split camel case string to individual strings."""
-    return re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))', str)
+    return re.findall(r"[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))", str)
 
 
 def dromedary_case_split(str) -> List:
     """Split camel case string to individual strings."""
-    return re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)', str)
+    return re.findall(r"[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)", str)

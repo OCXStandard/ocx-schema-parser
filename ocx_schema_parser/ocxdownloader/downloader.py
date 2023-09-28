@@ -1,13 +1,14 @@
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
-# System imports
-from typing import Optional
 from pathlib import Path
+from typing import Optional
+
+from loguru import logger
+
 # Third part imports
 from xsdata.utils.downloader import Downloader
-from loguru import logger
-#Module imports
-from ocx_schema_parser.utils.utilities import root_dir
 
+
+# Module imports
 
 
 class SchemaDownloader(Downloader):
@@ -19,6 +20,7 @@ class SchemaDownloader(Downloader):
     Args:
         schema_folder: The path to the schema download folder
     """
+
     def __init__(self, output: Path):
         super().__init__(output)
         self.schema_folder = output
@@ -36,7 +38,9 @@ class SchemaDownloader(Downloader):
         name = Path(uri).name
         file_path = self.schema_folder / name
         file_path.write_text(content, encoding="utf-8")
-        logger.debug(f'Writing schema {file_path.resolve()} to folder {self.schema_folder.resolve()}')
+        logger.debug(
+            f"Writing schema {file_path.resolve()} to folder {self.schema_folder.resolve()}"
+        )
         # logger.debug(content)
         self.downloaded[uri] = file_path
 

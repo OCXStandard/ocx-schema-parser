@@ -1,4 +1,4 @@
-#  Copyright (c) 2022. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2022-2023. OCX Consortium https://3docx.org. See the LICENSE
 from ocx_schema_parser.xparse import LxmlElement
 
 
@@ -38,13 +38,17 @@ class TestLxmlElement:
 
     def test_unique_tag(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
-        vessel = LxmlElement.find_all_children_with_attribute_value(root, "element", "name", "Vessel")[0]
+        vessel = LxmlElement.find_all_children_with_attribute_value(
+            root, "element", "name", "Vessel"
+        )[0]
         name = LxmlElement.unique_tag(vessel)
         assert name == "{http://www.w3.org/2001/XMLSchema}Vessel"
 
     def test_get_name(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
-        vessel = LxmlElement.find_all_children_with_attribute_value(root, "element", "name", "Vessel")[0]
+        vessel = LxmlElement.find_all_children_with_attribute_value(
+            root, "element", "name", "Vessel"
+        )[0]
         name = LxmlElement.get_name(vessel)
         assert name == "Vessel"
 
@@ -76,22 +80,30 @@ class TestLxmlElement:
 
     def test_is_substitution_group(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
-        vessel = LxmlElement.find_all_children_with_attribute_value(root, "element", "name", "Vessel")[0]
+        vessel = LxmlElement.find_all_children_with_attribute_value(
+            root, "element", "name", "Vessel"
+        )[0]
         assert LxmlElement.is_substitution_group(vessel) is True
 
     def test_is_abstract(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
-        element = LxmlElement.find_all_children_with_attribute_value(root, "element", "name", "Curve3D")[0]
+        element = LxmlElement.find_all_children_with_attribute_value(
+            root, "element", "name", "Curve3D"
+        )[0]
         assert LxmlElement.is_abstract(element) is True
 
     def test_get_substitution_group(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
-        vessel = LxmlElement.find_all_children_with_attribute_value(root, "element", "name", "Vessel")[0]
+        vessel = LxmlElement.find_all_children_with_attribute_value(
+            root, "element", "name", "Vessel"
+        )[0]
         assert LxmlElement.get_substitution_group(vessel) == "ocx:Form"
 
     def test_get_element_text(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
-        vessel = LxmlElement.find_all_children_with_attribute_value(root, "element", "name", "Vessel")[0]
+        vessel = LxmlElement.find_all_children_with_attribute_value(
+            root, "element", "name", "Vessel"
+        )[0]
         text = LxmlElement.get_element_text(vessel)
         assert text == "Vessel asset subject to Classification."
 
@@ -111,7 +123,9 @@ class TestLxmlElement:
 
     def test_find_child_with_name(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
-        vessel = LxmlElement.find_all_children_with_attribute_value(root, "element", "name", "Vessel")[0]
+        vessel = LxmlElement.find_all_children_with_attribute_value(
+            root, "element", "name", "Vessel"
+        )[0]
         child = LxmlElement.find_child_with_name(vessel, "annotation")
         assert len(child) == 1
 
@@ -127,24 +141,32 @@ class TestLxmlElement:
 
     def test_has_child_with_name(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
-        vessel = LxmlElement.find_all_children_with_attribute_value(root, "element", "name", "Vessel")[0]
+        vessel = LxmlElement.find_all_children_with_attribute_value(
+            root, "element", "name", "Vessel"
+        )[0]
         assert LxmlElement.has_child_with_name(vessel, "annotation") is True
 
     def test_find_all_children_with_attribute_value(self, load_schema_from_file):
         # If the schema version changes, the test should probably be updated
         root = load_schema_from_file.get_root()
-        child = LxmlElement.find_all_children_with_attribute_value(root, "attribute", "name", "schemaVersion")[0]
+        child = LxmlElement.find_all_children_with_attribute_value(
+            root, "attribute", "name", "schemaVersion"
+        )[0]
         assert child.get("fixed") == "2.8.6"
 
     def test_find_all_children_with_name_and_attribute(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
-        children = LxmlElement.find_all_children_with_name_and_attribute(root, "element", "name")
+        children = LxmlElement.find_all_children_with_name_and_attribute(
+            root, "element", "name"
+        )
         assert len(children) == 318
 
     def test_find_assertion(self, load_schema_from_file):
         # If the schema version changes, the test should probably be updated
         root = load_schema_from_file.get_root()
-        children = LxmlElement.find_all_children_with_attribute_value(root, "complexType", "name", "EntityRefBase_T")
+        children = LxmlElement.find_all_children_with_attribute_value(
+            root, "complexType", "name", "EntityRefBase_T"
+        )
         assert len(children) == 1
 
     def test_namespace_prefix(self, load_schema_from_file):

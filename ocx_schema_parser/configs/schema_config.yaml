@@ -66,5 +66,3 @@ OCX_NAME_EXCEPTIONS: [
       'originating_system',
       'time_stamp',
 ]
-
-

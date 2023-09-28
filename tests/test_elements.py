@@ -1,9 +1,8 @@
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
 """Tests for OcxGlobalElement class
 """
-import pytest
+
 from ocx_schema_parser.transformer import Transformer
-from ocx_schema_parser.elements import OcxGlobalElement
 
 
 class TestOcxGlobalElement:
@@ -23,17 +22,16 @@ class TestOcxGlobalElement:
         vessel = transformer_from_folder.get_ocx_element_from_type("unitsml:RootUnits")
         assert vessel.get_prefix() == "unitsml"
 
-
-    def test_attributes_to_dict(self, data_regression, transformer_from_folder: Transformer):
+    def test_attributes_to_dict(
+        self, data_regression, transformer_from_folder: Transformer
+    ):
         item = transformer_from_folder.get_ocx_element_from_type("ocx:Panel")
-        result =  {
-            attr.name: attr.to_dict() for attr in item.get_attributes()
-        }
+        result = {attr.name: attr.to_dict() for attr in item.get_attributes()}
         data_regression.check(result)
 
-    def test_children_to_dict(self, data_regression, transformer_from_folder: Transformer):
+    def test_children_to_dict(
+        self, data_regression, transformer_from_folder: Transformer
+    ):
         item = transformer_from_folder.get_ocx_element_from_type("ocx:Panel")
-        result =  {
-            attr.name: attr.to_dict() for attr in item.get_children()
-        }
+        result = {attr.name: attr.to_dict() for attr in item.get_children()}
         data_regression.check(result)

@@ -1,11 +1,7 @@
 """The data_classes module contains the dataclasses holding schema attributes after parsing."""
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
-from dataclasses import dataclass
-from dataclasses import field
-from dataclasses import fields
-from typing import Dict, List, Tuple, DefaultDict
-
-from collections import defaultdict
+from dataclasses import dataclass, field, fields
+from typing import Dict, List, Tuple
 
 
 @dataclass
@@ -78,6 +74,8 @@ class SchemaSummary(BaseDataClass):
     schema_version: List[Tuple] = field(metadata={"header": "Schema Version"})
     schema_types: List[Tuple] = field(metadata={"header": "Schema Types"})
     schema_namespaces: List[Tuple] = field(metadata={"header": "Namespaces"})
+
+
 @dataclass
 class SchemaAttribute(BaseDataClass):
     """Schema attribute type class.
@@ -91,10 +89,10 @@ class SchemaAttribute(BaseDataClass):
     """
 
     name: str = field(metadata={"header": "Attribute"})
-    prefix: str = field(default = "", metadata={"header": "Namespace"})
+    prefix: str = field(default="", metadata={"header": "Namespace"})
     type: str = field(default="", metadata={"header": "Type"})
-    restriction: str = field(default = "", metadata={"header": "Restriction"})
-    description: str = field(default ="", metadata={"header": "Description"})
+    restriction: str = field(default="", metadata={"header": "Restriction"})
+    description: str = field(default="", metadata={"header": "Description"})
 
 
 @dataclass
@@ -111,12 +109,14 @@ class OcxEnumerator:
     name: str = field(metadata={"header": "Prefix"})
     tag: str = field(metadata={"header": "Tag"})
     values: List[str] = field(metadata={"header": "Value"}, default_factory=lambda: [])
-    descriptions: List[str] = field(metadata={"header": "Description"}, default_factory=lambda: [])
-
+    descriptions: List[str] = field(
+        metadata={"header": "Description"}, default_factory=lambda: []
+    )
 
     def to_dict(self) -> Dict:
         """Output the enumerator values and annotations."""
-        return {'Value': self.values, 'Description': self.descriptions}
+        return {"Value": self.values, "Description": self.descriptions}
+
 
 @dataclass
 class OcxSchemaAttribute(BaseDataClass):
@@ -136,11 +136,9 @@ class OcxSchemaAttribute(BaseDataClass):
     prefix: str = field(metadata={"header": "Namespace"})
     type: str = field(metadata={"header": "Type"})
     use: str = field(metadata={"header": "Use"})
-    default: str = field(default ="", metadata={"header": "Default"})
-    fixed: str = field(default ="", metadata={"header": "Fixed"})
-    description: str = field(default ="", metadata={"header": "Description"})
-
-
+    default: str = field(default="", metadata={"header": "Default"})
+    fixed: str = field(default="", metadata={"header": "Fixed"})
+    description: str = field(default="", metadata={"header": "Description"})
 
 
 @dataclass
@@ -163,4 +161,4 @@ class OcxSchemaChild(BaseDataClass):
     use: str = field(metadata={"header": "Use"})
     cardinality: str = field(metadata={"header": "Cardinality"})
     is_choice: bool = field(default=False, metadata={"header": "Choice"})
-    description: str = field(default ="", metadata={"header": "Description"})
+    description: str = field(default="", metadata={"header": "Description"})

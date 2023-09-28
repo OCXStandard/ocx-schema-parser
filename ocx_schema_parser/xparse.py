@@ -1,12 +1,13 @@
-#  Copyright (c) 2023.  OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
 """xparse module."""
 # System imports
 from typing import Dict
+
 # Third party imports
 from loguru import logger
 from lxml import etree
-from lxml.etree import Element
-from lxml.etree import XMLSyntaxError
+from lxml.etree import Element, XMLSyntaxError
+
 # Application imports
 from .xelement import LxmlElement
 

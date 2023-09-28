@@ -1,17 +1,13 @@
-#  Copyright (c) 2022. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2022-2023. OCX Consortium https://3docx.org. See the LICENSE
 
 # Sys imports
 import re
-from typing import Any
-from typing import Dict
-from typing import List
-from typing import Union
-#Third party imports
+from typing import Any, Dict, List, Union
+
+# Third party imports
 from loguru import logger
 from lxml import etree
-from lxml.etree import Element
-from lxml.etree import ElementTextIterator
-from lxml.etree import QName
+from lxml.etree import Element, ElementTextIterator, QName
 
 
 class LxmlElement:
@@ -173,8 +169,8 @@ class LxmlElement:
         use = element.get("use")
         if use is None:
             return "opt."
-        if use == 'required':
-            use = 'req.'
+        if use == "required":
+            use = "req."
         return use
 
     @staticmethod
@@ -203,7 +199,7 @@ class LxmlElement:
             true if the attribute is an enumeratos, false otherwise
 
         """
-        return LxmlElement.has_child_with_name(element,'enumeration')
+        return LxmlElement.has_child_with_name(element, "enumeration")
 
     @staticmethod
     def is_reference(element: Element) -> bool:
@@ -237,9 +233,8 @@ class LxmlElement:
         else:
             return True
 
-
     @classmethod
-    def cardinality_string(cls,element) -> str:
+    def cardinality_string(cls, element) -> str:
         """Return the element cardinality formatted string."""
         lower, upper = cls.cardinality(element)
         if upper == "unbounded":
@@ -355,6 +350,7 @@ class LxmlElement:
         """
         attributes = LxmlElement.get_xml_attrib(element)
         return attributes.get("substitutionGroup")
+
     @staticmethod
     def get_restriction(element: Element) -> str:
         """Return the element restriction
@@ -366,11 +362,10 @@ class LxmlElement:
             restriction type
 
         """
-        restriction = ''
-        for item in LxmlElement.iter(element, '{*}restriction'):
-            restriction = item.get('base')
+        restriction = ""
+        for item in LxmlElement.iter(element, "{*}restriction"):
+            restriction = item.get("base")
         return restriction
-
 
     @staticmethod
     def get_element_text(element: Element) -> str:
@@ -439,7 +434,9 @@ class LxmlElement:
         return element.iter(tag, *tags)
 
     @staticmethod
-    def find_all_children_with_name(element: Element, child_name: str, namespace: str = "*") -> List:
+    def find_all_children_with_name(
+        element: Element, child_name: str, namespace: str = "*"
+    ) -> List:
         """Find all the XML element's children with  name ``child_name``
 
         Args:
@@ -456,7 +453,9 @@ class LxmlElement:
         return element.findall(xpath)
 
     @staticmethod
-    def find_child_with_name(element: Element, child_name: str, namespace: str = "*") -> Element:
+    def find_child_with_name(
+        element: Element, child_name: str, namespace: str = "*"
+    ) -> Element:
         """Find the first direct child of the XML element's children with  name ``child_name``
 
         Args:
@@ -503,7 +502,9 @@ class LxmlElement:
         return element.findall(xpath)
 
     @staticmethod
-    def has_child_with_name(element: Element, child_name: str, namespace: str = "*") -> bool:
+    def has_child_with_name(
+        element: Element, child_name: str, namespace: str = "*"
+    ) -> bool:
         """Check if the element has a child with  name 'child_name'
 
         Args:
@@ -544,7 +545,9 @@ class LxmlElement:
         return element.findall(xpath)
 
     @staticmethod
-    def find_all_children_with_name_and_attribute(element: Element, child_name: str, attrib_name: str, namespace: str = "*") -> List:
+    def find_all_children_with_name_and_attribute(
+        element: Element, child_name: str, attrib_name: str, namespace: str = "*"
+    ) -> List:
         """Find all the XML elements with name ``name`` and attribute name ``attrib_name``
 
         Args:
@@ -606,7 +609,7 @@ class LxmlElement:
         return None
 
     @staticmethod
-    def replace_ns_tag_with_ns_prefix(element:str, namespaces: Dict) -> str:
+    def replace_ns_tag_with_ns_prefix(element: str, namespaces: Dict) -> str:
         """Replace the namespace tag with a mapped namespace prefix.
 
         Args:
@@ -623,7 +626,7 @@ class LxmlElement:
         nsprefix = list(iter(namespaces))
         nstags = list(iter(namespaces.values()))
         qn = QName(element)
-        prefix = ''
+        prefix = ""
         try:
             index = nstags.index(qn.namespace)
             prefix = nsprefix[index]
@@ -633,10 +636,10 @@ class LxmlElement:
                 index = nstags.index(qn.namespace)
                 prefix = nsprefix.index(index)
         except ValueError as e:
-            logger.error(f'{qn.namespace} is not in the namespace list')
-        if prefix == '':
-            logger.debug(f'Empty namespace prefix in element {qn.localname}')
-        return f'{prefix}:{qn.localname}'
+            logger.error(f"{qn.namespace} is not in the namespace list: {e}")
+        if prefix == "":
+            logger.debug(f"Empty namespace prefix in element {qn.localname}")
+        return f"{prefix}:{qn.localname}"
 
     @staticmethod
     def namespaces_decorate(ns: str) -> str:
@@ -682,4 +685,3 @@ class LxmlElement:
         if not i == -1:
             element = element[i + 1 : len(element)]
         return element
-

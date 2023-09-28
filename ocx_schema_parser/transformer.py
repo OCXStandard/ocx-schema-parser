@@ -3,21 +3,26 @@
 
 # System imports
 
-from pathlib import Path
-from typing import  Iterator, Dict, List, Union, DefaultDict
 from collections import defaultdict
+from pathlib import Path
+from typing import Dict, Iterator, List, Union
+
 # Third party imports
 from loguru import logger
-from lxml.etree import Element
-from lxml.etree import QName
+from lxml.etree import Element, QName
+
 # Application imports
-from ocx_schema_parser.data_classes import OcxSchemaAttribute, OcxSchemaChild, OcxEnumerator, SchemaAttribute
-from ocx_schema_parser.ocxdownloader.downloader import SchemaDownloader
-from ocx_schema_parser.ocxparser import OcxParser
+from ocx_schema_parser.data_classes import (
+    OcxEnumerator,
+    OcxSchemaAttribute,
+    OcxSchemaChild,
+    SchemaAttribute,
+)
 from ocx_schema_parser.elements import OcxGlobalElement
 from ocx_schema_parser.helpers import SchemaHelper
+from ocx_schema_parser.ocxdownloader.downloader import SchemaDownloader
+from ocx_schema_parser.ocxparser import OcxParser
 from ocx_schema_parser.xparse import LxmlElement
-
 
 
 def resolve_source(source: str, recursive: bool) -> Iterator[str]:
@@ -39,8 +44,8 @@ def resolve_source(source: str, recursive: bool) -> Iterator[str]:
             yield path.as_uri()
 
 
-def download_schema_from_url(url: str , schema_folder: Path ) -> List:
-    """"Download the schemas from an url before processing.
+def download_schema_from_url(url: str, schema_folder: Path) -> List:
+    """ "Download the schemas from an url before processing.
 
     Args:
         url: The location of the schema
@@ -52,10 +57,10 @@ def download_schema_from_url(url: str , schema_folder: Path ) -> List:
     """
 
     schema_folder.mkdir(parents=True, exist_ok=True)
-    logger.debug(f'Created download folder: {schema_folder.resolve()}')
+    logger.debug(f"Created download folder: {schema_folder.resolve()}")
     # Delete any content if existing
-    for file in schema_folder.glob('*.xsd'):
-        logger.debug(f'Deleting file: {file}')
+    for file in schema_folder.glob("*.xsd"):
+        logger.debug(f"Deleting file: {file}")
         Path(file).unlink()
     downloader = SchemaDownloader(schema_folder)
     downloader.wget(url)
@@ -63,16 +68,17 @@ def download_schema_from_url(url: str , schema_folder: Path ) -> List:
     for key in downloader.downloaded:
         if key is not None:
             uris.append(key)
-            logger.debug(f'Downloading from uri: {key}')
-    files = list(schema_folder.glob('*.xsd'))
+            logger.debug(f"Downloading from uri: {key}")
+    files = list(schema_folder.glob("*.xsd"))
     for file in files:
-        logger.debug(f'Downloaded schema file: {file}')
+        logger.debug(f"Downloaded schema file: {file}")
     return uris
 
 
-def filter_ocx(name: str, prefix: str, ocx:OcxGlobalElement)->bool:
+def filter_ocx(name: str, prefix: str, ocx: OcxGlobalElement) -> bool:
     """Filter function for looking up an ocx instance by name and prefix."""
     return name == ocx.get_name() and prefix == ocx.get_prefix()
+
 
 class Transformer:
     """The OCX transformer class.
@@ -85,16 +91,18 @@ class Transformer:
         _simple_types: All schema simple type elements
         -is_transformed: True if schema classes are transformed, False otherwise
     """
+
     def __init__(self):
-        self.parser:OcxParser = OcxParser()
-        self._ocx_global_elements: Dict = {}  # Hash table with tag as key, value pairs(tag, OcxGlobalElement)
+        self.parser: OcxParser = OcxParser()
+        self._ocx_global_elements: Dict = (
+            {}
+        )  # Hash table with tag as key, value pairs(tag, OcxGlobalElement)
         self._schema_enumerators: Dict = {}
         self._simple_types: List[SchemaAttribute] = []
         self._global_attributes: List[SchemaAttribute] = []
         self._is_transformed: bool = False
 
-
-    def transform_schema_from_url(self, url: str, folder:Path) -> bool:
+    def transform_schema_from_url(self, url: str, folder: Path) -> bool:
         """Transform the xsd schema with ``url`` into python objects.
 
         Returns:
@@ -116,15 +124,12 @@ class Transformer:
             self._is_transformed = True
         return self.is_transformed()
 
-
     def is_transformed(self) -> bool:
         """Return transformation status."""
         return self._is_transformed
 
     def get_ocx_elements(self) -> List:
-        """Return all global OCX instances.
-
-        """
+        """Return all global OCX instances."""
         return list(self._ocx_global_elements.values())
 
     def get_ocx_element_with_name(self, name: str) -> OcxGlobalElement:
@@ -134,11 +139,13 @@ class Transformer:
             OCX instance with ``name``
 
         """
-        items =  filter(lambda item: item.get_name() == name, self.get_ocx_elements())
+        items = filter(lambda item: item.get_name() == name, self.get_ocx_elements())
         for ocx in items:
             return ocx
 
-    def get_ocx_element_from_type(self, schema_type: str) -> Union[OcxGlobalElement, None]:
+    def get_ocx_element_from_type(
+        self, schema_type: str
+    ) -> Union[OcxGlobalElement, None]:
         """Method to retrieve the schema ``element etree.Element`` with the key 'type'
 
         Args:
@@ -151,7 +158,9 @@ class Transformer:
         object = None
         name = LxmlElement.strip_namespace_prefix(schema_type)
         prefix = LxmlElement.namespace_prefix(schema_type)
-        result = filter(lambda ocx: filter_ocx(name, prefix, ocx), self.get_ocx_elements())
+        result = filter(
+            lambda ocx: filter_ocx(name, prefix, ocx), self.get_ocx_elements()
+        )
         for item in result:
             object = item
         return object
@@ -159,34 +168,32 @@ class Transformer:
     def ocx_iterator(self) -> Iterator:
         """Return an iterator of the OCX elements."""
         return iter(self._ocx_global_elements.values())
+
     def get_enumerators(self) -> Dict:
-        """Return all enumeration instances.
-
-        """
+        """Return all enumeration instances."""
         return self._schema_enumerators
+
     def get_global_attributes(self) -> List[SchemaAttribute]:
-        """Return all enumeration instances.
-
-        """
+        """Return all enumeration instances."""
         return self._global_attributes
-    def get_simple_types(self) -> List:
-        """Return all global simpleType instances.
 
-        """
+    def get_simple_types(self) -> List:
+        """Return all global simpleType instances."""
         return self._simple_types
+
     def get_enumerator_types(self) -> Dict:
         """Return the schema enumerator types.
-            Returns: All enumerator types
+        Returns: All enumerator types
         """
         tbl = defaultdict(list)
         enums = self.get_enumerators()
         for name, enum in enums.items():
-            tbl['Name'].append(name)
-            tbl['prefix'].append(enum.prefix)
-            tbl['Tag'].append(enum.tag)
+            tbl["Name"].append(name)
+            tbl["prefix"].append(enum.prefix)
+            tbl["Tag"].append(enum.tag)
         return tbl
 
-    def _transform_schema_from_url(self, url: str, folder:Path) -> bool:
+    def _transform_schema_from_url(self, url: str, folder: Path) -> bool:
         """Transform from a schema location given by a remote url.
             The schemas and any referenced schemas will be downloaded before transformed.
 
@@ -202,8 +209,7 @@ class Transformer:
                 result = True
         return result
 
-
-    def _transform_schema_in_folder(self, location:Path) -> bool:
+    def _transform_schema_in_folder(self, location: Path) -> bool:
         """Transform all xsd schemas in the folder ``location``
 
         Args:
@@ -214,7 +220,7 @@ class Transformer:
         # parse all schemas
         for file in files:
             self.parser.process_xsd_from_file(file)
-            counter =+ 1
+            counter = +1
         return counter > 0
 
     def _add_global_ocx_element(self, tag: str, element: OcxGlobalElement):
@@ -226,6 +232,7 @@ class Transformer:
 
         """
         self._ocx_global_elements[tag] = element
+
     def _find_all_my_parents(self, ocx: OcxGlobalElement):
         """Recursively find all the xsd schema parents of a global xsd element(parent, grandparent ...)
         The parents found is added to the ocx instance (child)
@@ -238,6 +245,7 @@ class Transformer:
         tag = ocx.get_tag()
         # Find my parents
         self._find_parents(tag, ocx)
+
     def _find_parents(self, child_tag: str, ocx: OcxGlobalElement):
         """Recursively find all ancestors of the global element ``OxcGlobalElement``
 
@@ -288,11 +296,11 @@ class Transformer:
             e = self.parser.get_element_from_tag(tag)
             name = LxmlElement.get_name(e)
             prefix = self.parser.get_prefix_from_namespace(QName(tag).namespace)
-            enum = OcxEnumerator(name=name, prefix = prefix, tag=tag)
+            enum = OcxEnumerator(name=name, prefix=prefix, tag=tag)
             values = []
             descriptions = []
-            for enumeration in LxmlElement.iter(e, '{*}enumeration'):
-                values.append(enumeration.get('value'))
+            for enumeration in LxmlElement.iter(e, "{*}enumeration"):
+                values.append(enumeration.get("value"))
                 descriptions.append(LxmlElement.get_element_text(enumeration))
             enum.values = values
             enum.descriptions = descriptions
@@ -305,8 +313,13 @@ class Transformer:
             prefix = self.parser.get_prefix_from_namespace(QName(tag).namespace)
             restriction = LxmlElement.get_restriction(element)
             annotation = LxmlElement.get_element_text(element)
-            attribute = SchemaAttribute(name=name,type=type, prefix=prefix,restriction=restriction,
-                                        description=annotation)
+            attribute = SchemaAttribute(
+                name=name,
+                type=type,
+                prefix=prefix,
+                restriction=restriction,
+                description=annotation,
+            )
             self._simple_types.append(attribute)
         # Global attributes
         for tag in self.parser.get_schema_attribute_types():
@@ -316,8 +329,13 @@ class Transformer:
             prefix = self.parser.get_prefix_from_namespace(QName(tag).namespace)
             restriction = LxmlElement.get_restriction(element)
             annotation = LxmlElement.get_element_text(element)
-            attribute = SchemaAttribute(name=name,prefix=prefix,type=type, restriction=restriction,
-                                        description=annotation)
+            attribute = SchemaAttribute(
+                name=name,
+                prefix=prefix,
+                type=type,
+                restriction=restriction,
+                description=annotation,
+            )
             self._add_global_attribute(attribute)
         return
 
@@ -329,6 +347,7 @@ class Transformer:
 
         """
         self._schema_enumerators[enum.name] = enum
+
     def _add_global_attribute(self, attrib: SchemaAttribute):
         """Add a schema attribute type.
 
@@ -338,7 +357,7 @@ class Transformer:
         """
         self._global_attributes.append(attrib)
 
-    def _process_attributes(self, ocx: OcxGlobalElement) -> None:
+    def _process_attributes(self, ocx: OcxGlobalElement) -> None:  # Simplify function
         """Process all xs:attributes of the global element
 
         Args:
@@ -369,7 +388,9 @@ class Transformer:
                     for a in attributes:
                         ocx.add_attribute(self._process_attribute(a, ns))
                 else:
-                    logger.error(f"Attribute group {ref} is not found in the global look-up table")
+                    logger.error(
+                        f"Attribute group {ref} is not found in the global look-up table"
+                    )
         # Iterate over parents
         parents = ocx.get_parents()
         for t in parents:
@@ -384,7 +405,9 @@ class Transformer:
                         for a in attributes:
                             ocx.add_attribute(self._process_attribute(a, ns))
                     else:
-                        logger.error(f"Attribute group {ref} is not found in the global look-up table")
+                        logger.error(
+                            f"Attribute group {ref} is not found in the global look-up table"
+                        )
         return
 
     def _process_children(self, ocx: OcxGlobalElement, substitutions: Dict):
@@ -397,9 +420,11 @@ class Transformer:
 
         # Process all xs:element elements including all supertypes
         target_ns = ocx.get_namespace()
-        elements = LxmlElement.find_all_children_with_name(ocx.get_schema_element(), "element")
+        elements = LxmlElement.find_all_children_with_name(
+            ocx.get_schema_element(), "element"
+        )
         for e in elements:
-            name = f'{self.parser.get_prefix_from_namespace(target_ns)}:{LxmlElement.get_name(e)}'
+            name = f"{self.parser.get_prefix_from_namespace(target_ns)}:{LxmlElement.get_name(e)}"
             prefix = self.parser.get_prefix_from_namespace(target_ns)
             child = self._process_child(e, prefix)
             child.cardinality = LxmlElement.cardinality_string(e)
@@ -407,23 +432,23 @@ class Transformer:
             if name in substitutions:
                 for tag in substitutions[name]:
                     element = self.parser.get_element_from_tag(tag)
-                    subst = self._process_child(element,prefix)
+                    subst = self._process_child(element, prefix)
                     subst.name = LxmlElement.get_name(element)
                     subst.type = SchemaHelper.get_type(element)
                     subst.description = LxmlElement.get_element_text(element)
                     subst.cardinality = child.cardinality
                     subst.is_choice = child.is_choice
                     ocx.add_child(subst)
-                    logger.debug(f'{ocx.get_name()}: Adding child {subst.name}')
+                    logger.debug(f"{ocx.get_name()}: Adding child {subst.name}")
                 else:
                     ocx.add_child(child)
-                    logger.debug(f'{ocx.get_name()}: Adding child {child.name}')
+                    logger.debug(f"{ocx.get_name()}: Adding child {child.name}")
         # Iterate over parents
         parents = ocx.get_parents()
         for t in parents:
             elements = LxmlElement.find_all_children_with_name(parents[t], "element")
             for e in elements:
-                name = f'{self.parser.get_prefix_from_namespace(target_ns)}:{LxmlElement.get_name(e)}'
+                name = f"{self.parser.get_prefix_from_namespace(target_ns)}:{LxmlElement.get_name(e)}"
                 prefix = self.parser.get_prefix_from_namespace(target_ns)
                 child = self._process_child(e, prefix)
                 child.cardinality = LxmlElement.cardinality_string(e)
@@ -438,13 +463,15 @@ class Transformer:
                         subst.cardinality = child.cardinality
                         subst.is_choice = child.is_choice
                         ocx.add_child(subst)
-                        logger.debug(f'{ocx.get_name()}: Adding child {subst.name}')
+                        logger.debug(f"{ocx.get_name()}: Adding child {subst.name}")
                 else:
-                        ocx.add_child(child)
-                        logger.debug(f'{ocx.get_name()}: Adding child {child.name}')
+                    ocx.add_child(child)
+                    logger.debug(f"{ocx.get_name()}: Adding child {child.name}")
             return
 
-    def _process_attribute(self, xs_attribute: Element, target_ns: str) -> OcxSchemaAttribute:
+    def _process_attribute(
+        self, xs_attribute: Element, target_ns: str
+    ) -> OcxSchemaAttribute:
         """Process an xs:attribute element
         Arguments:
             xs_attribute: The schema attribute
@@ -456,13 +483,20 @@ class Transformer:
         """
         name = LxmlElement.get_name(xs_attribute)
         type = SchemaHelper.get_type(xs_attribute)
-        use= LxmlElement.get_use(xs_attribute)
-        fixed= xs_attribute.get("fixed")
-        default= xs_attribute.get("default")
-        annotation= LxmlElement.get_element_text(xs_attribute)
+        use = LxmlElement.get_use(xs_attribute)
+        fixed = xs_attribute.get("fixed")
+        default = xs_attribute.get("default")
+        annotation = LxmlElement.get_element_text(xs_attribute)
         prefix = self.parser.get_prefix_from_namespace(target_ns)
-        attribute = OcxSchemaAttribute(name=name, prefix=prefix, type=type, fixed=fixed, use=use,
-                                       default=default, description=annotation)
+        attribute = OcxSchemaAttribute(
+            name=name,
+            prefix=prefix,
+            type=type,
+            fixed=fixed,
+            use=use,
+            default=default,
+            description=annotation,
+        )
         reference = LxmlElement.get_reference(xs_attribute)
         if reference is not None:
             # Get the referenced element
@@ -475,11 +509,11 @@ class Transformer:
             return attribute
         else:
             if attribute.type is None:
-                #logger.debug(f'The schema type {attribute.get_name()} has no type')
+                # logger.debug(f'The schema type {attribute.get_name()} has no type')
                 qn = QName(xs_attribute)
                 prefix = self.parser.get_prefix_from_namespace(qn.namespace)
                 type = LxmlElement.strip_namespace_tag(xs_attribute.tag)
-                attribute.type = f'{prefix}:{type}'
+                attribute.type = f"{prefix}:{type}"
             return attribute
 
     def _process_child(self, xs_element: Element, prefix: str) -> OcxSchemaChild:
@@ -495,18 +529,24 @@ class Transformer:
         """
         name = LxmlElement.get_name(xs_element)
         type = SchemaHelper.get_type(xs_element)
-        annotation= LxmlElement.get_element_text(xs_element)
+        annotation = LxmlElement.get_element_text(xs_element)
         cardinality = LxmlElement.cardinality_string(xs_element)
         lower, upper = LxmlElement.cardinality(xs_element)
         choice = LxmlElement.is_choice(xs_element)
         if lower == 0:
-            use =  "opt."
+            use = "opt."
         else:
             use = "req."
 
-        child = OcxSchemaChild(name=name, prefix=prefix,type=type, use=use, description=annotation,
-                               cardinality=cardinality,
-                               is_choice=choice)
+        child = OcxSchemaChild(
+            name=name,
+            prefix=prefix,
+            type=type,
+            use=use,
+            description=annotation,
+            cardinality=cardinality,
+            is_choice=choice,
+        )
         reference = LxmlElement.get_reference(xs_element)
         if reference is not None:
             # Get the referenced element
@@ -516,4 +556,3 @@ class Transformer:
                 child.description = LxmlElement.get_element_text(a)
             child.type = SchemaHelper.get_type(a)
         return child
-

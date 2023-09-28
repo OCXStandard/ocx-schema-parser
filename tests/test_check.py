@@ -1,8 +1,7 @@
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
-import pytest
-from ocx_schema_parser.transformer import Transformer
-from ocx_schema_parser.check import SchemaCheck
 
+from ocx_schema_parser.check import SchemaCheck
+from ocx_schema_parser.transformer import Transformer
 
 
 class TestSchemaCheck:
@@ -18,11 +17,11 @@ class TestSchemaCheck:
 
     def test_is_camel_case(self):
         """Camel case conformance check."""
-        assert SchemaCheck.is_camel_case('TBar') is True
+        assert SchemaCheck.is_camel_case("TBar") is True
 
     def test_is_dromedary_case(self):
         """Dromedary case conformance check."""
-        assert SchemaCheck.is_dromedary_case('functionType') is True
+        assert SchemaCheck.is_dromedary_case("functionType") is True
 
     def test_check_schema_name_conformance(self, transformer_from_folder: Transformer):
         checker = SchemaCheck(transformer_from_folder)
