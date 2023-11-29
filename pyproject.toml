@@ -17,16 +17,16 @@ packages = [{include = "ocx_schema_parser"}]
 homepage = "https://github.com/OCXStandard/ocx-schema-parser"
 
 [tool.poetry.dependencies]
-python = "^3.10"
-xsdata = "23.6"
+python = "^3.11"
+xsdata = "*"
 lxml = "*"
-ocx = "3.0.0a0"
 pyspellchecker = "*"
 inflection = "*"
 loguru = "*"
 sphinx = "<=6.2.1"
 fuzzywuzzy = "^0.18.0"
 pyyaml = "*"
+tbump = "*"
 
 [tool.poetry.group.development.dependencies]
 pre-commit = "*"

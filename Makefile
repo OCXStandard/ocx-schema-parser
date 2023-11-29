@@ -61,6 +61,10 @@ PHONY: doc
 doc-links: ## Check the internal and external links after building the documentation
 	@sphinx-build docs -W -b linkcheck -d _build/doctrees _build/html
 PHONY: doc-links
+
+doc-req: ## Export the requirements to docs/requirements.txt
+	@poetry export --without-hashes -o docs/requirements.txt
+
 # RUN ##################################################################
 
 PHONY: run
@@ -111,6 +115,8 @@ publish:   ## Build the package dist with poetry
 	@poetry publish
 .PHONY: publish
 
+poetry-fix:  ## Force pip poetry re-installation
+	@pip install poetry --upgrade
 
 # HELP ########################################################################
 
