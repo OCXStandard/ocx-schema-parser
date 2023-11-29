@@ -63,7 +63,7 @@ doc-links: ## Check the internal and external links after building the documenta
 PHONY: doc-links
 
 doc-req: ## Export the requirements to docs/requirements.txt
-	@poetry export --without-hashes -o docs/requirements.txt
+	@poetry export --without-hashes --with docs -o docs/requirements.txt
 
 # RUN ##################################################################
 
