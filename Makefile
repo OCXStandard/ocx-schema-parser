@@ -76,8 +76,8 @@ run: ## Start ocx-tools CLI
 FAILURES := .pytest_cache/pytest/v/cache/lastfailed
 
 test:  ## Run unit and integration tests
-	#@pytest --durations=5  --cov-report html --cov src .
-	@pytest
+	@pytest --durations=5  --cov-report html --cov ocx_schema_parser .
+	#@pytest
 
 test-upd:  ## Update the regression tests baseline
 	@pytest --force-regen

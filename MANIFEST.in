@@ -1,2 +1,3 @@
 include README.md
 include LICENSE
+include ocx_schema_parser/configs/schema_config.yaml

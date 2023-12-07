@@ -1,11 +1,15 @@
 [project.urls]
 
 "Bug Tracker" = "https://github.com/OCXStandard/ocx-schema-parser/issues"
-
-
+# Use setuptools to build if using a MANIFEST.in file
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "setuptools>=54.0.0"]
+build-backend = "setuptools.build_meta"
+
+# Poetry build
+#[build-system]
+#requires = ["poetry-core"]
+#build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "ocx_schema_parser"
@@ -30,6 +34,8 @@ tbump = "*"
 
 [tool.poetry.group.development.dependencies]
 pre-commit = "*"
+pytest = "*"
+pytest-cov = "*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"

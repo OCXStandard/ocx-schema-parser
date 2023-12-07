@@ -1,6 +1,6 @@
 """ Cross module utility functions."""
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
-
+import sys
 import errno
 import logging
 import os
@@ -15,6 +15,12 @@ import yaml
 def root_dir() -> str:
     """Path to the directory of the parent module."""
     return os.path.realpath(os.path.join(os.path.dirname(__file__), "../../"))
+
+
+def resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    base_path = getattr(sys, "_MEIPASS", os.path.abspath("."))
+    return os.path.join(base_path, relative_path)
 
 
 def current_dir(file: str) -> str:
@@ -185,7 +191,7 @@ def list_files_in_directory(directory: str, file_ext: str = ".3docx") -> list:
     return file_list
 
 
-def load_yaml_config(config: Path) -> dict:
+def load_yaml_config(config: str) -> dict:
     """Safely read a yaml config file and return the content as a dict.
 
     Args:
@@ -193,14 +199,13 @@ def load_yaml_config(config: Path) -> dict:
     Raises:
         Raise ``errno.ENOENT`` if yaml file does not exist
     """
-    if config.exists():
-        with open(config.absolute()) as f:
+    resource_file = resource_path(config)
+    if Path(resource_file).exists():
+        with open(resource_file) as f:
             app_config = yaml.safe_load(f)
         return app_config
     else:
-        raise FileNotFoundError(
-            errno.ENOENT, os.strerror(errno.ENOENT), config.absolute()
-        )
+        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), resource_file)
 
 
 def camel_case_split(str) -> List:
