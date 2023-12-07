@@ -7,7 +7,7 @@ from loguru import logger
 # Application imports
 from .utils import utilities
 
-__version__ = "1.5.1"
+__version__ = "1.5.2"
 
 current_dir = Path(__file__).parent
 config_file = current_dir / "configs" / "schema_config.yaml"  # The schema config

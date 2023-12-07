@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.poetry]
 name = "ocx_schema_parser"
-version = "1.5.1"
+version = "1.5.2"
 description = ""
 authors = ["ocastrup <ole.christain.astrup@dnv.com>"]
 readme = "README.md"
@@ -50,7 +50,7 @@ sphinx_automodapi = "*"
 github_url = "https://github.com/OCXStandard/ocx-schema-parser"
 
 [tool.tbump.version]
-current = "1.5.1"
+current = "1.5.2"
 
 # Example of a semver regexp.
 # Make sure this matches current_version before
