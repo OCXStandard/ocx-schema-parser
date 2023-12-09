@@ -3,7 +3,7 @@
 from collections import defaultdict
 from pathlib import Path
 
-from ocx_schema_parser import config_file
+
 from ocx_schema_parser.utils import utilities
 
 TEST_DICT = {
@@ -24,12 +24,6 @@ def test_current_dir():
     file = Path(utilities.root_dir()) / "utils/utilities.py"
     dir = Path(utilities.current_dir(file)).name
     assert dir == "utils"
-
-
-@staticmethod
-def test_load_yaml_config(data_regression):
-    config = utilities.load_yaml_config(config_file)
-    data_regression.check(config)
 
 
 @staticmethod

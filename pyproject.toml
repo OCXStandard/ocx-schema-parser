@@ -24,10 +24,11 @@ lxml = "*"
 pyspellchecker = "*"
 inflection = "*"
 loguru = "*"
-sphinx = "<=6.2.1"
-fuzzywuzzy = "^0.18.0"
+fuzzywuzzy = "*"
 pyyaml = "*"
 tbump = "*"
+configparser = "*"
+
 
 [tool.poetry.group.development.dependencies]
 pre-commit = "*"

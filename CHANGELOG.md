@@ -1,7 +1,14 @@
 # ocx-schema-parser: Changelog
 
+
+## 1.6.0 - 2023-12-09
+bump to [v1.6.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.6.0)
+
+## Changes
+Changed from config.yaml to Configparser app configuration
+
 ## 1.4.0 - 2023-11-29
-bump to [v1.4.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.3.1)
+bump to [v1.4.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.4.0)
 
 ### Changed
  - Removed invalid dependencies

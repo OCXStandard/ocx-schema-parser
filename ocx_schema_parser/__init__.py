@@ -1,27 +1,24 @@
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
-from pathlib import Path
+
+__version__ = "1.5.2"
 
 # Third party imports
 from loguru import logger
 
 # Application imports
-from .utils import utilities
+from ocx_schema_parser.config import config
 
-__version__ = "1.5.2"
+SCHEMA_FOLDER = config.get("SchemaParserSettings", "schema_folder")
+TMP_FOLDER = config.get("SchemaParserSettings", "tmp_folder")
+WORKING_DRAFT = config.get("SchemaParserSettings", "working_draft")
+DEFAULT_SCHEMA = config.get("SchemaParserSettings", "schema_url")
+keys = config.get("SchemaParserSettings", "w3c_schema_builtin_keys")
+values = config.get("SchemaParserSettings", "w3c_schema_builtin_values")
+W3C_SCHEMA_BUILT_IN_TYPES = dict(zip(keys, values))
+PROCESS_SCHEMA_TYPES = config.get(
+    "SchemaParserSettings", "process_schema_types"
+).split()
+ALLOWED_WORDS = config.get("SchemaParserSettings", "known_word_list").split()
+OCX_NAME_EXCEPTIONS = config.get("SchemaParserSettings", "ocx_name_exceptions").split()
 
-current_dir = Path(__file__).parent
-config_file = current_dir / "configs" / "schema_config.yaml"  # The schema config
-
-app_config = utilities.load_yaml_config(config_file)  # safe yaml load
-
-DEFAULT_SCHEMA = app_config.get("DEFAULT_SCHEMA")
-SCHEMA_FOLDER = app_config.get("SCHEMA_FOLDER")
-TMP_FOLDER = app_config.get("TMP_FOLDER")
-W3C_SCHEMA_BUILT_IN_TYPES = app_config.get("W3C_SCHEMA_BUILT_IN_TYPES")
-PROCESS_SCHEMA_TYPES = app_config.get("PROCESS_SCHEMA_TYPES")
-SUB_COMMAND = app_config.get("SUB_COMMAND")
-ALLOWED_WORDS = app_config.get("KNOWN_WORD_LIST")
-NAME_EXCEPTIONS = app_config.get("OCX_NAME_EXCEPTIONS")
-WORKING_DRAFT = app_config.get("WORKING_DRAFT")
-
-logger.enable(__name__)
+logger.disable(__name__)

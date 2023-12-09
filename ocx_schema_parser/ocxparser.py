@@ -21,11 +21,10 @@ class OcxParser:
     """
     The OcxSchema provides functionality for parsing the OCX xsd schema and storing all the elements.
 
-    Args:
 
     Attributes:
-        _schema_namespaces: All namespaces on the form (prefix, namespace) key-value pairs resulting from
-            parsing all schema files, `W3C <https://www.w3.org/TR/xml-names/#sec-namespaces>`_.
+        _schema_namespaces: All namespaces on the form (prefix, namespace) key-value pairs resulting from parsing all
+                schema files, `W3C <https://www.w3.org/TR/xml-names/#sec-namespaces>`_.
         _is_parsed: True if a schema has been parsed, False otherwise
         _schema_version: The version of the parsed schema
        _schema_changes: A list of all schema changes described by the tag SchemaChange contained in the xsd file.
@@ -33,7 +32,7 @@ class OcxParser:
         _substitution_groups: Collection of all substitution groups with its members.
         _schema_enumerators: All schema enumerators
         _builtin_xs_types: W3C primitive data types.
-            `www.w3.org <https://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes>`_. Defined in ``config.yaml``
+            `www.w3.org <https://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes>`_. Defined in ``config.py``
         _schema_ns: The schema target ns with the schema version as key
 
     """

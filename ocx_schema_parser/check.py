@@ -9,7 +9,7 @@ import inflection
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
 from spellchecker import SpellChecker
 
-from ocx_schema_parser import ALLOWED_WORDS, NAME_EXCEPTIONS
+from ocx_schema_parser import ALLOWED_WORDS, OCX_NAME_EXCEPTIONS
 from ocx_schema_parser.transformer import Transformer
 
 
@@ -83,13 +83,16 @@ class SchemaCheck:
         failures = defaultdict(list)
         for e in self._transformer.ocx_iterator():
             name = e.get_name()
-            if self.is_camel_case(name) is not True and name not in NAME_EXCEPTIONS:
+            if self.is_camel_case(name) is not True and name not in OCX_NAME_EXCEPTIONS:
                 result = False
                 failures["camel_case"].append(name)
             children = e.get_children()
             for child in children:
                 name = child.name
-                if self.is_camel_case(name) is not True and name not in NAME_EXCEPTIONS:
+                if (
+                    self.is_camel_case(name) is not True
+                    and name not in OCX_NAME_EXCEPTIONS
+                ):
                     print(name)
                     failures["camel_case"].append(name)
             attributes = e.get_attributes()
@@ -97,7 +100,7 @@ class SchemaCheck:
                 name = attr.name
                 if (
                     self.is_dromedary_case(name) is not True
-                    and name not in NAME_EXCEPTIONS
+                    and name not in OCX_NAME_EXCEPTIONS
                 ):
                     print(name)
                     failures["dromedary_case"].append(name)
