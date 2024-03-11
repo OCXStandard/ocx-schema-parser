@@ -1,6 +1,6 @@
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
 
-__version__ = "1.6.0"
+__version__ = "1.7.0"
 
 # Third party imports
 from loguru import logger
