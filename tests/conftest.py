@@ -1,4 +1,4 @@
-#  Copyright (c) 2022-2023. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2022-2024. OCX Consortium https://3docx.org. See the LICENSE
 
 
 import pytest
@@ -19,7 +19,7 @@ def load_schema_from_file(shared_datadir) -> LxmlParser:
     parser = LxmlParser()
     file = shared_datadir / "OCX_Schema.xsd"
     parser.parse(file.absolute())
-    assert parser.lxml_version() == (4, 9, 3, 0)
+    assert parser.lxml_version() == (5, 1, 0, 0)
     return parser
 
 
