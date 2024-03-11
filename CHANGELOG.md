@@ -15,8 +15,8 @@ and this project adheres to the Python [PEP 440 versioning recommendations](http
 
 
 
-## [1.6.1] - 2024-03-11
-bump to [v1.6.1](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.6.1)
+## [1.7.0] - 2024-03-11
+bump to [v1.7.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.7.0)
 
 ### Change
 Downgrade to Python 3.10
