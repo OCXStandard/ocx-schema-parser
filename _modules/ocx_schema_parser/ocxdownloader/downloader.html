@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ocx_schema_parser.ocxdownloader.downloader &mdash; ocx_schema_parser 1.8.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ocx_schema_parser
+          </a>
+              <div class="version">
+                1.8.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">transformer classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html#parser-classes">parser classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html#data-classes-classes">data_classes classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html#elements-classes">elements classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html#xelement-classes">xelement classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html#ocxdownloader-classes">ocxdownloader classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html#helpers-classes">helpers classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html#xparse-classes">xparse classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ocx_schema_parser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ocx_schema_parser.ocxdownloader.downloader</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ocx_schema_parser.ocxdownloader.downloader</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
+
+<span class="c1"># Third part imports</span>
+<span class="kn">from</span> <span class="nn">xsdata.utils.downloader</span> <span class="kn">import</span> <span class="n">Downloader</span>
+
+
+<span class="c1"># Module imports</span>
+
+
+<div class="viewcode-block" id="SchemaDownloader"><a class="viewcode-back" href="../../../schema.html#ocx_schema_parser.ocxdownloader.downloader.SchemaDownloader">[docs]</a><span class="k">class</span> <span class="nc">SchemaDownloader</span><span class="p">(</span><span class="n">Downloader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Downloader specialisation class.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        output: The location of the download folder relative to current directory</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        schema_folder: The path to the schema download folder</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema_folder</span> <span class="o">=</span> <span class="n">output</span>
+
+<div class="viewcode-block" id="SchemaDownloader.write_file"><a class="viewcode-back" href="../../../schema.html#ocx_schema_parser.ocxdownloader.downloader.SchemaDownloader.write_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Override super class method and output all schemas into one folder.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            uri: the location of the schema to download. All referenced schemas will be collected.</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the uri file name</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema_folder</span> <span class="o">/</span> <span class="n">name</span>
+        <span class="n">file_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Writing schema </span><span class="si">{</span><span class="n">file_path</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="si">}</span><span class="s2"> to folder </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">schema_folder</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># logger.debug(content)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">downloaded</span><span class="p">[</span><span class="n">uri</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span>
+
+        <span class="k">if</span> <span class="n">location</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">downloaded</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, 3Docx.org.
+      <span class="lastupdated">Last updated on Dec 06, 2024.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
