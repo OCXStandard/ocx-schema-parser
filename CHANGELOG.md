@@ -15,6 +15,13 @@ and this project adheres to the Python [PEP 440 versioning recommendations](http
 
 
 
+
+## [1.8.0] - 2024-12-11
+bump to [v1.8.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.8.0)
+
+### Change
+Fixed bug in unzipping built-in schema types
+
 ## [1.7.1] - 2024-03-11
 bump to [v1.7.1](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.7.1)
 

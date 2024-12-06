@@ -112,7 +112,8 @@ build:   ## Build the package dist with poetry
 .PHONY: build
 
 publish:   ## Build the package dist with poetry
-	@poetry publish
+	@poetry publish  --username=__token__ --password=<TOKEN>>
+
 .PHONY: publish
 
 poetry-fix:  ## Force pip poetry re-installation

@@ -410,7 +410,7 @@ prefix:
   - 'mega: million'
   - 'kilo: thousand'
   - 'hecto: hundred'
-  - 'deca: ten'
+  - 'deka: ten'
   - 'deci: tenth'
   - 'centi: hundredth'
   - 'milli: thousandth'
@@ -425,12 +425,13 @@ prefix:
   - 'mebi: magabinary'
   - 'gibi: gigabinary'
   - 'tebi: terabinary'
-  - 'exbi: exabinary'
   - 'pebi: petabinary'
+  - 'exbi: exabinary'
   - 'yobi: yottabinary'
   Value:
   - Y
   - Z
+  - E
   - P
   - T
   - G
@@ -441,7 +442,7 @@ prefix:
   - d
   - c
   - m
-  - u
+  - mu
   - n
   - p
   - f
@@ -452,9 +453,8 @@ prefix:
   - Mi
   - Gi
   - Ti
-  - Pi
-  - Ei
   - Zi
+  - Ei
   - Yi
 refType:
   Description:
