@@ -17,8 +17,8 @@ and this project adheres to the Python [PEP 440 versioning recommendations](http
 
 
 
-## [1.8.1] - 2025-01-17
-bump to [v1.8.1](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.8.1)
+## [1.8.2] - 2025-01-17
+bump to [v1.8.2](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.8.2)
 
 ### Change
 * Fixed bug in SchemaDownloader to correctly handling a local file as input
