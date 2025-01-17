@@ -16,30 +16,39 @@ and this project adheres to the Python [PEP 440 versioning recommendations](http
 
 
 
+
+## [1.8.1] - 2025-01-17
+bump to [v1.8.1](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.8.1)
+
+### Change
+* Fixed bug in SchemaDownloader to correctly handling a local file as input
+* Updated baselines and tests
+
+
 ## [1.8.0] - 2024-12-11
 bump to [v1.8.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.8.0)
 
 ### Change
-Fixed bug in unzipping built-in schema types
+* Fixed bug in unzipping built-in schema types
 
 ## [1.7.1] - 2024-03-11
 bump to [v1.7.1](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.7.1)
 
 ### Change
-Add publish authority to package repository on pypi
+* Add publish authority to package repository on pypi
 
 
 ## [1.7.0] - 2024-03-11
 bump to [v1.7.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.7.0)
 
 ### Change
-Downgrade to Python 3.10
+* Downgrade to Python 3.10
 
 ## [1.6.0] - 2023-12-09
 bump to [v1.6.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.6.0)
 
 ## Changes
-Changed from config.yaml to Configparser app configuration
+* Changed from config.yaml to Configparser app configuration
 
 ## [1.4.0] - 2023-11-29
 bump to [v1.4.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.4.0)
