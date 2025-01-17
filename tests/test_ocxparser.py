@@ -1,6 +1,7 @@
-#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 
-""" Tests for the OCXSchema class"""
+"""Tests for the OCXSchema class"""
+
 from ocx_schema_parser.ocxparser import OcxParser
 
 

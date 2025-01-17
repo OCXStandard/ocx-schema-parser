@@ -1,4 +1,4 @@
-#  Copyright (c) 2022-2024. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2022-2025. OCX Consortium https://3docx.org. See the LICENSE
 
 
 import pytest
@@ -8,6 +8,7 @@ from ocx_schema_parser.ocxparser import OcxParser
 from ocx_schema_parser.transformer import Transformer, resolve_source
 from ocx_schema_parser.xparse import LxmlParser
 
+OCX_SCHEMA = "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"
 
 # To make sure that the tests import the modules this has to come before the import statements
 # sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
@@ -19,7 +20,7 @@ def load_schema_from_file(shared_datadir) -> LxmlParser:
     parser = LxmlParser()
     file = shared_datadir / "OCX_Schema.xsd"
     parser.parse(file.absolute())
-    assert parser.lxml_version() == (5, 1, 0, 0)
+    assert parser.lxml_version() == (5, 3, 0, 0)
     return parser
 
 

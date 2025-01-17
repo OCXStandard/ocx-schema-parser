@@ -1,5 +1,6 @@
 """The data_classes module contains the dataclasses holding schema attributes after parsing."""
-#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+
+#  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 from dataclasses import dataclass, field, fields
 from typing import Dict, List, Tuple
 

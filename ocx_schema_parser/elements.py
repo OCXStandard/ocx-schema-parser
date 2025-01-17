@@ -1,5 +1,6 @@
 """The OCX Schema content classes."""
-#  Copyright (c) 2022-2023. OCX Consortium https://3docx.org. See the LICENSE
+
+#  Copyright (c) 2022-2025. OCX Consortium https://3docx.org. See the LICENSE
 from collections import defaultdict
 from typing import Dict, List, Union
 
@@ -234,7 +235,7 @@ class OcxGlobalElement:
         """
         lower, upper = self._cardinality
         if upper == "unbounded":
-            upper = "\u221E"  # UTF-8 Infinity symbol
+            upper = "\u221e"  # UTF-8 Infinity symbol
         return f"[{lower}, {upper}]"
 
     def is_reference(self) -> bool:

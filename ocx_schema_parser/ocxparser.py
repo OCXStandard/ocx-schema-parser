@@ -1,5 +1,6 @@
-#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 """ocxparser module."""
+
 from collections import defaultdict
 from typing import Any, DefaultDict, Dict, Iterator, List, Tuple, Union
 
@@ -43,9 +44,7 @@ class OcxParser:
         self._target_ns: str = ""
         self._is_parsed: bool = False
         self._root: lxml.etree.Element = None
-        self._all_schema_elements: Dict = (
-            {}
-        )  # Hash table with tag as key schema_elements[tag] = lxml.etree.Element
+        self._all_schema_elements: Dict = {}  # Hash table with tag as key schema_elements[tag] = lxml.etree.Element
         self._all_types: DefaultDict[List] = defaultdict(
             list
         )  # Hash table with tag as key: all_types[tag] = lxml.etree.Element
@@ -55,9 +54,7 @@ class OcxParser:
         self._substitution_groups: DefaultDict[List] = defaultdict(list)
         # w3c primitive data types ref https://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes
         self._builtin_xs_types: Dict = W3C_SCHEMA_BUILT_IN_TYPES
-        self._schema_ns: Dict = (
-            {}
-        )  # Store the schema target ns with the schema version as key
+        self._schema_ns: Dict = {}  # Store the schema target ns with the schema version as key
         self._schema_enumerators: Dict = {}
         self._simple_types: List = []
 

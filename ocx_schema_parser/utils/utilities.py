@@ -1,5 +1,6 @@
-""" Cross module utility functions."""
-#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+"""Cross module utility functions."""
+
+#  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 import sys
 import errno
 import logging

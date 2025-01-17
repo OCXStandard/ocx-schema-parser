@@ -1,4 +1,4 @@
-#  Copyright (c) 2022. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2022-2025. OCX Consortium https://3docx.org. See the LICENSE
 
 from ocx_schema_parser.helpers import SchemaHelper
 
@@ -13,7 +13,7 @@ class TestSchemaHelpers:
         """
         root = load_schema_from_file.get_root()
         version = SchemaHelper.get_schema_version(root)
-        assert version == "2.8.6"
+        assert version == "3.0.0"
 
     def test_find_schema_changes(self, data_regression, load_schema_from_file):
         """Test retrieving the OCX schema changes

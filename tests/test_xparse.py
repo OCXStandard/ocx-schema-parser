@@ -1,4 +1,4 @@
-#  Copyright (c) 2022. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2022-2025. OCX Consortium https://3docx.org. See the LICENSE
 
 
 class TestLxmlParser:
@@ -16,7 +16,7 @@ class TestLxmlParser:
 
     def test_doc_xml_version(self, load_schema_from_file):
         doc_xml_version = load_schema_from_file.doc_xml_version()
-        assert doc_xml_version == "1.1"
+        assert doc_xml_version == "1.0"
 
     def test_get_namespaces(self, data_regression, load_schema_from_file):
         namespaces = load_schema_from_file.get_namespaces()

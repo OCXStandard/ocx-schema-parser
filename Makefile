@@ -33,12 +33,6 @@ conda-clean: ## Purge all conda tarballs, log files and caches
 .Phony: conda-clean
 
 
-# PROJECT DEPENDENCIES ########################################################
-
-# VIRTUAL_ENV ?= ${VENV}
-# DEPENDENCIES := $(VIRTUAL_ENV)/$(shell cksum pyproject.toml)
-
-
 # Color output
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
@@ -51,7 +45,7 @@ doc-serve: ## Open the the html docs built by Sphinx
 	@cmd /c start "_build/index.html"
 
 ds: doc-serve
-.PHINY: ds
+.PHONY: ds
 
 
 doc: ## Build the html docs using Sphinx. For other Sphinx options, run make in the docs folder
@@ -71,50 +65,28 @@ PHONY: run
 run: ## Start ocx-tools CLI
 	python main.py
 
+# pre-commit ######################################################################
+pre-commit:	## Run any pre-commit hooks
+	@pre-commit run --all-files
+
 # TESTS #######################################################################
 
 FAILURES := .pytest_cache/pytest/v/cache/lastfailed
 
+
 test:  ## Run unit and integration tests
-	@pytest --durations=5  --cov-report html --cov ocx_schema_parser .
-	#@pytest
+	@pytest --durations=5  --cov-report html --cov ${source_dir} .
 
-test-upd:  ## Update the regression tests baseline
-	@pytest --force-regen
-
-tu: test-upd
-PHONY: tu
-
-test-cov:  ## Show the test coverage report
-	cmd /c start $(CURDIR)/$(COVDIR)/index.html
-
-tc: test-cov
-.PHONY: tc
-
-PHONY: test-upd, test-cov
-# CHECKS ######################################################################
-check-lint:	## Run formatters, linters, and static code security scanners bandit and jake
-	@printf "\n${BLUE}Running black against source and test files...${NC}\n"
-	@black . -v
-	@printf "${BLUE}\nRunning Flake8 against source and test files...${NC}\n"
-	@flake8 -v
+test-upd:  ## Run unit and integration tests
+	@pytest --force-regen --durations=5  --cov-report html --cov $(PACKAGE) .
 
 
-# BUILD #######################################################################
+test-cov:  ## View the test coverage report
+	cmd /c start $(CURDIR)/htmlcov/index.html
 
-build-exe:   ## Build a bundled package (on windows: an exe file) executable using pyinstaller
-	@pyinstaller main.spec
-.PHONY: build-exe
-
-build:   ## Build the package dist with poetry
+install:   ## Install the current dev version in the local environment
 	@poetry update
-	@poetry build
-.PHONY: build
-
-publish:   ## Build the package dist with poetry
-	@poetry publish  --username=__token__ --password=<TOKEN>>
-
-.PHONY: publish
+	@poetry install
 
 poetry-fix:  ## Force pip poetry re-installation
 	@pip install poetry --upgrade

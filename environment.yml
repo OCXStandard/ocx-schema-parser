@@ -7,7 +7,7 @@ channels:
   # be listed explicitly here.
   - nodefaults
 dependencies:
-  - python=3.10
+  - python=3.9
   - pip
   - poetry
   - pycurl
@@ -15,5 +15,5 @@ dependencies:
   - m2-grep # Grep for windows. For Makefile sh
   - m2-gawk # awk for windows. for Makefile sh
   - pip:
-      - xsdata[cli,lxml, soap]==23.8  # xsdata with all dependencies
+      - xsdata[cli,lxml, soap]  # xsdata with all dependencies
       - poetry-plugin-export

@@ -1,4 +1,4 @@
-#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 
 
 from ocx_schema_parser.transformer import Transformer
@@ -9,7 +9,7 @@ class TestTransformer:
         assert transformer_from_folder.is_transformed()
 
     def test_get_ocx_elements(self, transformer_from_folder: Transformer):
-        assert len(transformer_from_folder.get_ocx_elements()) == 327
+        assert len(transformer_from_folder.get_ocx_elements()) == 316
 
     def test_get_ocx_element_from_type(self, transformer_from_folder: Transformer):
         vessel = transformer_from_folder.get_ocx_element_from_type("ocx:Vessel")

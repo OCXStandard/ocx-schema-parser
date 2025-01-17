@@ -18,8 +18,8 @@ packages = [{include = "ocx_schema_parser"}]
 homepage = "https://github.com/OCXStandard/ocx-schema-parser"
 
 [tool.poetry.dependencies]
-python = "^3.10"
-xsdata = "23.8"
+python = "^3.9"
+xsdata = "^24.0"
 lxml = "*"
 pyspellchecker = "*"
 inflection = "*"
@@ -34,6 +34,8 @@ configparser = "*"
 pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
+packaging = "*"
+setuptools ="*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"

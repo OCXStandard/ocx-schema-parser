@@ -1,42 +1,8 @@
-http://data.dnvgl.com/Schemas/ocxXMLSchema:
-  Prefix:
-  - ocx
-  Version:
-  - 2.8.6
-  attribute:
-  - 5
-  attributeGroup:
-  - 3
-  complexType:
-  - 173
-  element:
-  - 318
-  enumeration:
-  - 13
-  simpleType:
-  - 7
-http://www.w3.org/1999/xlink:
-  Prefix:
-  - xlink
-  Version:
-  - 2.8.6
-  attribute:
-  - 0
-  attributeGroup:
-  - 0
-  complexType:
-  - 0
-  element:
-  - 0
-  enumeration:
-  - 0
-  simpleType:
-  - 0
 http://www.w3.org/2001/XMLSchema:
   Prefix:
   - xsd
   Version:
-  - 2.8.6
+  - 3.0.0
   attribute:
   - 0
   attributeGroup:
@@ -53,7 +19,7 @@ http://www.w3.org/2007/XMLSchema-versioning:
   Prefix:
   - vc
   Version:
-  - 2.8.6
+  - 3.0.0
   attribute:
   - 0
   attributeGroup:
@@ -70,7 +36,7 @@ http://www.w3.org/XML/1998/namespace:
   Prefix:
   - xml
   Version:
-  - 2.8.6
+  - 3.0.0
   attribute:
   - 2
   attributeGroup:
@@ -83,11 +49,28 @@ http://www.w3.org/XML/1998/namespace:
   - 2
   simpleType:
   - 0
+https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd:
+  Prefix:
+  - ocx
+  Version:
+  - 3.0.0
+  attribute:
+  - 5
+  attributeGroup:
+  - 5
+  complexType:
+  - 170
+  element:
+  - 307
+  enumeration:
+  - 14
+  simpleType:
+  - 4
 urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18:
   Prefix:
   - null
   Version:
-  - 2.8.6
+  - 3.0.0
   attribute:
   - 0
   attributeGroup:

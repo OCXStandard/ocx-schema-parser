@@ -1,5 +1,6 @@
-""" Tests for the cross module utility functions."""
-#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+"""Tests for the cross module utility functions."""
+
+#  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 from collections import defaultdict
 from pathlib import Path
 
@@ -19,28 +20,24 @@ DEFAULTDICT["col1"].append(range(6))
 DEFAULTDICT["col2"].append((range(5, 10)))
 
 
-@staticmethod
 def test_current_dir():
     file = Path(utilities.root_dir()) / "utils/utilities.py"
     dir = Path(utilities.current_dir(file)).name
     assert dir == "utils"
 
 
-@staticmethod
 def test_number_table_rows(data_regression):
     numbered_dict = utilities.number_table_rows(TEST_DICT)
     index = [0, 1, 2, 3]
     assert index == numbered_dict["#"]
 
 
-@staticmethod
 def test_camel_case_split():
     camel_case = "pythonGeekForGeeks"
     words = utilities.camel_case_split(camel_case)
     assert words == ["Geek", "For", "Geeks"]
 
 
-@staticmethod
 def test_dromedary_case_split():
     camel_case = "pythonGeekForGeeks"
     words = utilities.dromedary_case_split(camel_case)

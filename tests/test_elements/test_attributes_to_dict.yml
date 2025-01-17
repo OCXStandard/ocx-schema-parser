@@ -4,7 +4,7 @@ GUIDRef:
   Description: A globally Unique ID referring an entity in the sending application.
   Fixed: null
   Namespace: ocx
-  Type: Restriction of type ocx:guid
+  Type: ocx:guid
   Use: req.
 functionType:
   Attribute: functionType

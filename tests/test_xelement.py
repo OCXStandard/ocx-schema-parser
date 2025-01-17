@@ -1,4 +1,4 @@
-#  Copyright (c) 2022-2023. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2022-2025. OCX Consortium https://3docx.org. See the LICENSE
 from ocx_schema_parser.xparse import LxmlElement
 
 
@@ -15,7 +15,7 @@ class TestLxmlElement:
     def test_get_source_line(self, load_schema_from_file):
         element = load_schema_from_file.get_root()
         line = LxmlElement.get_source_line(element)
-        assert line == 9
+        assert line == 1
 
     def test_get_parent(self, load_schema_from_file):
         # ToDo: write test
@@ -24,7 +24,7 @@ class TestLxmlElement:
     def test_get_children(self, load_schema_from_file):
         element = load_schema_from_file.get_root()
         children = LxmlElement.get_children(element)
-        assert len(children) == 4826
+        assert len(children) == 3655
 
     def test_get_xml_attrib(self, load_schema_from_file):
         element = load_schema_from_file.get_root()
@@ -54,9 +54,19 @@ class TestLxmlElement:
 
     def test_get_use(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
-        attribute = LxmlElement.find_attributes(root)[0]
-        use = LxmlElement.get_use(attribute)
-        assert use == "optional"
+        panel = LxmlElement.find_all_children_with_attribute_value(
+            root, name="complexType", attrib_value="Panel_T", attrib_name="name"
+        )
+        if len(panel) > 0:
+            panel = panel[0]
+            attrib = LxmlElement.find_attributes(panel)
+            if len(attrib) > 0:
+                use = LxmlElement.get_use(attrib[0])
+                assert use == "req."
+            else:
+                assert False
+        else:
+            assert False
 
     def test_get_reference(self, load_schema_from_file):
         # ToDo: write test
@@ -119,7 +129,7 @@ class TestLxmlElement:
     def test_find_all_children_with_name(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
         children = LxmlElement.find_all_children_with_name(root, "complexType")
-        assert len(children) == 202
+        assert len(children) == 214
 
     def test_find_child_with_name(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
@@ -132,12 +142,12 @@ class TestLxmlElement:
     def test_find_attributes(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
         attributes = LxmlElement.find_attributes(root)
-        assert len(attributes) == 152
+        assert len(attributes) == 155
 
     def test_find_attribute_groups(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
         groups = LxmlElement.find_attribute_groups(root)
-        assert len(groups) == 8
+        assert len(groups) == 10
 
     def test_has_child_with_name(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
@@ -152,14 +162,14 @@ class TestLxmlElement:
         child = LxmlElement.find_all_children_with_attribute_value(
             root, "attribute", "name", "schemaVersion"
         )[0]
-        assert child.get("fixed") == "2.8.6"
+        assert child.get("fixed") == "3.0.0"
 
     def test_find_all_children_with_name_and_attribute(self, load_schema_from_file):
         root = load_schema_from_file.get_root()
         children = LxmlElement.find_all_children_with_name_and_attribute(
             root, "element", "name"
         )
-        assert len(children) == 318
+        assert len(children) == 307
 
     def test_find_assertion(self, load_schema_from_file):
         # If the schema version changes, the test should probably be updated
@@ -167,7 +177,7 @@ class TestLxmlElement:
         children = LxmlElement.find_all_children_with_attribute_value(
             root, "complexType", "name", "EntityRefBase_T"
         )
-        assert len(children) == 1
+        assert len(children) == 0
 
     def test_namespace_prefix(self, load_schema_from_file):
         result = LxmlElement.namespace_prefix("ocx:Vessel")

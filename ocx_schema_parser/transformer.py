@@ -1,4 +1,4 @@
-#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 """Schema transformer"""
 
 # System imports
@@ -94,9 +94,7 @@ class Transformer:
 
     def __init__(self):
         self.parser: OcxParser = OcxParser()
-        self._ocx_global_elements: Dict = (
-            {}
-        )  # Hash table with tag as key, value pairs(tag, OcxGlobalElement)
+        self._ocx_global_elements: Dict = {}  # Hash table with tag as key, value pairs(tag, OcxGlobalElement)
         self._schema_enumerators: Dict = {}
         self._simple_types: List[SchemaAttribute] = []
         self._global_attributes: List[SchemaAttribute] = []

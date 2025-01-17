@@ -10,36 +10,37 @@ ComposedOf:
   Type: ocx:ComposedOf_T
   Use: req.
 CutBy:
-  Cardinality: '[1, 1]'
+  Cardinality: '[0, 1]'
   Child: CutBy
   Choice: false
   Description: A structural concept defining a cut-out in a surface defined by a parametric
     hole or a set of generic trim curves. Cut-out on panels will cut material on all
-    the panel plates touched by the cut-out shape.
+    the panel plates touched by the cut-out shape. Apply cutBy either on Panel or
+    on Plate level, but not on both.
   Namespace: ocx
   Type: ocx:CutBy_T
-  Use: req.
+  Use: opt.
 LimitedBy:
   Cardinality: '[1, 1]'
   Child: LimitedBy
   Choice: false
   Description: The references to limiting objects forming a closed contour of the
-    parent element. It is not requiredthat the set of objects is ordered in the correct
+    parent element. It is not required that the set of objects is ordered in the correct
     sequence.
   Namespace: ocx
   Type: ocx:LimitedBy_T
   Use: req.
 OuterContour:
-  Cardinality: '[1, 1]'
+  Cardinality: '[0, 1]'
   Child: OuterContour
   Choice: false
   Description: The geometry of the outer closed contour limiting a surface, represented
     by a set of trim curves or a closed curve primitive.
   Namespace: ocx
   Type: ocx:Contour3D_T
-  Use: req.
+  Use: opt.
 PhysicalProperties:
-  Cardinality: '[1, 1]'
+  Cardinality: '[0, 1]'
   Child: PhysicalProperties
   Choice: false
   Description: Basic physical properties of structure objects (weight and centre of
@@ -48,25 +49,24 @@ PhysicalProperties:
     the import.
   Namespace: ocx
   Type: ocx:PhysicalProperties_T
-  Use: req.
+  Use: opt.
 SplitBy:
-  Cardinality: '[1, 1]'
+  Cardinality: '[0, 1]'
   Child: SplitBy
   Choice: false
   Description: Structural concepts defining the subdivision of a panel into plates
     split by one or more seams.
   Namespace: ocx
   Type: ocx:SplitBy_T
-  Use: req.
+  Use: opt.
 StiffenedBy:
-  Cardinality: '[1, 1]'
+  Cardinality: '[0, 1]'
   Child: StiffenedBy
   Choice: false
-  Description: Structural concept defining the stiffeners which is belonging to a
-    panel.
+  Description: Structural concept defining the stiffeners which belongs to a panel.
   Namespace: ocx
   Type: ocx:StiffenedBy_T
-  Use: req.
+  Use: opt.
 UnboundedGeometry:
   Cardinality: '[1, 1]'
   Child: UnboundedGeometry

@@ -1,48 +1,51 @@
-barSectionAttributes:
-  Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}barSectionAttributes'
 bulkCargoType:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}bulkCargoType'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}bulkCargoType'
 compartmentPurpose:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}compartmentPurpose'
-edgeReinforcement:
-  Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}edgeReinforcement'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}compartmentPurpose'
 freeboardType:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}freeboardType'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}freeboardType'
 functionType:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}functionType'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}functionType'
 geometryFormat:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}geometryFormat'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}geometryFormat'
 grade:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}grade'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}grade'
 lang:
   Prefix: xml
   Tag: '{http://www.w3.org/XML/1998/namespace}lang'
 liquidCargoType:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}liquidCargoType'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}liquidCargoType'
+manufacture:
+  Prefix: ocx
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}manufacture'
 position:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}position'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}position'
 prefix:
   Prefix: unitsml
   Tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}prefix'
 refType:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}refType'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}refType'
+reinforcementType:
+  Prefix: ocx
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}reinforcementType'
+slotType:
+  Prefix: ocx
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}slotType'
 space:
   Prefix: xml
   Tag: '{http://www.w3.org/XML/1998/namespace}space'
 tightness:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}tightness'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}tightness'
 unitCargoType:
   Prefix: ocx
-  Tag: '{http://data.dnvgl.com/Schemas/ocxXMLSchema}unitCargoType'
+  Tag: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}unitCargoType'

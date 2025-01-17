@@ -1,5 +1,6 @@
-#  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
+#  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 """xparse module."""
+
 # System imports
 from typing import Dict
 
