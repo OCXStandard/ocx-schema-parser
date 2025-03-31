@@ -3,8 +3,8 @@
 
 from collections import defaultdict
 from typing import Dict, Set, Tuple
+import re
 
-import inflection
 
 #  Copyright (c) 2023. OCX Consortium https://3docx.org. See the LICENSE
 from spellchecker import SpellChecker
@@ -61,7 +61,7 @@ class SchemaCheck:
 
 
         """
-        return inflection.camelize(name, True) == name
+        return bool(re.fullmatch(r"[A-Z][a-zA-Z]*", name))
 
     @staticmethod
     def is_dromedary_case(name: str) -> bool:
@@ -70,7 +70,7 @@ class SchemaCheck:
         Arguments:
             name: The string to verify
         """
-        return inflection.camelize(name, False) == name
+        return bool(re.fullmatch(r"[a-z]+(?:[A-Z][a-z]*)*", name))
 
     def check_schema_name_conformance(self) -> Tuple[bool, Dict]:
         """Check the conformance of the OCX schema names.

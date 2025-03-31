@@ -3,7 +3,6 @@
 from ocx_schema_parser.check import SchemaCheck
 from ocx_schema_parser.transformer import Transformer
 
-
 class TestSchemaCheck:
     """Test class for the SchemaCheck methods."""
 
@@ -26,4 +25,5 @@ class TestSchemaCheck:
     def test_check_schema_name_conformance(self, transformer_from_folder: Transformer):
         checker = SchemaCheck(transformer_from_folder)
         result, failures = checker.check_schema_name_conformance()
+        print(failures)
         assert result is True

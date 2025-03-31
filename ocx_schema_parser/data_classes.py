@@ -30,7 +30,7 @@ class SchemaChange(BaseDataClass):
 
     Parameters:
          version: The schema version the change applies to
-         author: The author of the schem change
+         author: The author of the schema change
          date: The date of the schema change
          description: A description of the change
 

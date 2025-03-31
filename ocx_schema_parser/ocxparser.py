@@ -101,7 +101,7 @@ class OcxParser:
         return self._all_schema_elements
 
     def element_iterator(self) -> Iterator:
-        """Iterator of the parsed schem elements.
+        """Iterator of the parsed schema elements.
 
         Returns:
             Element iterator
@@ -420,7 +420,7 @@ class OcxParser:
         """Retrieve the schema element ``etree.Element`` with the key ``schema_type``.
 
         Args:
-            schema_type: The schema type to retrive on the form ``ns_prefix:name``
+            schema_type: The schema type to retrieve on the form ``ns_prefix:name``
 
         Returns:
             A tuple of the element unique tag and the element (tag, Element)

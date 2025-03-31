@@ -20,7 +20,7 @@ def load_schema_from_file(shared_datadir) -> LxmlParser:
     parser = LxmlParser()
     file = shared_datadir / "OCX_Schema.xsd"
     parser.parse(file.absolute())
-    assert parser.lxml_version() == (5, 3, 0, 0)
+    assert parser.lxml_version() == (5, 3, 1, 0)
     return parser
 
 

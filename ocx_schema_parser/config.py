@@ -55,7 +55,8 @@ config["SchemaParserSettings"] = {
         https://www.w3.org/TR/xmlschema-2/#byte
         https://www.w3.org/TR/xmlschema-2/#normalizedString""",
     "process_schema_types": "element    attribute    complexType    simpleType    attributeGroup",
-    "known_word_list": """3D
+    "known_word_list": """
+        3D
         NURBS
         OCX
         XML
@@ -73,7 +74,36 @@ config["SchemaParserSettings"] = {
         schema
         stiffeners""",
     # Schema naming conformance exceptions
-    "ocx_name_exceptions": """AP_Pos FP_Pos GUIDRef U_NURBSproperties V_NURBSproperties application_version ocxXML
+    "ocx_name_exceptions": """
+        AP_Pos FP_Pos
+        GUIDRef
+        U_NURBSproperties
+        V_NURBSproperties
+        application_version
+        ocxXML
         originating_system
-        time_stamp""",
+        time_stamp
+        is2D
+        NURBS3D
+        CircumArc3D
+        Circle3D
+        Ellipse3D
+        CircumCircle3D
+        PolyLine3D
+        Line3D
+        CompositeCurve3D
+        EndCutEnd1
+        EndCutEnd2
+        Cylinder3D
+        Cone3D
+        Sphere3D
+        Plane3D
+        Point3D
+        Curve3D
+        Hole2DContour
+        FreeEdgeCurve3D
+        Hole2D
+        ParametricHole2D
+        Vector3D
+        """,
 }

@@ -10,18 +10,9 @@ def test_schema_url():
     )
 
 
-def test_name_exceptions():
-    assert config.get("SchemaParserSettings", "ocx_name_exceptions").split() == [
-        "AP_Pos",
-        "FP_Pos",
-        "GUIDRef",
-        "U_NURBSproperties",
-        "V_NURBSproperties",
-        "application_version",
-        "ocxXML",
-        "originating_system",
-        "time_stamp",
-    ]
+def test_name_exceptions(data_regression):
+    result= config.get("SchemaParserSettings", "ocx_name_exceptions").split()
+    data_regression.check(result)
 
 
 def test_known_word_list():
