@@ -12,8 +12,11 @@ from __future__ import unicode_literals
 
 import os
 import sys
+from datetime import datetime
 
 sys.path.insert(0, os.path.abspath(".."))
+
+from ocx_schema_parser import __version__
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -30,11 +33,11 @@ extensions = [
 source_suffix = ".rst"
 master_doc = "index"
 project = "ocx_schema_parser"
-year = "2023"
+year = str(datetime.now().year)
 author = "3Docx.org"
 copyright = "{0}, {1}".format(year, author)
-version = "1.8.5"
-release = version
+version = __version__
+release = __version__
 pygments_style = "trac"
 templates_path = ["_templates"]
 extlinks = {
