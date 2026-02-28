@@ -14,6 +14,24 @@ dependencies = [
     "pyyaml>=6.0.3",
 ]
 
+[dependency-groups]
+dev = [
+    "pre-commit>=4.0",
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "pytest-datadir>=1.5",
+    "pytest-regression>=0.6",
+    "tbump>=6.11",
+]
+docs = [
+    "sphinx>=7.4",
+    "sphinx-rtd-theme>=2.0",
+    "sphinx-autodoc-typehints>=2.0",
+    "sphinx-automodapi>=0.17",
+    "sphinx-click>=6.0",
+    "myst-parser>=3.0",
+]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]

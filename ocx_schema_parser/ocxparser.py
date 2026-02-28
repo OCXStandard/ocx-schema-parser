@@ -28,7 +28,7 @@ class OcxParser:
                 schema files, `W3C <https://www.w3.org/TR/xml-names/#sec-namespaces>`_.
         _is_parsed: True if a schema has been parsed, False otherwise
         _schema_version: The version of the parsed schema
-       _schema_changes: A list of all schema changes described by the tag SchemaChange contained in the xsd file.
+        _schema_changes: A list of all schema changes described by the tag SchemaChange contained in the xsd file.
         _schema_types: The list of xsd types to be parsed. Only these types will be stored.
         _substitution_groups: Collection of all substitution groups with its members.
         _schema_enumerators: All schema enumerators
