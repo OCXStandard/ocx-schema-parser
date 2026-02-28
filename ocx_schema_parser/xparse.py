@@ -80,7 +80,6 @@ class LxmlParser:
             logger.error(f"Failed to load target from {url}: {e}", exc_info=True)
         return parsed
 
-
     def get_root(self) -> Element:
         """The XML root.
 

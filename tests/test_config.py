@@ -9,6 +9,7 @@ def test_official_schema_url():
         == "https://3docx.org/fileadmin/ocx_schema/V310/OCX_Schema.xsd"
     )
 
+
 def test_working_draft_schema_url():
     assert (
         config.get("SchemaParserSettings", "working_draft")
@@ -17,7 +18,7 @@ def test_working_draft_schema_url():
 
 
 def test_name_exceptions(data_regression):
-    result= config.get("SchemaParserSettings", "ocx_name_exceptions").split()
+    result = config.get("SchemaParserSettings", "ocx_name_exceptions").split()
     data_regression.check(result)
 
 

@@ -3,7 +3,7 @@
 
 import pytest
 
-from ocx_schema_parser import DEFAULT_SCHEMA,WORKING_DRAFT
+from ocx_schema_parser import WORKING_DRAFT
 from ocx_schema_parser.ocxparser import OcxParser
 from ocx_schema_parser.transformer import Transformer, resolve_source
 from ocx_schema_parser.xparse import LxmlParser
@@ -21,7 +21,6 @@ def load_schema_from_file(shared_datadir) -> LxmlParser:
     parser.parse_file(file.absolute())
     assert parser.lxml_version() == (6, 0, 2, 0)
     return parser
-
 
 
 @pytest.fixture
@@ -51,5 +50,5 @@ def transformer_from_url(shared_datadir) -> Transformer:
     transformer = Transformer()
     transformer.transform_schema_from_url(WORKING_DRAFT, shared_datadir)
     ns = transformer.parser.get_namespaces()
-    assert ns.get("ocx", None  ) == WORKING_DRAFT
+    assert ns.get("ocx", None) == WORKING_DRAFT
     return transformer

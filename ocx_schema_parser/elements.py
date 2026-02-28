@@ -83,7 +83,7 @@ class OcxGlobalElement:
         """Whether the element has assertions or not'
 
         Returns:
-             Tru if the global element as assertions, False otherwise
+             True if the global element has assertions, False otherwise
 
         """
         return len(self._assertions) > 0

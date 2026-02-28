@@ -83,7 +83,7 @@ class OcxParser:
         self._target_ns = target_ns
 
     def get_target_namespace(self) -> str:
-        """Return the target namespcae of the parsed schema.
+        """Return the target namespace of the parsed schema.
 
         Returns:
             The target namespace.
