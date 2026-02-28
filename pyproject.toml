@@ -27,11 +27,34 @@ omit = ["tests/*", "**/__pycache__/*"]
 show_missing = true
 skip_covered = false
 
-[dependency-groups]
-dev = [
-    "pytest>=9.0.2",
-    "pytest-cov>=7.0.0",
-    "pytest-datadir>=1.8.0",
-    "pytest-regressions>=2.10.0",
-    "pytest-subtests>=0.15.0",
-]
+[tool.tbump]
+github_url = "https://github.com/OCXStandard/ocx-schema-parser/"
+
+[tool.tbump.version]
+current = "1.8.5"
+regex = '''
+  (?P<major>\d+)
+  \.
+  (?P<minor>\d+)
+  \.
+  (?P<patch>\d+)
+  '''
+
+[tool.tbump.git]
+message_template = "Bump to v{new_version}"
+tag_template = "v{new_version}"
+
+# pyproject.toml version field
+[[tool.tbump.file]]
+src = "pyproject.toml"
+search = 'version = "{current_version}"'
+
+# package __version__ string
+[[tool.tbump.file]]
+src = "ocx_schema_parser/__init__.py"
+search = '__version__ = "{current_version}"'
+
+# Check CHANGELOG has an entry for the new version before committing
+[[tool.tbump.before_commit]]
+name = "check changelog"
+cmd = "grep -q {new_version} CHANGELOG.md"

@@ -3,6 +3,7 @@
 from ocx_schema_parser.check import SchemaCheck
 from ocx_schema_parser.transformer import Transformer
 
+
 class TestSchemaCheck:
     """Test class for the SchemaCheck methods."""
 

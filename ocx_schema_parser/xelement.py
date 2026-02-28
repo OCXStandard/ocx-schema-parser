@@ -581,7 +581,7 @@ class LxmlElement:
         """
         test = None
         # Assertions
-        xpath = f'.//{LxmlElement.namespaces_decorate(namespace)}{"assert"}'
+        xpath = f".//{LxmlElement.namespaces_decorate(namespace)}{'assert'}"
         asserts = element.findall(xpath)
         if len(asserts) > 0:
             attrib = asserts[0].attrib

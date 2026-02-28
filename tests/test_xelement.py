@@ -268,9 +268,12 @@ class TestLxmlElement:
 
     def test_strip_namespace_tag(self, load_schema_from_file):
         # Strip a Clark-notation namespace tag
-        assert LxmlElement.strip_namespace_tag(
-            "{http://www.w3.org/2001/XMLSchema}complexType"
-        ) == "complexType"
+        assert (
+            LxmlElement.strip_namespace_tag(
+                "{http://www.w3.org/2001/XMLSchema}complexType"
+            )
+            == "complexType"
+        )
         # A string without a namespace tag is returned unchanged
         assert LxmlElement.strip_namespace_tag("complexType") == "complexType"
         # Verify against an actual element tag from the parsed schema

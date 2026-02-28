@@ -1,18 +1,18 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v6.0.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/crate-ci/typos
-    rev: v1.28.2
+    rev: v1.44.0
     hooks:
       - id: typos
         exclude: ^tests/|.xsd|xsdata/models/datatype.py$
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.8.5
+    rev: v0.15.4
     hooks:
       # Run the linter.
       - id: ruff

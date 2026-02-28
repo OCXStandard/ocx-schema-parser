@@ -13,6 +13,15 @@ and this project adheres to the Python [PEP 440 versioning recommendations](http
 * ``Fixed`` for any bug fixes.
 * ``Security`` in case of vulnerabilities.
 
+## [2.0.0] - 2026-02-28
+
+bump to [v2.0.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v2.0.0)
+
+### Change
+
+* Fixed bug in OCX global element not returning children from parent types
+* Updated baselines and tests
+
 ## [1.8.5] - 2025-01-17
 bump to [v1.8.5](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v1.8.5)
 

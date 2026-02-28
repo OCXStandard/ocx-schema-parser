@@ -62,9 +62,7 @@ class TestTransformer:
         result = {f"Children of {element.get_name()}": children["Child"]}
         data_regression.check(result)
 
-    def test_get_enumerators_from_url(
-        self, transformer_from_url: Transformer
-    ):
+    def test_get_enumerators_from_url(self, transformer_from_url: Transformer):
         enums = transformer_from_url.get_enumerators()
         assert len(enums) == 18
 
@@ -81,4 +79,3 @@ class TestTransformer:
         element = transformer_from_url.get_ocx_element_from_type("ocx:Plate")
         children = element.get_children()
         assert len(children) == 12
-
