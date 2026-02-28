@@ -1,6 +1,6 @@
 [project]
 name = "ocx-schema-parser"
-version = "2.0.0"
+version = "2.0.1"
 description = "A python package for parsing the OCX schema definition and generating schema documentation."
 readme = "README.md"
 authors = [
@@ -56,7 +56,7 @@ skip_covered = false
 github_url = "https://github.com/OCXStandard/ocx-schema-parser/"
 
 [tool.tbump.version]
-current = "2.0.0"
+current = "2.0.1"
 regex = '''
   (?P<major>\d+)
   \.
