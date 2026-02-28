@@ -6,13 +6,21 @@ readme = "README.md"
 authors = [
     { name = "ocastrup", email = "ole.christian.astrup@dnv.com" }
 ]
-homepage = "https://github.com/OCXStandard/ocx-schema-parser"
 requires-python = ">=3.10"
 dependencies = [
     "ocx-common>=2.6.0",
     "pyspellchecker>=0.8.4",
     "pyyaml>=6.0.3",
 ]
+
+[project.urls]
+Homepage = "https://github.com/OCXStandard/ocx-schema-parser"
+Repository = "https://github.com/OCXStandard/ocx-schema-parser.git"
+"Bug Tracker" = "https://github.com/OCXStandard/ocx-schema-parser/issues"
+
+[tool.setuptools.packages.find]
+include = ["ocx_schema_parser*"]
+exclude = ["tests*", "schema_versions*", "docs*"]
 
 [dependency-groups]
 dev = [
