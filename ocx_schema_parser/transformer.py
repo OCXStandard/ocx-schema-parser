@@ -215,7 +215,7 @@ class Transformer:
         """
         files = resolve_source(str(location.resolve()), True)
         counter = 0
-        # parse all schemas
+        # parse_file all schemas
         for file in files:
             self.parser.process_xsd_from_file(file)
             counter = +1
@@ -443,7 +443,7 @@ class Transformer:
                     logger.debug(f"{ocx.get_name()}: Adding child {child.name}")
         # Iterate over parents
         parents = ocx.get_parents()
-        for t in parents:
+        for t in reversed(parents):
             elements = LxmlElement.find_all_children_with_name(parents[t], "element")
             for e in elements:
                 name = f"{self.parser.get_prefix_from_namespace(target_ns)}:{LxmlElement.get_name(e)}"
@@ -465,7 +465,7 @@ class Transformer:
                 else:
                     ocx.add_child(child)
                     logger.debug(f"{ocx.get_name()}: Adding child {child.name}")
-            return
+        return
 
     def _process_attribute(
         self, xs_attribute: Element, target_ns: str

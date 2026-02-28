@@ -3,10 +3,16 @@
 from ocx_schema_parser import config
 
 
-def test_schema_url():
+def test_official_schema_url():
     assert (
         config.get("SchemaParserSettings", "schema_url")
-        == "https://3docx.org/fileadmin/ocx_schema/V286/OCX_Schema.xsd"
+        == "https://3docx.org/fileadmin/ocx_schema/V310/OCX_Schema.xsd"
+    )
+
+def test_working_draft_schema_url():
+    assert (
+        config.get("SchemaParserSettings", "working_draft")
+        == "https://3docx.org/fileadmin//ocx_schema//V320rc8//OCX_Schema.xsd"
     )
 
 

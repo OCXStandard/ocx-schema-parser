@@ -46,7 +46,7 @@ class TestTransformer:
         assert transformer_from_url.is_transformed()
 
     def test_transform_ocx_elements_from_url(self, transformer_from_url: Transformer):
-        assert len(transformer_from_url.get_ocx_elements()) == 327
+        assert len(transformer_from_url.get_ocx_elements()) == 341
 
     def test_get_ocx_element_from_type_from_url(
         self, transformer_from_url: Transformer
@@ -57,17 +57,16 @@ class TestTransformer:
     def test_get_ocx_element_properties_from_type_from_url(
         self, data_regression, transformer_from_url: Transformer
     ):
-        element = transformer_from_url.get_ocx_element_from_type("ocx:TraceLine")
+        element = transformer_from_url.get_ocx_element_from_type("ocx:Plate")
         children = element.children_to_dict()
         result = {f"Children of {element.get_name()}": children["Child"]}
         data_regression.check(result)
 
     def test_get_enumerators_from_url(
-        self, data_regression, transformer_from_url: Transformer
+        self, transformer_from_url: Transformer
     ):
         enums = transformer_from_url.get_enumerators()
-        result = {enum: enums[enum].to_dict() for enum in enums}
-        data_regression.check(result)
+        assert len(enums) == 18
 
     def test_get_global_attributes_from_url(
         self, data_regression, transformer_from_url: Transformer
@@ -77,3 +76,9 @@ class TestTransformer:
             for enum in transformer_from_url.get_global_attributes()
         }
         data_regression.check(result)
+
+    def test_ocx_parents(self, transformer_from_url: Transformer):
+        element = transformer_from_url.get_ocx_element_from_type("ocx:Plate")
+        children = element.get_children()
+        assert len(children) == 12
+

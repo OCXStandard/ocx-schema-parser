@@ -164,7 +164,7 @@ class OcxParser:
 
         """
         parser = LxmlParser()
-        if result := parser.parse(file):
+        if result := parser.parse_file(file):
             num_ns = self._add_namespace(parser.get_namespaces())
             logger.debug(f'Added {num_ns} new namespaces for schema "{file}"')
             target_ns = parser.get_target_namespace()

@@ -71,21 +71,22 @@ class SchemaDownloader(Downloader):
 
         """
         try:
+            if uri in self.downloaded:
+                return
+
+            self.downloaded[uri] = None
+            if location:
+                self.downloaded[location] = None
+
             if is_valid_uri(uri):
-                if not (
-                    uri in self.downloaded or (location and location in self.downloaded)
-                ):
-                    self.downloaded[uri] = None
-                    self.downloaded[location] = None
-                    self.adjust_base_path(uri)
-
-                    logger.info(f"Fetching {uri}")
-
-                    input_stream = opener.open(uri).read()  # nosec
+                logger.info(f"Fetching {uri}")
+                input_stream = opener.open(uri).read()  # nosec
             else:
                 input_file = Path(uri).resolve()
+                logger.info(f"Fetching local file {input_file}")
                 with open(str(input_file), "rb") as file:
                     input_stream = file.read()
+
             if uri.endswith("wsdl"):
                 self.parse_definitions(uri, input_stream)
             else:

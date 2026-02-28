@@ -1,9 +1,13 @@
-Children of TraceLine:
-- Circle3D
-- CircumArc3D
-- CircumCircle3D
-- CompositeCurve3D
-- Ellipse3D
-- Line3D
-- NURBS3D
-- PolyLine3D
+Children of Plate:
+- CustomProperties
+- Description
+- ExternalGeometryRef
+- LimitedBy
+- MassProperties
+- NetArea
+- Offset
+- OuterContour
+- PlateCutBy
+- PlateMaterial
+- PointOnSurface
+- UnboundedGeometry

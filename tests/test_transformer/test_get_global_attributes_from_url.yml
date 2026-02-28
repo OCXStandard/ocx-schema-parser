@@ -4,8 +4,8 @@ GUIDRef:
     The sending application creates and holds the GUID. Used to establish a unique
     reference to an entity persistent  between applications.
   Namespace: ocx
-  Restriction: ocx:guid
-  Type: Restriction of type ocx:guid
+  Restriction: ''
+  Type: ocx:guid
 base:
   Attribute: base
   Description: ''
@@ -17,7 +17,7 @@ externalRef:
   Description: URI specifying the file location of the referenced entity.
   Namespace: ocx
   Restriction: ''
-  Type: xs:anyURI
+  Type: xs:string
 hasEdgeReinforcement:
   Attribute: hasEdgeReinforcement
   Description: Boolean. False if bracket has no reinforcement (Default).

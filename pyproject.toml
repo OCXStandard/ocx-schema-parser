@@ -1,5 +1,5 @@
 [project]
-name = "ocx_schema_parser"
+name = "ocx-schema-parser"
 version = "1.8.5"
 description = "A python package for parsing the OCX schema definition and generating schema documentation."
 readme = "README.md"
@@ -7,158 +7,31 @@ authors = [
     { name = "ocastrup", email = "ole.christian.astrup@dnv.com" }
 ]
 homepage = "https://github.com/OCXStandard/ocx-schema-parser"
-
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
-    "ocx_common>=2.6.0",
-    "pyspellchecker>=0.8.2",
+    "ocx-common>=2.6.0",
+    "pyspellchecker>=0.8.4",
+    "pyyaml>=6.0.3",
 ]
-#    python = "^3.9"
-#    xsdata = "^24.0"
-#    lxml = "*"
-#    pyspellchecker = "*"
-#    inflection = "*"
-#    loguru = "*"
-#    fuzzywuzzy = "*"
-#    pyyaml = "*"
-#    tbump = "*"
-#    configparser = "*"
 
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "--cov=ocx_schema_parser --cov-report=term-missing --cov-report=html:htmlcov"
+
+[tool.coverage.run]
+source = ["ocx_schema_parser"]
+omit = ["tests/*", "**/__pycache__/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
 
 [dependency-groups]
 dev = [
-    "packaging>=23.2",
-    "pre-commit>=4.1.0",
-    "pytest-cov>=6.0.0",
-    "pytest-regressions>=2.7.0",
-    "responses>=0.25.6",
-    "setuptools>=75.8.0",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "pytest-datadir>=1.8.0",
+    "pytest-regressions>=2.10.0",
+    "pytest-subtests>=0.15.0",
 ]
-docs = [
-    "sphinx>=7.4.7",
-    "sphinx>=7.4.7",
-    "sphinx-autodoc-typehints>=2.3.0",
-    "sphinx-automodapi>=0.18.0",
-    "sphinx-click>=6.0.0",
-    "sphinx-rtd-theme>=3.0.2",
-]
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.pytest.ini_options]
-markers = [
-    "production: marks tests as slow (deselect with '-m \"not production\"')",
-    "commit: run on every commit",
-]
-addopts = "-ra -q"
-testpaths = [
-    "tests",]
-
-
-
-[tool.ruff]
-# Exclude directories.
-exclude = [
-    ".github",
-    ".coverage",
-    ".idea",
-    "docs",
-    "htmlcov",
-    "tests",
-]
-
-[tool.ruff.lint]
-# 1. Enable flake8-bugbear (`B`) rules, in addition to the defaults.
-select = ["E4", "E7", "E9", "F", "B"]
-
-# 2. Avoid enforcing line-length violations (`E501`)
-ignore = ["E501"]
-
-# 3. Avoid trying to fix flake8-bugbear (`B`) violations.
-unfixable = ["B"]
-
-# 4. Ignore `E402` (import violations) in all `__init__.py` files, and in select subdirectories.
-[tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["E402"]
-"**/{tests,docs,tools}/*" = ["E402"]
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
-
-[tool.ruff.lint.flake8-quotes]
-docstring-quotes = "double"
-
-[tool.ruff.format]
-# Like Black, use double quotes for strings.
-quote-style = "double"
-
-# Like Black, indent with spaces, rather than tabs.
-indent-style = "space"
-
-# Like Black, respect magic trailing commas.
-skip-magic-trailing-comma = false
-
-# Like Black, automatically detect the appropriate line ending.
-line-ending = "auto"
-
-# Enable auto-formatting of code examples in docstrings. Markdown,
-# reStructuredText code/literal blocks and doctests are all supported.
-#
-
-[tool.tbump]
-# Uncomment this if your project is hosted on GitHub:
-github_url = "https://github.com/OCXStandard/ocx-schema-parser"
-
-[tool.tbump.version]
-current = "1.8.5"
-
-# Example of a semver regexp.
-# Make sure this matches current_version before
-# using tbump
-regex = '''
-  (?P<major>\d+)
-  \.
-  (?P<minor>\d+)
-  \.
-  (?P<patch>\d+)
-  (\-
-    (?P<extra>.+)
-  )?
-  '''
-
-[[tool.tbump.field]]
-# the name of the field
-name = "extra"
-# the default value to use, if there is no match
-default = ""
-
-[tool.tbump.git]
-message_template = "Bump to {new_version}"
-tag_template = "v{new_version}"
-
-# For each file to patch, add a [[tool.tbump.file]] config
-# section containing the path of the file, relative to the
-# tbump.toml location.
-
-[[tool.tbump.file]]
-src = "pyproject.toml"
-
-[[tool.tbump.file]]
-src = "./ocx_schema_parser/__init__.py"
-
-[[tool.tbump.file]]
-src = "./docs/conf.py"
-
-# You can specify a list of commands to
-# run after the files have been patched
-# and before the git commit is made
-
-
-# Or run some commands after the git tag and the branch
-# have been pushed:
-#  [[tool.tbump.after_push]]
-#  name = "publish"
-#  cmd = "./publish.sh"

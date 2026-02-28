@@ -24,11 +24,11 @@ class LxmlParser:
     def __init__(self):
         self._tree: Element = None
 
-    def parse(self, file: str, store_ids: bool = False) -> bool:
+    def parse_file(self, file: str, store_ids: bool = False) -> bool:
         """Parses an XML file.
 
         Args:
-            file: The file name of the xml document to be parsed. The parser can only parse from a local file.
+            file: The file name of the xml document to be parsed. The parser can only parse_file from a local file.
             store_ids: If set to True, the parser will create a hash table of the xml IDs
 
         Returns:
@@ -51,6 +51,35 @@ class LxmlParser:
         except OSError:
             logger.error("Failed to open file %s" % file, exc_info=True)
         return parsed
+
+    def parse_url(self, url: str, store_ids: bool = False) -> bool:
+        """Parses from an url.
+
+        Args:
+            url: The url to the target parse object.
+            store_ids: If set to True, the parser will create a hash table of the xml IDs
+
+        Returns:
+            The return value. True for success, False otherwise.
+
+        """
+        # Parsing the XML file.
+        parsed = False
+        try:
+            my_parser = etree.XMLParser(
+                remove_comments=False,
+                remove_blank_text=True,
+                ns_clean=True,
+                collect_ids=store_ids,
+            )
+            self._tree = etree.parse(url, parser=my_parser)
+            parsed = True
+        except XMLSyntaxError as e:
+            logger.error(e)
+        except Exception as e:
+            logger.error(f"Failed to load target from {url}: {e}", exc_info=True)
+        return parsed
+
 
     def get_root(self) -> Element:
         """The XML root.

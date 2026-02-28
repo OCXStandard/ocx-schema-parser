@@ -22,8 +22,8 @@ class TestSchemaCheck:
         """Dromedary case conformance check."""
         assert SchemaCheck.is_dromedary_case("functionType") is True
 
-    def test_check_schema_name_conformance(self, transformer_from_folder: Transformer):
-        checker = SchemaCheck(transformer_from_folder)
+    def test_check_schema_name_conformance(self, transformer_from_url: Transformer):
+        checker = SchemaCheck(transformer_from_url)
         result, failures = checker.check_schema_name_conformance()
         print(failures)
         assert result is True

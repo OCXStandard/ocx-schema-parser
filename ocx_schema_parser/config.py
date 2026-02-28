@@ -6,8 +6,8 @@ config = configparser.ConfigParser()
 
 # Add sections and options programmatically
 config["SchemaParserSettings"] = {
-    "schema_url": "https://3docx.org/fileadmin/ocx_schema/V286/OCX_Schema.xsd",
-    "working_draft": "https://3docx.org/fileadmin//ocx_schema//V300b0//OCX_Schema.xsd",
+    "schema_url": "https://3docx.org/fileadmin/ocx_schema/V310/OCX_Schema.xsd",
+    "working_draft": "https://3docx.org/fileadmin//ocx_schema//V320rc8//OCX_Schema.xsd",
     "schema_folder": "schema_versions",
     "tmp_folder": "tmp",
     "w3c_schema_builtin_keys": """
@@ -105,5 +105,7 @@ config["SchemaParserSettings"] = {
         Hole2D
         ParametricHole2D
         Vector3D
+        Line3DList
+        Point3DList
         """,
 }

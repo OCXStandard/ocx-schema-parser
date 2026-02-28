@@ -9,6 +9,14 @@ ComposedOf:
   Namespace: ocx
   Type: ocx:ComposedOf_T
   Use: req.
+CustomProperties:
+  Cardinality: '[0, 1]'
+  Child: CustomProperties
+  Choice: false
+  Description: Container for custom properties.
+  Namespace: ocx
+  Type: ocx:CustomProperties_T
+  Use: opt.
 CutBy:
   Cardinality: '[0, 1]'
   Child: CutBy
@@ -19,6 +27,16 @@ CutBy:
     on Plate level, but not on both.
   Namespace: ocx
   Type: ocx:CutBy_T
+  Use: opt.
+Description:
+  Cardinality: '[0, 1]'
+  Child: Description
+  Choice: false
+  Description: Contains a description of the component its parent represents. The
+    description is stored as a string. You can use this element for whatever purposes
+    you require. This element can be used inside many OCX XML elements but is optional.
+  Namespace: ocx
+  Type: xs:string
   Use: opt.
 LimitedBy:
   Cardinality: '[1, 1]'
