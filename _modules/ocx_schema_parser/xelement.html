@@ -1,0 +1,914 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ocx_schema_parser.xelement &mdash; ocx_schema_parser 2.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f5cff4aa"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ocx_schema_parser
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html">transformer classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#parser-classes">parser classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#data-classes-classes">data_classes classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#elements-classes">elements classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#xelement-classes">xelement classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#ocxdownloader-classes">ocxdownloader classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#helpers-classes">helpers classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#xparse-classes">xparse classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ocx_schema_parser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ocx_schema_parser.xelement</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ocx_schema_parser.xelement</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright (c) 2022-2025. OCX Consortium https://3docx.org. See the LICENSE</span>
+
+<span class="c1"># Sys imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="c1"># Third party imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">etree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml.etree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">ElementTextIterator</span><span class="p">,</span> <span class="n">QName</span>
+
+
+<div class="viewcode-block" id="LxmlElement">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LxmlElement</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper class for the lxml etree.Element class main functions.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LxmlElement.items">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.items">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">items</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets element attributes, as a sequence. The attributes are returned in an arbitrary order.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The current etree.Element node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A List of all attributes of ``element``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">items</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_root">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_root">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_root</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return Element root node of the document that contains this element.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The current etree.Element node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The root Element node of the document for this element</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">et</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">getroottree</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">et</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_base">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_base">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_base</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The base URI of the document holding the Element (the location of the document)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The current etree.Element node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The base URI of the document or empty string if unknown</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">base</span>
+        <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">base</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_source_line">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_source_line">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_source_line</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Original line number as found by the parser or None if unknown.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The current etree.Element node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The line number of the ``element`` in the source</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">sourceline</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_parent">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_parent">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_parent</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the parent of this element or None for the root element.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The current ``etree.Element`` node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The parent Element node of the document for this element or none if ``element`` is the root</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_children">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_children">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_children</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all direct children of the xml element</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A List of all children of &#39;element&#39; excluding the parent itself.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_xml_attrib">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_xml_attrib">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_xml_attrib</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The XML attributes of an element</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary of ``(key,value)`` pairs of the element attributes</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_localname">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_localname">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_localname</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The local name (type) of an XML element</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The element local name</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qn</span> <span class="o">=</span> <span class="n">QName</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">qn</span><span class="o">.</span><span class="n">localname</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.unique_tag">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.unique_tag">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unique_tag</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The unique tag of an XML element: ``{namespace}name``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The element unique tag</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="n">ns</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_namespace</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespaces_decorate</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span><span class="si">}{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_name">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_name">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_name</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The name of an XML element defined by the attribute ``name``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The element local name or None if no name</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">strip_namespace_prefix</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ref&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_use">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_use">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_use</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether XML element is required or optional given by the attribute value ``use``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The element use as a string, either ``required`` or ``optional``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;use&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;opt.&quot;</span>
+        <span class="k">if</span> <span class="n">use</span> <span class="o">==</span> <span class="s2">&quot;required&quot;</span><span class="p">:</span>
+            <span class="n">use</span> <span class="o">=</span> <span class="s2">&quot;req.&quot;</span>
+        <span class="k">return</span> <span class="n">use</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_reference">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_reference">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_reference</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The referenced XML element defined by the attribute ``ref``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The referenced element including namespace prefix if any. None if there is no reference</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ref&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.is_enumeration">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.is_enumeration">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_enumeration</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the attribute is an enumeration or not</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            true if the attribute is an enumeratos, false otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">has_child_with_name</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">&quot;enumeration&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.is_reference">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.is_reference">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_reference</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the element is a reference or not</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            true if the element is a reference, false otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;use&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.is_mandatory">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.is_mandatory">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_mandatory</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The element use. True if required, False otherwise</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The element node</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            True if the element is mandatory, false otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">cardinality</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lower</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.cardinality_string">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.cardinality_string">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cardinality_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the element cardinality formatted string.&quot;&quot;&quot;</span>
+        <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">cardinality</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">upper</span> <span class="o">==</span> <span class="s2">&quot;unbounded&quot;</span><span class="p">:</span>
+            <span class="n">upper</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\u221e</span><span class="s2">&quot;</span>  <span class="c1"># UTF-8 Infinity symbol</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">lower</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">upper</span><span class="si">}</span><span class="s2">]&quot;</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.cardinality">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.cardinality">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cardinality</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Establish the cardinality of the ``Element``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: the ``etree.Element`` instance</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The tuple of the element lower and upper bounds (lower, upper)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_xml_attrib</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;minOccurs&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="n">lower</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;minOccurs&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">use</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;use&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">use</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">use</span> <span class="o">==</span> <span class="s2">&quot;req&quot;</span> <span class="ow">or</span> <span class="n">use</span> <span class="o">==</span> <span class="s2">&quot;required&quot;</span><span class="p">:</span>
+                    <span class="n">lower</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">lower</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lower</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="s2">&quot;maxOccurs&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="n">upper</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;maxOccurs&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">upper</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># Find the closest xs:sequence or xs:choice ancestor which overrules mandatory use</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">iterancestors</span><span class="p">(</span><span class="s2">&quot;{*}sequence&quot;</span><span class="p">,</span> <span class="s2">&quot;{*}choice&quot;</span><span class="p">):</span>
+            <span class="n">attributes</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">attrib</span>
+            <span class="k">if</span> <span class="s2">&quot;minOccurs&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+                <span class="n">lower</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;minOccurs&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;maxOccurs&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+                <span class="n">upper</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;maxOccurs&quot;</span><span class="p">]</span>
+            <span class="k">break</span>
+        <span class="k">return</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.is_choice">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.is_choice">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_choice</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if the element ancestor is an xs:choice, False otherwise</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: the etree.Element instance</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            True if the element node is a choice, false otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">choice</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># Find the closest sequence or choice ancestor which overrules mandatory use</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">iterancestors</span><span class="p">(</span><span class="s2">&quot;{*}sequence&quot;</span><span class="p">,</span> <span class="s2">&quot;{*}choice&quot;</span><span class="p">):</span>
+            <span class="n">qn</span> <span class="o">=</span> <span class="n">QName</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">qn</span><span class="o">.</span><span class="n">localname</span> <span class="o">==</span> <span class="s2">&quot;choice&quot;</span><span class="p">:</span>
+                <span class="n">choice</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">break</span>
+        <span class="k">return</span> <span class="n">choice</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.is_substitution_group">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.is_substitution_group">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_substitution_group</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if the element is a substitution</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: the etree.Element instance</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            True if the element is a  substitutionGroup, false otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_xml_attrib</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;substitutionGroup&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.is_abstract">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.is_abstract">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_abstract</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if the element is abstract</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: the ``etree.Element`` instance</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            True if the element abstract, false otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_xml_attrib</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;abstract&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_substitution_group">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_substitution_group">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_substitution_group</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the name of the element&#39;s substitutionGroup</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: the ``etree.Element`` instance</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            name of substitutionGroup, None if no substitutionGroup</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_xml_attrib</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;substitutionGroup&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_restriction">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_restriction">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_restriction</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the element restriction</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: the ``etree.Element`` instance</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            restriction type</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">restriction</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">&quot;{*}restriction&quot;</span><span class="p">):</span>
+            <span class="n">restriction</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">restriction</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_element_text">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_element_text">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_element_text</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The text between the element&#39;s start and end tags without any tail text.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: the etree.Element instance</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The element text stripped of any special characters</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">ElementTextIterator</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">with_tail</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">description</span> <span class="o">+</span> <span class="n">text</span>
+            <span class="k">break</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[</span><span class="se">\n\t\r</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>  <span class="c1"># Strip off special characters</span>
+        <span class="k">return</span> <span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.get_namespace">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.get_namespace">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_namespace</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The namespace of an XML element</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The element namespace</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qn</span> <span class="o">=</span> <span class="n">QName</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">qn</span><span class="o">.</span><span class="n">namespace</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.iter">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.iter">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iter</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">tags</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">etree</span><span class="o">.</span><span class="n">ElementDepthFirstIterator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over all elements in the subtree in document order (depth first pre-order),</span>
+<span class="sd">            starting with this element.</span>
+
+<span class="sd">            Can be restricted to find only elements with specific tags: pass ``{ns}localname`` as tag.</span>
+<span class="sd">            Either or both of ns and localname can be * for a wildcard; ns can be empty for no namespace.</span>
+<span class="sd">            ``localname`` is equivalent to ``{}localname`` (i.e. no namespace)</span>
+<span class="sd">            but ``*`` is ``{*}*`` (any or no namespace), not ``{}*``.</span>
+
+<span class="sd">            Passing multiple tags (or a sequence of tags) instead of a single tag</span>
+<span class="sd">            will let the iterator return all elements matching any of these tags, in document order.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The etree.Element node to search from</span>
+<span class="sd">            tag: The name of the child</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            An iterator filtered by tags if specified.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            .. highlight:: python</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                for type in LxmlElement.iter(root, {*}complexType)</span>
+<span class="sd">                    print(type.tag)</span>
+
+<span class="sd">            will iterate over all ``complexType`` tags and print the tag starting from the document root .</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="o">*</span><span class="n">tags</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.find_all_children_with_name">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.find_all_children_with_name">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_all_children_with_name</span><span class="p">(</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">,</span> <span class="n">child_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find all the XML element&#39;s children with  name ``child_name``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node to search from</span>
+<span class="sd">            child_name: The name of the child</span>
+<span class="sd">            namespace: The search namespace. Default is the wildcard ``*`` matching any namespace</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            A list of elements. Empty list if no children can be found</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;.//</span><span class="si">{</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespaces_decorate</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span><span class="si">}{</span><span class="n">child_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.find_child_with_name">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.find_child_with_name">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_child_with_name</span><span class="p">(</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">,</span> <span class="n">child_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the first direct child of the XML element&#39;s children with  name ``child_name``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node to search from</span>
+<span class="sd">            child_name: The name of the child</span>
+<span class="sd">            namespace: The search namespace. Default is the wildcard &#39;*&#39; matching any namespace</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The child element as etree.Element. None if no child can be found</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;.//</span><span class="si">{</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespaces_decorate</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span><span class="si">}{</span><span class="n">child_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.find_attributes">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.find_attributes">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_attributes</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find all sub elements of type xs:attribute</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node to search from</span>
+<span class="sd">            namespace: The search namespace. Default is the wildcard ``*`` matching any namespace</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The list of the xs:attribute type found</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;.//</span><span class="si">{</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespaces_decorate</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span><span class="si">}</span><span class="s2">attribute&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.find_attribute_groups">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.find_attribute_groups">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_attribute_groups</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find all sub elements of type ``xs:attributeGroup``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node to search from</span>
+<span class="sd">            namespace: The search namespace. Default is the wildcard ``*`` matching any namespace</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Attribute groups</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;.//</span><span class="si">{</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespaces_decorate</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span><span class="si">}</span><span class="s2">attributeGroup&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.has_child_with_name">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.has_child_with_name">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_child_with_name</span><span class="p">(</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">,</span> <span class="n">child_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the element has a child with  name &#39;child_name&#39;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node to search from</span>
+<span class="sd">            child_name: The name of the child</span>
+<span class="sd">            namespace: The search namespace. Default is the wildcard ``*`` matching any namespace</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if the element has a child with name ``child_name`` False otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;.//</span><span class="si">{</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespaces_decorate</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span><span class="si">}{</span><span class="n">child_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">xpath</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.find_all_children_with_attribute_value">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.find_all_children_with_attribute_value">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_all_children_with_attribute_value</span><span class="p">(</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">attrib_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">attrib_value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find all the XML elements with the attribute name &#39;attrib_name&#39; having a given value  &#39;attrib_value&#39;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node to search from</span>
+<span class="sd">            name: The name of the element with attrib_name and attrib_value</span>
+<span class="sd">            attrib_name: The name of the attribute</span>
+<span class="sd">            attrib_value: The value of the attribute</span>
+<span class="sd">            namespace: The search namespace. Default is the wildcard ``*`` matching any namespace</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            All children having attributes with name ``attrib_name`` and value ``attrib_value``.</span>
+<span class="sd">            Empty list if no children can be found</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;.//</span><span class="si">{</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespaces_decorate</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span><span class="si">}{</span><span class="n">name</span><span class="si">}</span><span class="s1">[@</span><span class="si">{</span><span class="n">attrib_name</span><span class="si">}</span><span class="s1">=&quot;</span><span class="si">{</span><span class="n">attrib_value</span><span class="si">}</span><span class="s1">&quot;]&#39;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.find_all_children_with_name_and_attribute">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.find_all_children_with_name_and_attribute">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_all_children_with_name_and_attribute</span><span class="p">(</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">,</span> <span class="n">child_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attrib_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find all the XML elements with name ``name`` and attribute name ``attrib_name``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node to search from</span>
+<span class="sd">            child_name: The name of the children elements</span>
+<span class="sd">            attrib_name: The name of the attribute</span>
+<span class="sd">            namespace: The search namespace. Default is the wildcard matching any namespace</span>
+
+
+<span class="sd">        Returns:</span>
+<span class="sd">            All elements having attributes with name ``attrib_name``.</span>
+<span class="sd">            An empty list if no children can be found</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;.//</span><span class="si">{</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespaces_decorate</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span><span class="si">}{</span><span class="n">child_name</span><span class="si">}</span><span class="s2">[@</span><span class="si">{</span><span class="n">attrib_name</span><span class="si">}</span><span class="s2">]&quot;</span>
+        <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.find_assertion">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.find_assertion">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="c1"># Finding the assertion in the code.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_assertion</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find any assertions under the ``element``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The XML parent node to search from</span>
+<span class="sd">            namespace: The search namespace. Default is the wildcard ``*`` matching any namespace</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The assertion test as a string.</span>
+<span class="sd">            None if no assertion tag is found</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Assertions</span>
+        <span class="n">xpath</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;.//</span><span class="si">{</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespaces_decorate</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span><span class="si">}{</span><span class="s1">&#39;assert&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">asserts</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">asserts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">attrib</span> <span class="o">=</span> <span class="n">asserts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span>
+            <span class="k">if</span> <span class="s2">&quot;test&quot;</span> <span class="ow">in</span> <span class="n">attrib</span><span class="p">:</span>
+                <span class="n">test</span> <span class="o">=</span> <span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;test&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">test</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.namespace_prefix">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.namespace_prefix">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">namespace_prefix</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the namespace prefix of an element if any</span>
+
+<span class="sd">        Args:</span>
+
+<span class="sd">            element: The element name with or without prefix as a string</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The element prefix string or None if no prefix</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">element</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.replace_ns_tag_with_ns_prefix">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.replace_ns_tag_with_ns_prefix">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace_ns_tag_with_ns_prefix</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">namespaces</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace the namespace tag with a mapped namespace prefix.</span>
+
+<span class="sd">        Args:</span>
+
+<span class="sd">            element: The element name with or without prefix as a string</span>
+<span class="sd">            namespaces: the namespace tag to prefix mapping</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            the element with prefix</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">nsprefix</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">namespaces</span><span class="p">))</span>
+        <span class="n">nstags</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">namespaces</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">qn</span> <span class="o">=</span> <span class="n">QName</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">nstags</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">qn</span><span class="o">.</span><span class="n">namespace</span><span class="p">)</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">nsprefix</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">nstags</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">nsprefix</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">nstags</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">qn</span><span class="o">.</span><span class="n">namespace</span><span class="p">)</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="n">nsprefix</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">qn</span><span class="o">.</span><span class="n">namespace</span><span class="si">}</span><span class="s2"> is not in the namespace list: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prefix</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty namespace prefix in element </span><span class="si">{</span><span class="n">qn</span><span class="o">.</span><span class="n">localname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">qn</span><span class="o">.</span><span class="n">localname</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.namespaces_decorate">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.namespaces_decorate">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">namespaces_decorate</span><span class="p">(</span><span class="n">ns</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decorate a string with curly brackets to form a valid XML namespace</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ns: The namespace</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The curly decorated namespace</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="n">ns</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.strip_namespace_prefix">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.strip_namespace_prefix">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">strip_namespace_prefix</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the element name without the namespace prefix</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The element name with or without prefix as a string</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The element without namespace prefix</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">element</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">element</span></div>
+
+
+<div class="viewcode-block" id="LxmlElement.strip_namespace_tag">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.xelement.LxmlElement.strip_namespace_tag">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">strip_namespace_tag</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the element name without the namespace tag</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            element: The element name with or without namespace as a string</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The element without namespace tag</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">element</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">element</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, 3Docx.org.
+      <span class="lastupdated">Last updated on Feb 28, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

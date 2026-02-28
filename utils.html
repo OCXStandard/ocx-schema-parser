@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utils &mdash; ocx_schema_parser 2.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f5cff4aa"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="transformer classes" href="schema.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ocx_schema_parser
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="schema.html">transformer classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#parser-classes">parser classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#data-classes-classes">data_classes classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#elements-classes">elements classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#xelement-classes">xelement classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#ocxdownloader-classes">ocxdownloader classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#helpers-classes">helpers classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#xparse-classes">xparse classes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.camel_case_split"><code class="docutils literal notranslate"><span class="pre">camel_case_split()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.current_dir"><code class="docutils literal notranslate"><span class="pre">current_dir()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.default_to_grid"><code class="docutils literal notranslate"><span class="pre">default_to_grid()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.default_to_regular"><code class="docutils literal notranslate"><span class="pre">default_to_regular()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.dromedary_case_split"><code class="docutils literal notranslate"><span class="pre">dromedary_case_split()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.find_replace_multi"><code class="docutils literal notranslate"><span class="pre">find_replace_multi()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.list_files_in_directory"><code class="docutils literal notranslate"><span class="pre">list_files_in_directory()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.load_yaml_config"><code class="docutils literal notranslate"><span class="pre">load_yaml_config()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.logging_level"><code class="docutils literal notranslate"><span class="pre">logging_level()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.nested_dict"><code class="docutils literal notranslate"><span class="pre">nested_dict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.number_table_rows"><code class="docutils literal notranslate"><span class="pre">number_table_rows()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.resource_path"><code class="docutils literal notranslate"><span class="pre">resource_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.root_dir"><code class="docutils literal notranslate"><span class="pre">root_dir()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocx_schema_parser.utils.utilities.tree"><code class="docutils literal notranslate"><span class="pre">tree()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ocx_schema_parser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">utils</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utils">
+<h1>utils<a class="headerlink" href="#utils" title="Link to this heading"></a></h1>
+<p id="module-ocx_schema_parser.utils.utilities">Cross module utility functions.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.camel_case_split">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">camel_case_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#camel_case_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.camel_case_split" title="Link to this definition"></a></dt>
+<dd><p>Split camel case string to individual strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.current_dir">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">current_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#current_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.current_dir" title="Link to this definition"></a></dt>
+<dd><p>The full path to the folder containing the <code class="docutils literal notranslate"><span class="pre">file</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> – The name of an existing file</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.default_to_grid">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">default_to_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#default_to_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.default_to_grid" title="Link to this definition"></a></dt>
+<dd><p>Converts defaultdicts to a data grid with unique row ids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – The dict to be converted</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.default_to_regular">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">default_to_regular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#default_to_regular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.default_to_regular" title="Link to this definition"></a></dt>
+<dd><p>Converts defaultdicts of defaultdicts to dict of dicts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – The dict to be converted</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.dromedary_case_split">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">dromedary_case_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#dromedary_case_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.dromedary_case_split" title="Link to this definition"></a></dt>
+<dd><p>Split camel case string to individual strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.find_replace_multi">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">find_replace_multi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#find_replace_multi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.find_replace_multi" title="Link to this definition"></a></dt>
+<dd><p>Substitute every value in a dict if it matches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.list_files_in_directory">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">list_files_in_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.3docx'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#list_files_in_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.list_files_in_directory" title="Link to this definition"></a></dt>
+<dd><p>Utility function to list files in a directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directory</strong> – the name of the directory.</p></li>
+<li><p><strong>file_ext</strong> – Only files with matching extension will be listed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of matching files.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.load_yaml_config">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">load_yaml_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#load_yaml_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.load_yaml_config" title="Link to this definition"></a></dt>
+<dd><p>Safely read a yaml config file and return the content as a dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – Path to yaml file</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Raise errno.ENOENT if yaml file does not exist</strong> – </p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.logging_level">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">logging_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loglevel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#logging_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.logging_level" title="Link to this definition"></a></dt>
+<dd><p>Utility function to return the logging level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>loglevel</strong> – One of <code class="docutils literal notranslate"><span class="pre">INFO</span></code>, <code class="docutils literal notranslate"><span class="pre">WARNING</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> or <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.nested_dict">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">nested_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#nested_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.nested_dict" title="Link to this definition"></a></dt>
+<dd><p>A recursive function that creates a default dictionary where each value is
+another default dictionary.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.number_table_rows">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">number_table_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#number_table_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.number_table_rows" title="Link to this definition"></a></dt>
+<dd><p>Utility function to add row numbers to the first column of a table stored as a dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – The input table dict</p></li>
+<li><p><strong>first_index</strong> – The first row index value. Default = 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a table (dict) with numbered rows in the first column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.resource_path">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">resource_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relative_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#resource_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.resource_path" title="Link to this definition"></a></dt>
+<dd><p>Get absolute path to resource, works for dev and for PyInstaller</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.root_dir">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">root_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#root_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.root_dir" title="Link to this definition"></a></dt>
+<dd><p>Path to the directory of the parent module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.utils.utilities.tree">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.utils.utilities.</span></span><span class="sig-name descname"><span class="pre">tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/utils/utilities.html#tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.utils.utilities.tree" title="Link to this definition"></a></dt>
+<dd><p>A recursive generator, given a directory Path object
+will yield a visual tree structure line by line
+with each line prefixed by the same characters</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="schema.html" class="btn btn-neutral float-left" title="transformer classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, 3Docx.org.
+      <span class="lastupdated">Last updated on Feb 28, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

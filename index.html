@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contents &mdash; ocx_schema_parser 2.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f5cff4aa"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="transformer classes" href="schema.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            ocx_schema_parser
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">transformer classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#parser-classes">parser classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#data-classes-classes">data_classes classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#elements-classes">elements classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#xelement-classes">xelement classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#ocxdownloader-classes">ocxdownloader classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#helpers-classes">helpers classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#xparse-classes">xparse classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">ocx_schema_parser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Contents</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h1>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">transformer classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-transformer-class">The ‘’Transformer’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer"><code class="docutils literal notranslate"><span class="pre">Transformer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.get_enumerator_types"><code class="docutils literal notranslate"><span class="pre">Transformer.get_enumerator_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.get_enumerators"><code class="docutils literal notranslate"><span class="pre">Transformer.get_enumerators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.get_global_attributes"><code class="docutils literal notranslate"><span class="pre">Transformer.get_global_attributes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.get_ocx_element_from_type"><code class="docutils literal notranslate"><span class="pre">Transformer.get_ocx_element_from_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.get_ocx_element_with_name"><code class="docutils literal notranslate"><span class="pre">Transformer.get_ocx_element_with_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.get_ocx_elements"><code class="docutils literal notranslate"><span class="pre">Transformer.get_ocx_elements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.get_simple_types"><code class="docutils literal notranslate"><span class="pre">Transformer.get_simple_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.is_transformed"><code class="docutils literal notranslate"><span class="pre">Transformer.is_transformed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.ocx_iterator"><code class="docutils literal notranslate"><span class="pre">Transformer.ocx_iterator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.transform_schema_from_folder"><code class="docutils literal notranslate"><span class="pre">Transformer.transform_schema_from_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.transformer.Transformer.transform_schema_from_url"><code class="docutils literal notranslate"><span class="pre">Transformer.transform_schema_from_url()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#parser-classes">parser classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-ocxparser-class">The ‘’OcxParser’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser"><code class="docutils literal notranslate"><span class="pre">OcxParser</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.element_iterator"><code class="docutils literal notranslate"><span class="pre">OcxParser.element_iterator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_element_from_tag"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_element_from_tag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_element_from_type"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_element_from_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_lookup_table"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_lookup_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_namespaces"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_namespaces()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_prefix_from_namespace"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_prefix_from_namespace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_attribute_group_types"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_schema_attribute_group_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_attribute_types"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_schema_attribute_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_complex_types"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_schema_complex_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_element_types"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_schema_element_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_enumerations"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_schema_enumerations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_namespace"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_schema_namespace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_simple_types"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_schema_simple_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_version"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_schema_version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_substitution_groups"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_substitution_groups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_target_namespace"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_target_namespace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.get_xs_types"><code class="docutils literal notranslate"><span class="pre">OcxParser.get_xs_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.process_xsd_from_file"><code class="docutils literal notranslate"><span class="pre">OcxParser.process_xsd_from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_attribute_groups"><code class="docutils literal notranslate"><span class="pre">OcxParser.tbl_attribute_groups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_attribute_types"><code class="docutils literal notranslate"><span class="pre">OcxParser.tbl_attribute_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_complex_types"><code class="docutils literal notranslate"><span class="pre">OcxParser.tbl_complex_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_element_types"><code class="docutils literal notranslate"><span class="pre">OcxParser.tbl_element_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_enumerators"><code class="docutils literal notranslate"><span class="pre">OcxParser.tbl_enumerators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_simple_types"><code class="docutils literal notranslate"><span class="pre">OcxParser.tbl_simple_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_summary"><code class="docutils literal notranslate"><span class="pre">OcxParser.tbl_summary()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#data-classes-classes">data_classes classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-basedataclass-class">The ‘’BaseDataClass’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.BaseDataClass"><code class="docutils literal notranslate"><span class="pre">BaseDataClass</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.BaseDataClass.to_dict"><code class="docutils literal notranslate"><span class="pre">BaseDataClass.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-schematype-class">The ‘’SchemaType’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaType"><code class="docutils literal notranslate"><span class="pre">SchemaType</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaType.name"><code class="docutils literal notranslate"><span class="pre">SchemaType.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaType.prefix"><code class="docutils literal notranslate"><span class="pre">SchemaType.prefix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaType.source_line"><code class="docutils literal notranslate"><span class="pre">SchemaType.source_line</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaType.tag"><code class="docutils literal notranslate"><span class="pre">SchemaType.tag</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-schemasummary-class">The ‘’SchemaSummary’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaSummary"><code class="docutils literal notranslate"><span class="pre">SchemaSummary</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaSummary.schema_namespaces"><code class="docutils literal notranslate"><span class="pre">SchemaSummary.schema_namespaces</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaSummary.schema_types"><code class="docutils literal notranslate"><span class="pre">SchemaSummary.schema_types</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaSummary.schema_version"><code class="docutils literal notranslate"><span class="pre">SchemaSummary.schema_version</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-schemachange-class">The  ‘’SchemaChange’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaChange"><code class="docutils literal notranslate"><span class="pre">SchemaChange</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaChange.author"><code class="docutils literal notranslate"><span class="pre">SchemaChange.author</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaChange.date"><code class="docutils literal notranslate"><span class="pre">SchemaChange.date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaChange.description"><code class="docutils literal notranslate"><span class="pre">SchemaChange.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.SchemaChange.version"><code class="docutils literal notranslate"><span class="pre">SchemaChange.version</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-ocxenumerator-class">The  ‘’OcxEnumerator’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.OcxEnumerator"><code class="docutils literal notranslate"><span class="pre">OcxEnumerator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.OcxEnumerator.descriptions"><code class="docutils literal notranslate"><span class="pre">OcxEnumerator.descriptions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.OcxEnumerator.name"><code class="docutils literal notranslate"><span class="pre">OcxEnumerator.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.OcxEnumerator.prefix"><code class="docutils literal notranslate"><span class="pre">OcxEnumerator.prefix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.OcxEnumerator.tag"><code class="docutils literal notranslate"><span class="pre">OcxEnumerator.tag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.OcxEnumerator.to_dict"><code class="docutils literal notranslate"><span class="pre">OcxEnumerator.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.data_classes.OcxEnumerator.values"><code class="docutils literal notranslate"><span class="pre">OcxEnumerator.values</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#elements-classes">elements classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-ocxglobalelement-class">The ‘’OcxGlobalElement’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.add_assertion"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.add_assertion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.add_attribute"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.add_attribute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.add_child"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.add_child()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.attributes_to_dict"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.attributes_to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.children_to_dict"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.children_to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_annotation"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_annotation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_assertion_tests"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_assertion_tests()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_attributes"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_attributes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_cardinality"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_cardinality()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_children"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_children()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_name"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_namespace"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_namespace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_parent_names"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_parent_names()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_parents"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_parents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_prefix"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_prefix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_properties"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_properties()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_schema_element"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_schema_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_substitution_group"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_substitution_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_tag"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_tag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_type"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.get_use"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.get_use()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.has_assertion"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.has_assertion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.is_abstract"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.is_abstract()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.is_choice"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.is_choice()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.is_mandatory"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.is_mandatory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.is_reference"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.is_reference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.is_substitution_group"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.is_substitution_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.put_cardinality"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.put_cardinality()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.elements.OcxGlobalElement.put_parent"><code class="docutils literal notranslate"><span class="pre">OcxGlobalElement.put_parent()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#xelement-classes">xelement classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-lxmlelement-class">The ‘’LxmlElement’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement"><code class="docutils literal notranslate"><span class="pre">LxmlElement</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.cardinality"><code class="docutils literal notranslate"><span class="pre">LxmlElement.cardinality()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.cardinality_string"><code class="docutils literal notranslate"><span class="pre">LxmlElement.cardinality_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.find_all_children_with_attribute_value"><code class="docutils literal notranslate"><span class="pre">LxmlElement.find_all_children_with_attribute_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.find_all_children_with_name"><code class="docutils literal notranslate"><span class="pre">LxmlElement.find_all_children_with_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.find_all_children_with_name_and_attribute"><code class="docutils literal notranslate"><span class="pre">LxmlElement.find_all_children_with_name_and_attribute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.find_assertion"><code class="docutils literal notranslate"><span class="pre">LxmlElement.find_assertion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.find_attribute_groups"><code class="docutils literal notranslate"><span class="pre">LxmlElement.find_attribute_groups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.find_attributes"><code class="docutils literal notranslate"><span class="pre">LxmlElement.find_attributes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.find_child_with_name"><code class="docutils literal notranslate"><span class="pre">LxmlElement.find_child_with_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_base"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_base()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_children"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_children()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_element_text"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_element_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_localname"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_localname()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_name"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_namespace"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_namespace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_parent"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_parent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_reference"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_reference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_restriction"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_restriction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_root"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_root()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_source_line"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_source_line()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_substitution_group"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_substitution_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_use"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_use()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.get_xml_attrib"><code class="docutils literal notranslate"><span class="pre">LxmlElement.get_xml_attrib()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.has_child_with_name"><code class="docutils literal notranslate"><span class="pre">LxmlElement.has_child_with_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.is_abstract"><code class="docutils literal notranslate"><span class="pre">LxmlElement.is_abstract()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.is_choice"><code class="docutils literal notranslate"><span class="pre">LxmlElement.is_choice()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.is_enumeration"><code class="docutils literal notranslate"><span class="pre">LxmlElement.is_enumeration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.is_mandatory"><code class="docutils literal notranslate"><span class="pre">LxmlElement.is_mandatory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.is_reference"><code class="docutils literal notranslate"><span class="pre">LxmlElement.is_reference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.is_substitution_group"><code class="docutils literal notranslate"><span class="pre">LxmlElement.is_substitution_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.items"><code class="docutils literal notranslate"><span class="pre">LxmlElement.items()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.iter"><code class="docutils literal notranslate"><span class="pre">LxmlElement.iter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.namespace_prefix"><code class="docutils literal notranslate"><span class="pre">LxmlElement.namespace_prefix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.namespaces_decorate"><code class="docutils literal notranslate"><span class="pre">LxmlElement.namespaces_decorate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.replace_ns_tag_with_ns_prefix"><code class="docutils literal notranslate"><span class="pre">LxmlElement.replace_ns_tag_with_ns_prefix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.strip_namespace_prefix"><code class="docutils literal notranslate"><span class="pre">LxmlElement.strip_namespace_prefix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.strip_namespace_tag"><code class="docutils literal notranslate"><span class="pre">LxmlElement.strip_namespace_tag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xelement.LxmlElement.unique_tag"><code class="docutils literal notranslate"><span class="pre">LxmlElement.unique_tag()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#ocxdownloader-classes">ocxdownloader classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-ocxdownloader-class">The ‘’OcxDownloader’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxdownloader.downloader.SchemaDownloader"><code class="docutils literal notranslate"><span class="pre">SchemaDownloader</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxdownloader.downloader.SchemaDownloader.base_path"><code class="docutils literal notranslate"><span class="pre">SchemaDownloader.base_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxdownloader.downloader.SchemaDownloader.downloaded"><code class="docutils literal notranslate"><span class="pre">SchemaDownloader.downloaded</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxdownloader.downloader.SchemaDownloader.output"><code class="docutils literal notranslate"><span class="pre">SchemaDownloader.output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxdownloader.downloader.SchemaDownloader.wget"><code class="docutils literal notranslate"><span class="pre">SchemaDownloader.wget()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.ocxdownloader.downloader.SchemaDownloader.write_file"><code class="docutils literal notranslate"><span class="pre">SchemaDownloader.write_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#helpers-classes">helpers classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-schemahelper-class">The ‘’SchemaHelper’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.helpers.SchemaHelper"><code class="docutils literal notranslate"><span class="pre">SchemaHelper</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.helpers.SchemaHelper.find_schema_changes"><code class="docutils literal notranslate"><span class="pre">SchemaHelper.find_schema_changes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.helpers.SchemaHelper.get_reference"><code class="docutils literal notranslate"><span class="pre">SchemaHelper.get_reference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.helpers.SchemaHelper.get_schema_version"><code class="docutils literal notranslate"><span class="pre">SchemaHelper.get_schema_version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.helpers.SchemaHelper.get_type"><code class="docutils literal notranslate"><span class="pre">SchemaHelper.get_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.helpers.SchemaHelper.is_reference"><code class="docutils literal notranslate"><span class="pre">SchemaHelper.is_reference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.helpers.SchemaHelper.schema_changes_data_grid"><code class="docutils literal notranslate"><span class="pre">SchemaHelper.schema_changes_data_grid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.helpers.SchemaHelper.unique_tag"><code class="docutils literal notranslate"><span class="pre">SchemaHelper.unique_tag()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html#xparse-classes">xparse classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#the-lxmlparser-class">The ‘’LxmlParser’’ class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser"><code class="docutils literal notranslate"><span class="pre">LxmlParser</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.doc_encoding"><code class="docutils literal notranslate"><span class="pre">LxmlParser.doc_encoding()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.doc_public_id"><code class="docutils literal notranslate"><span class="pre">LxmlParser.doc_public_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.doc_root_name"><code class="docutils literal notranslate"><span class="pre">LxmlParser.doc_root_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.doc_system_url"><code class="docutils literal notranslate"><span class="pre">LxmlParser.doc_system_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.doc_url"><code class="docutils literal notranslate"><span class="pre">LxmlParser.doc_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.doc_xml_version"><code class="docutils literal notranslate"><span class="pre">LxmlParser.doc_xml_version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.get_namespaces"><code class="docutils literal notranslate"><span class="pre">LxmlParser.get_namespaces()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.get_referenced_files"><code class="docutils literal notranslate"><span class="pre">LxmlParser.get_referenced_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.get_root"><code class="docutils literal notranslate"><span class="pre">LxmlParser.get_root()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.get_target_namespace"><code class="docutils literal notranslate"><span class="pre">LxmlParser.get_target_namespace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.lxml_version"><code class="docutils literal notranslate"><span class="pre">LxmlParser.lxml_version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.parse_file"><code class="docutils literal notranslate"><span class="pre">LxmlParser.parse_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schema.html#ocx_schema_parser.xparse.LxmlParser.parse_url"><code class="docutils literal notranslate"><span class="pre">LxmlParser.parse_url()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.camel_case_split"><code class="docutils literal notranslate"><span class="pre">camel_case_split()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.current_dir"><code class="docutils literal notranslate"><span class="pre">current_dir()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.default_to_grid"><code class="docutils literal notranslate"><span class="pre">default_to_grid()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.default_to_regular"><code class="docutils literal notranslate"><span class="pre">default_to_regular()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.dromedary_case_split"><code class="docutils literal notranslate"><span class="pre">dromedary_case_split()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.find_replace_multi"><code class="docutils literal notranslate"><span class="pre">find_replace_multi()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.list_files_in_directory"><code class="docutils literal notranslate"><span class="pre">list_files_in_directory()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.load_yaml_config"><code class="docutils literal notranslate"><span class="pre">load_yaml_config()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.logging_level"><code class="docutils literal notranslate"><span class="pre">logging_level()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.nested_dict"><code class="docutils literal notranslate"><span class="pre">nested_dict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.number_table_rows"><code class="docutils literal notranslate"><span class="pre">number_table_rows()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.resource_path"><code class="docutils literal notranslate"><span class="pre">resource_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.root_dir"><code class="docutils literal notranslate"><span class="pre">root_dir()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#ocx_schema_parser.utils.utilities.tree"><code class="docutils literal notranslate"><span class="pre">tree()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="schema.html" class="btn btn-neutral float-right" title="transformer classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, 3Docx.org.
+      <span class="lastupdated">Last updated on Feb 28, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

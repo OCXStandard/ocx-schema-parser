@@ -1,0 +1,732 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ocx_schema_parser.ocxparser &mdash; ocx_schema_parser 2.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f5cff4aa"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ocx_schema_parser
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html">transformer classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#parser-classes">parser classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#data-classes-classes">data_classes classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#elements-classes">elements classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#xelement-classes">xelement classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#ocxdownloader-classes">ocxdownloader classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#helpers-classes">helpers classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#xparse-classes">xparse classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ocx_schema_parser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ocx_schema_parser.ocxparser</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ocx_schema_parser.ocxparser</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE</span>
+<span class="sd">&quot;&quot;&quot;ocxparser module.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">DefaultDict</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">lxml</span>
+
+<span class="c1"># Third party imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml.etree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">QName</span>
+
+<span class="c1"># Application imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ocx_schema_parser</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">W3C_SCHEMA_BUILT_IN_TYPES</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ocx_schema_parser.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SchemaHelper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ocx_schema_parser.xparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">LxmlElement</span><span class="p">,</span> <span class="n">LxmlParser</span>
+
+
+<div class="viewcode-block" id="OcxParser">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OcxParser</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The OcxSchema provides functionality for parsing the OCX xsd schema and storing all the elements.</span>
+
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        _schema_namespaces: All namespaces on the form (prefix, namespace) key-value pairs resulting from parsing all</span>
+<span class="sd">                schema files, `W3C &lt;https://www.w3.org/TR/xml-names/#sec-namespaces&gt;`_.</span>
+<span class="sd">        _is_parsed: True if a schema has been parsed, False otherwise</span>
+<span class="sd">        _schema_version: The version of the parsed schema</span>
+<span class="sd">        _schema_changes: A list of all schema changes described by the tag SchemaChange contained in the xsd file.</span>
+<span class="sd">        _schema_types: The list of xsd types to be parsed. Only these types will be stored.</span>
+<span class="sd">        _substitution_groups: Collection of all substitution groups with its members.</span>
+<span class="sd">        _schema_enumerators: All schema enumerators</span>
+<span class="sd">        _builtin_xs_types: W3C primitive data types.</span>
+<span class="sd">            `www.w3.org &lt;https://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes&gt;`_. Defined in ``config.py``</span>
+<span class="sd">        _schema_ns: The schema target ns with the schema version as key</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Default namespace map for the reserved prefix xml. See https://www.w3.org/TR/xml-names/#sec-namespaces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;xml&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.w3.org/XML/1998/namespace&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_target_ns</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_parsed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="p">:</span> <span class="n">lxml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">Element</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_all_schema_elements</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Hash table with tag as key schema_elements[tag] = lxml.etree.Element</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_all_types</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">[</span><span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
+            <span class="nb">list</span>
+        <span class="p">)</span>  <span class="c1"># Hash table with tag as key: all_types[tag] = lxml.etree.Element</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_types</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_version</span><span class="p">:</span> <span class="n">Any</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_changes</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">[</span><span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_substitution_groups</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">[</span><span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="c1"># w3c primitive data types ref https://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_builtin_xs_types</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">W3C_SCHEMA_BUILT_IN_TYPES</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_ns</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Store the schema target ns with the schema version as key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_enumerators</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_simple_types</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="OcxParser.process_xsd_from_file">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.process_xsd_from_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_xsd_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the xsd with file name ``file``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file: The file name of the xsd.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if processed, False otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_xsd_from_file</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_lookup_tables</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_target_ns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_ns</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target_ns: the target name space of the parsed schema</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_target_ns</span> <span class="o">=</span> <span class="n">target_ns</span>
+
+<div class="viewcode-block" id="OcxParser.get_target_namespace">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_target_namespace">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_target_namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the target namespace of the parsed schema.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The target namespace.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target_ns</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_lookup_table">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_lookup_table">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lookup_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the lookup table of parsed schema types.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The lookup table.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_schema_elements</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.element_iterator">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.element_iterator">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">element_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterator of the parsed schema elements.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Element iterator</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">yield</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_schema_elements</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_prefix_from_namespace">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_prefix_from_namespace">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_prefix_from_namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the namespace prefix.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The namespace prefix</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nsprefix</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="p">))</span>
+        <span class="n">nstags</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">nstags</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">nsprefix</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">nstags</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">nsprefix</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">nstags</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="n">nsprefix</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">namespace</span><span class="si">}</span><span class="s2"> is not in the namespace list: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prefix</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add new namespaces to the global namespace dict</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The number of new namespaces added</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ns_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="p">)</span>
+        <span class="c1"># Check if any keys exists</span>
+        <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">namespace</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;The _namespace prefix &quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">&quot; already exists. &#39;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Dropping new _namespace </span><span class="si">{</span><span class="n">namespace</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span><span class="si">}</span><span class="s2"> from the _namespace table&quot;</span>
+                <span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;The existing namespace with prefix &quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">&quot; is: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
+                <span class="k">del</span> <span class="n">namespace</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="p">,</span> <span class="o">**</span><span class="n">namespace</span><span class="p">}</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="p">)</span> <span class="o">-</span> <span class="n">ns_size</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_xsd_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse an xsd schema file with name ``file``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file: the path to the xsd file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if parsed successfully, false otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">LxmlParser</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="o">:=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_file</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+            <span class="n">num_ns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_namespace</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get_namespaces</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Added </span><span class="si">{</span><span class="n">num_ns</span><span class="si">}</span><span class="s1"> new namespaces for schema &quot;</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+            <span class="n">target_ns</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_target_namespace</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">target_ns</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;The target _namespace &quot;</span><span class="si">{</span><span class="n">target_ns</span><span class="si">}</span><span class="s1">&quot; is not registered in &#39;</span>
+                    <span class="sa">f</span><span class="s2">&quot;the _namespace listing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_target_ns</span><span class="p">(</span><span class="n">target_ns</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+            <span class="c1"># Retrieve the OCX schema version</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">SchemaHelper</span><span class="o">.</span><span class="n">get_schema_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">version</span> <span class="o">!=</span> <span class="s2">&quot;Missing&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_schema_version</span> <span class="o">=</span> <span class="n">version</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_schema_ns</span><span class="p">[</span><span class="n">version</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_ns</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_lookup_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the global lookup tables of Schema data classes with the tag as key.&quot;&quot;&quot;</span>
+
+        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span>
+        <span class="c1"># Add all global elements</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;element&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name_and_attribute</span><span class="p">(</span>
+            <span class="n">root</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_element_to_lookup_table</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_target_namespace</span><span class="p">())</span>
+        <span class="c1"># Add all complex elements</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;complexType&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name_and_attribute</span><span class="p">(</span>
+            <span class="n">root</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_element_to_lookup_table</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_target_namespace</span><span class="p">())</span>
+        <span class="c1"># Add all simple types</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;simpleType&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name_and_attribute</span><span class="p">(</span>
+            <span class="n">root</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_element_to_lookup_table</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_target_namespace</span><span class="p">())</span>
+        <span class="c1"># Add all attributeGroups</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;attributeGroup&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name_and_attribute</span><span class="p">(</span>
+            <span class="n">root</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_element_to_lookup_table</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_target_namespace</span><span class="p">())</span>
+        <span class="c1"># Add all global attributes (these are refs)</span>
+        <span class="n">glob_attr</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name_and_attribute</span><span class="p">(</span>
+            <span class="n">root</span><span class="p">,</span> <span class="s2">&quot;attribute&quot;</span><span class="p">,</span> <span class="s2">&quot;ref&quot;</span>
+        <span class="p">)</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">glob_attr</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_attribute_value</span><span class="p">(</span>
+                <span class="n">root</span><span class="p">,</span> <span class="s2">&quot;attribute&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_element_to_lookup_table</span><span class="p">(</span>
+                    <span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_target_namespace</span><span class="p">()</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_element_to_lookup_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">,</span> <span class="n">target_ns</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a schema element to the lookup table.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            element: The schema element to be added.</span>
+<span class="sd">            target_ns: The target namespace of the element</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># add the schema type</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="n">SchemaHelper</span><span class="o">.</span><span class="n">unique_tag</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">target_ns</span><span class="p">)</span>
+            <span class="n">schema_type</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_localname</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_schema_element</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">is_enumeration</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="ow">and</span> <span class="n">schema_type</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="s2">&quot;attribute&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;attributeGroup&quot;</span><span class="p">,</span>
+            <span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_schema_type</span><span class="p">(</span><span class="s2">&quot;enumeration&quot;</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_schema_type</span><span class="p">(</span><span class="n">schema_type</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+            <span class="c1"># Add to substitution group if any</span>
+            <span class="k">if</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">is_substitution_group</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
+                <span class="n">group</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_substitution_group</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_member_to_substitution_group</span><span class="p">(</span>
+                    <span class="n">group</span><span class="p">,</span>
+                    <span class="n">SchemaHelper</span><span class="o">.</span><span class="n">unique_tag</span><span class="p">(</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">element</span><span class="p">),</span> <span class="n">target_ns</span><span class="p">),</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_schema_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a new schema element to the hash table.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tag: The hash key</span>
+<span class="sd">            element: The schema ``Element`` to add</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_all_schema_elements</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_schema_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a new schema type to the hash table.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tag: The hash key</span>
+<span class="sd">            schema_type: The schema type</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_all_types</span><span class="p">[</span><span class="n">schema_type</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_member_to_substitution_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an ``xs:element`` to a substitution group collection.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group: The name of the substitution group</span>
+<span class="sd">            element: The global OCX element to add</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_substitution_groups</span><span class="p">[</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_schema_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal function to retrieve a list of tags of ``lxml.etree.Element`` schema elements of a specific type.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The sorted list of all tags of ``lxml.etree.Element`` of type ``schema_type``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_types</span><span class="p">[</span><span class="n">schema_type</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OcxParser.get_schema_version">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_version">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_schema_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The OCX schema version.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The coded version string of the OCX schema</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_version</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_namespaces">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_namespaces">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_namespaces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The parsed namespaces.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The dict of namespaces as (namespace,prefix) key-value pairs</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_schema_namespace">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_namespace">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_schema_namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The schema namespace of the schema with ``version``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The target namespace</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_ns</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;Missing&quot;</span> <span class="k">if</span> <span class="n">ns</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ns</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_xs_types">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_xs_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_xs_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;All builtin xs types.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The list of all defined xs types</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_builtin_xs_types</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_schema_element_types">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_element_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_schema_element_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;All schema elements of type ``element``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The list of all etree.Element of type ``element``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_schema_types</span><span class="p">(</span><span class="s2">&quot;element&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_schema_complex_types">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_complex_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_schema_complex_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;All tags for schema elements of type ``complexType``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The list of tags of all ``etree.Element`` of type ``complexType``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_schema_types</span><span class="p">(</span><span class="s2">&quot;complexType&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_schema_simple_types">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_simple_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_schema_simple_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;All schema elements of type ``simpleType``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The list of tags of all etree.Element of type ``simpleType``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_schema_types</span><span class="p">(</span><span class="s2">&quot;simpleType&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_schema_enumerations">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_enumerations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_schema_enumerations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;All schema elements of type ``enumeration``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The list of tags of all etree.Element of type ``enumeration``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_schema_types</span><span class="p">(</span><span class="s2">&quot;enumeration&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_schema_attribute_types">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_attribute_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_schema_attribute_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;All schema elements of type ``attribute``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The list of unique tags for all etree.Element of type ``attribute``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_schema_types</span><span class="p">(</span><span class="s2">&quot;attribute&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_schema_attribute_group_types">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_schema_attribute_group_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_schema_attribute_group_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;All schema elements of type ``attributeGroup``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The list of all etree.Element of type ``attributeGroup``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_schema_types</span><span class="p">(</span><span class="s2">&quot;attributeGroup&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_substitution_groups">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_substitution_groups">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_substitution_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The collection of the schema  ``substitutionGroup``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Substitution groups with members</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_substitution_groups</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_element_from_tag">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_element_from_tag">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_element_from_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Element</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return get the ``etree.Element`` with the key ``tag``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The schema element instance</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_builtin_xs_types</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">: The tag </span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2"> is a built-in type </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_builtin_xs_types</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_schema_elements</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">: The tag </span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2"> is not in the look-up table&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_schema_elements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.get_element_from_type">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.get_element_from_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_element_from_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve the schema element ``etree.Element`` with the key ``schema_type``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            schema_type: The schema type to retrieve on the form ``ns_prefix:name``</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple of the element unique tag and the element (tag, Element)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">strip_namespace_prefix</span><span class="p">(</span><span class="n">schema_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespace_prefix</span><span class="p">(</span><span class="n">schema_type</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="p">:</span>
+            <span class="n">namespace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="p">[</span>
+                <span class="n">LxmlElement</span><span class="o">.</span><span class="n">namespace_prefix</span><span class="p">(</span><span class="n">schema_type</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The type </span><span class="si">{</span><span class="n">schema_type</span><span class="si">}</span><span class="s2"> has an unknown _namespace prefix&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="n">SchemaHelper</span><span class="o">.</span><span class="n">unique_tag</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_builtin_xs_types</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The tag </span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2"> is a built-in type </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_builtin_xs_types</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_schema_elements</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_from_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="vm">__class__</span><span class="si">}</span><span class="s2">: The tag </span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2"> is not in the look-up table&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.tbl_summary">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_summary">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tbl_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">short</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The summary of the parsed schema and any referenced schemas.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            short: If true, only report number of schema types, otherwise report names of types.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The schema summary content dataclasses</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">namespace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema_namespaces</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Version&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_schema_version</span><span class="p">()],</span> <span class="s2">&quot;Prefix&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">prefix</span><span class="p">]}</span>
+            <span class="k">for</span> <span class="nb">type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_types</span><span class="p">:</span>
+                <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                    <span class="nb">filter</span><span class="p">(</span>
+                        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">QName</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">namespace</span> <span class="o">==</span> <span class="n">namespace</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_types</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">short</span><span class="p">:</span>
+                    <span class="n">content</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="n">QName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">localname</span><span class="p">,</span> <span class="n">items</span><span class="p">)))</span>
+                    <span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">content</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="n">QName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">localname</span><span class="p">,</span> <span class="n">items</span><span class="p">))</span>
+            <span class="n">summary</span><span class="p">[</span><span class="n">namespace</span><span class="p">]</span> <span class="o">=</span> <span class="n">content</span>
+        <span class="k">return</span> <span class="n">summary</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.tbl_attribute_groups">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_attribute_groups">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tbl_attribute_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;All parsed ``attributeGroup`` types in the schema and any referenced schemas.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">             List of  ``SchemaType`` data class holding ``attributeGroup`` attributes.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_schema_attribute_group_types</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">QName</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span><span class="o">.</span><span class="n">localname</span><span class="p">:</span> <span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.tbl_simple_types">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_simple_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tbl_simple_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The table of all parsed ``simpleType`` elements in the schema and any referenced schemas.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The ``SchemaType`` data class attributes of ``simpleType``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_schema_simple_types</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">QName</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span><span class="o">.</span><span class="n">localname</span><span class="p">:</span> <span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.tbl_enumerators">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_enumerators">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tbl_enumerators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The table of all parsed ``enumerator`` elements in the schema and any referenced schemas.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The ``SchemaType`` data class attributes of ``simpleType``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_schema_simple_types</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">QName</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span><span class="o">.</span><span class="n">localname</span><span class="p">:</span> <span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.tbl_attribute_types">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_attribute_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tbl_attribute_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The table of all parsed attribute elements in the schema and any referenced schemas.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The ``SchemaType`` data class attributes of ``attributeType``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_schema_attribute_types</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">QName</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span><span class="o">.</span><span class="n">localname</span><span class="p">:</span> <span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.tbl_element_types">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_element_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tbl_element_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The table of all parsed elements of type element in the schema and any referenced schemas.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The ``SchemaType`` data class attributes of ``element``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_schema_element_types</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">QName</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span><span class="o">.</span><span class="n">localname</span><span class="p">:</span> <span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="OcxParser.tbl_complex_types">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.ocxparser.OcxParser.tbl_complex_types">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tbl_complex_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The table of all parsed complexType elements in the schema and any referenced schemas.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">            The ``SchemaType`` data class attributes of ``complexType``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_schema_complex_types</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">QName</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span><span class="o">.</span><span class="n">localname</span><span class="p">:</span> <span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">}</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, 3Docx.org.
+      <span class="lastupdated">Last updated on Feb 28, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

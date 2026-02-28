@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ocx_schema_parser.helpers &mdash; ocx_schema_parser 2.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f5cff4aa"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ocx_schema_parser
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html">transformer classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#parser-classes">parser classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#data-classes-classes">data_classes classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#elements-classes">elements classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#xelement-classes">xelement classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#ocxdownloader-classes">ocxdownloader classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#helpers-classes">helpers classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html#xparse-classes">xparse classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ocx_schema_parser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ocx_schema_parser.helpers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ocx_schema_parser.helpers</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright (c) 2022-2023. OCX Consortium https://3docx.org. See the LICENSE</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">asdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lxml.etree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">ElementTextIterator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.data_classes</span><span class="w"> </span><span class="kn">import</span> <span class="n">SchemaChange</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.xelement</span><span class="w"> </span><span class="kn">import</span> <span class="n">LxmlElement</span>
+
+
+<div class="viewcode-block" id="SchemaHelper">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.helpers.SchemaHelper">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SchemaHelper</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A utility class for retrieving OCX attributes and information from an OCX xsd element&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SchemaHelper.is_reference">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.helpers.SchemaHelper.is_reference">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_reference</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is a reference or not</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if the element is a reference, False otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_reference</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;None&quot;</span>
+        <span class="k">return</span> <span class="n">reference</span></div>
+
+
+<div class="viewcode-block" id="SchemaHelper.get_reference">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.helpers.SchemaHelper.get_reference">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_reference</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The element reference</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The reference to a global element on the form ``prefix:name``.</span>
+<span class="sd">            Returns None if the element is not a reference.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_xml_attrib</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ref&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span>
+        <span class="k">return</span> <span class="n">ref</span></div>
+
+
+<div class="viewcode-block" id="SchemaHelper.get_type">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.helpers.SchemaHelper.get_type">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_type</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># ToDo: Simplify function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The element type given by the element attribute or by its ``complexContent``</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The global element type on the form ``prefix:name``.</span>
+<span class="sd">            If the element has no type, ``untyped`` is returned.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">schema_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">get_xml_attrib</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="n">schema_type</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;base&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="n">schema_type</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;base&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;ref&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="n">schema_type</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;ref&quot;</span><span class="p">]</span>
+        <span class="c1"># The element may have complexContent</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">&quot;complexContent&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># complexContent has either an extension or a restriction</span>
+            <span class="c1"># extension</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name_and_attribute</span><span class="p">(</span>
+                <span class="n">element</span><span class="p">,</span> <span class="s2">&quot;extension&quot;</span><span class="p">,</span> <span class="s2">&quot;base&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">schema_type</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">)</span>
+            <span class="c1"># restriction</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name_and_attribute</span><span class="p">(</span>
+                <span class="n">element</span><span class="p">,</span> <span class="s2">&quot;restriction&quot;</span><span class="p">,</span> <span class="s2">&quot;base&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">schema_type</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">)</span>
+        <span class="c1"># the element may be a simpleType</span>
+        <span class="n">simple_type</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">&quot;simpleType&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">simple_type</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># simpleType may have either an extension or a restriction</span>
+            <span class="c1"># extension</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name_and_attribute</span><span class="p">(</span>
+                <span class="n">simple_type</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;extension&quot;</span><span class="p">,</span> <span class="s2">&quot;base&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">schema_type</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">)</span>
+            <span class="c1"># restriction</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name_and_attribute</span><span class="p">(</span>
+                <span class="n">simple_type</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;restriction&quot;</span><span class="p">,</span> <span class="s2">&quot;base&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">schema_type</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">)</span>
+        <span class="c1"># the element may be a List</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">&quot;{*}list&quot;</span><span class="p">):</span>
+            <span class="nb">type</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;itemType&quot;</span><span class="p">)</span>
+            <span class="n">schema_type</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;List of type </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="c1"># the element may be a restriction</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">&quot;{*}restriction&quot;</span><span class="p">):</span>
+            <span class="nb">type</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">)</span>
+            <span class="n">schema_type</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Restriction of type </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="c1"># if schemaType is not None:</span>
+        <span class="c1">#     # Add any missing prefix</span>
+        <span class="c1">#     if ns_prefix(schemaType) is None:</span>
+        <span class="c1">#         base = element.base</span>
+        <span class="c1">#         if base in self.schema.schemaBase:</span>
+        <span class="c1">#             prefix = self.schema.schemaBase[base]</span>
+        <span class="c1">#             schemaType = prefix + &quot;:&quot; + schemaType</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     schemaType = &quot;untyped&quot;</span>
+        <span class="k">return</span> <span class="n">schema_type</span></div>
+
+
+<div class="viewcode-block" id="SchemaHelper.unique_tag">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.helpers.SchemaHelper.unique_tag">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unique_tag</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A unique global tag from the element name and namespace</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: The name of the element</span>
+<span class="sd">            namespace: The namespace</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A unique element tag on the form ``{namespace}name``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="n">namespace</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span> <span class="o">+</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="n">tag</span></div>
+
+
+<div class="viewcode-block" id="SchemaHelper.get_schema_version">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.helpers.SchemaHelper.get_schema_version">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_schema_version</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the current OCX schema version</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root: The root element of the schema</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The  version of the OCX schema</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;Missing&quot;</span>
+        <span class="c1"># root.findall(&#39;.//{*}attribute[@name=&quot;schemaVersion&quot;]&#39;</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_attribute_value</span><span class="p">(</span>
+            <span class="n">root</span><span class="p">,</span> <span class="s2">&quot;attribute&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;schemaVersion&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fixed&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">version</span></div>
+
+
+<div class="viewcode-block" id="SchemaHelper.find_schema_changes">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.helpers.SchemaHelper.find_schema_changes">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_schema_changes</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SchemaChange</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find any schema version changes with tag ``SchemaChange``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root: The root element of the schema</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">             A list of ``SchemaChange`` dataclasses</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">schema_changes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">changes</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;SchemaChange&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
+            <span class="c1"># Retrieve the reason for change from the Description element</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">LxmlElement</span><span class="o">.</span><span class="n">find_all_children_with_name</span><span class="p">(</span><span class="n">change</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">)</span>
+            <span class="c1"># Parse the text between start and end tag</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">description</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">description</span> <span class="o">=</span> <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">ElementTextIterator</span><span class="p">(</span><span class="n">change</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">with_tail</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                    <span class="n">description</span> <span class="o">=</span> <span class="n">description</span> <span class="o">+</span> <span class="n">text</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[</span><span class="se">\n\t\r</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+                <span class="n">description</span> <span class="o">=</span> <span class="n">text</span>
+            <span class="n">schema_change</span> <span class="o">=</span> <span class="n">SchemaChange</span><span class="p">(</span>
+                <span class="n">change</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">),</span>
+                <span class="n">change</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">),</span>
+                <span class="n">change</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">),</span>
+                <span class="n">description</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">schema_changes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">schema_change</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">schema_changes</span></div>
+
+
+<div class="viewcode-block" id="SchemaHelper.schema_changes_data_grid">
+<a class="viewcode-back" href="../../schema.html#ocx_schema_parser.helpers.SchemaHelper.schema_changes_data_grid">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">schema_changes_data_grid</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A dictionary of the content  of all ``SchemaChange`` tags</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root: The root element of the schema</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">             A dict dta grid with a unique id as key</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">changes</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">find_schema_changes</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="n">data_grid</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">05d</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">data_grid</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="n">change</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data_grid</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, 3Docx.org.
+      <span class="lastupdated">Last updated on Feb 28, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
