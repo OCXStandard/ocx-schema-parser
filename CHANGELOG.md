@@ -13,6 +13,15 @@ and this project adheres to the Python [PEP 440 versioning recommendations](http
 * ``Fixed`` for any bug fixes.
 * ``Security`` in case of vulnerabilities.
 
+## [2.0.1] - 2026-02-28
+
+bump to [v2.0.1](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v2.0.1)
+
+### Change
+
+* Add building documentation to CI workflow
+* Fix GitHub Actions workflow to correctly build and publish documentation
+
 ## [2.0.0] - 2026-02-28
 
 bump to [v2.0.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v2.0.0)

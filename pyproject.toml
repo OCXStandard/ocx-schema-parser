@@ -79,10 +79,6 @@ search = 'version = "{current_version}"'
 src = "ocx_schema_parser/__init__.py"
 search = '__version__ = "{current_version}"'
 
-# Sphinx docs version (safety net — conf.py reads __version__ dynamically)
-[[tool.tbump.file]]
-src = "docs/conf.py"
-search = 'version = "{current_version}"'
 
 # Check CHANGELOG has an entry for the new version before committing
 [[tool.tbump.before_commit]]
