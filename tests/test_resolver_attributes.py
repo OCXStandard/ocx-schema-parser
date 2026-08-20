@@ -63,6 +63,27 @@ def test_nearest_definition_wins():
     assert attrs["name"].type == "xs:token"  # Leaf_T overrides Base_T
 
 
+def test_prohibited_attribute_removes_inherited_declaration():
+    fragment = """<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:t="urn:test" targetNamespace="urn:test">
+  <xs:complexType name="Base_T">
+    <xs:attribute name="bar" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType name="Derived_T">
+    <xs:complexContent>
+      <xs:restriction base="t:Base_T">
+        <xs:attribute name="bar" use="prohibited"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+"""
+    r = _Resolver([parse_fragment(fragment)])
+
+    assert "bar" not in {a.name for a in r.attributes_of("{urn:test}Derived_T")}
+
+
 def test_attribute_details():
     r = make_resolver()
     attrs = {a.name: a for a in r.attributes_of("{urn:test}Leaf_T")}

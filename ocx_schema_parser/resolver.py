@@ -51,6 +51,16 @@ def _cardinality(node) -> Cardinality:
     return Cardinality(lower=lower, upper=upper)
 
 
+def _multiply_cardinality(left: Cardinality, right: Cardinality) -> Cardinality:
+    """Multiply nested occurrence bounds; ``upper=None`` means unbounded."""
+    if left.upper is None or right.upper is None:
+        upper = None
+    else:
+        product = left.upper * right.upper
+        upper = None if product >= UNBOUNDED else product
+    return Cardinality(lower=left.lower * right.lower, upper=upper)
+
+
 def _base_ref(ct: xsd.ComplexType) -> Optional[str]:
     """Return the base type reference of a complex type's derivation, if any."""
     for content in (ct.complex_content, ct.simple_content):
@@ -133,6 +143,14 @@ class _Node:
     tag: str
 
 
+@dataclass
+class _ExpandedAttributes:
+    """Expanded attributes plus prohibited names that shadow ancestors."""
+
+    attributes: list[Attribute]
+    prohibited: set[str]
+
+
 class _Resolver:
     """Walks xsdata Schema dataclasses and builds the OcxSchema model."""
 
@@ -190,6 +208,8 @@ class _Resolver:
         ns_map = schema.ns_map or {}
         if prefix and prefix in ns_map:
             return f"{{{ns_map[prefix]}}}{local}"
+        if not prefix and None in ns_map:
+            return f"{{{ns_map[None]}}}{local}"
         if not prefix and schema.target_namespace:
             return f"{{{schema.target_namespace}}}{local}"
         return f"{{{prefix}}}{local}" if prefix else local
@@ -274,10 +294,29 @@ class _Resolver:
             description=_description(attr),
         )
 
-    def _expand_attributes(self, holder, schema: xsd.Schema, seen_groups: set[str]) -> list[Attribute]:
+    def _prohibited_attribute_name(self, attr: xsd.Attribute, schema: xsd.Schema) -> Optional[str]:
+        """Return the local attribute name if this declaration prohibits it."""
+        use = attr.use.value if attr.use is not None else "optional"
+        if use != "prohibited":
+            return None
+        if attr.name:
+            return attr.name
+        if attr.ref:
+            _, local = self.split(self.qref(attr.ref, schema))
+            return local
+        return None
+
+    def _expand_attributes(
+        self, holder, schema: xsd.Schema, seen_groups: set[str]
+    ) -> _ExpandedAttributes:
         """Collect attributes on ``holder``, expanding attributeGroup refs recursively."""
         result: list[Attribute] = []
+        prohibited: set[str] = set()
         for attr in getattr(holder, "attributes", []) or []:
+            prohibited_name = self._prohibited_attribute_name(attr, schema)
+            if prohibited_name is not None:
+                prohibited.add(prohibited_name)
+                continue
             made = self._make_attribute(attr, schema)
             if made is not None:
                 result.append(made)
@@ -293,27 +332,39 @@ class _Resolver:
             if node is None:
                 self._missing(tag, "attribute group")
                 continue
-            result.extend(self._expand_attributes(node.obj, node.schema, seen_groups))
-        return result
+            expanded = self._expand_attributes(node.obj, node.schema, seen_groups)
+            result.extend(expanded.attributes)
+            prohibited.update(expanded.prohibited)
+        return _ExpandedAttributes(result, prohibited)
 
     def attributes_of(self, type_tag: str) -> list[Attribute]:
         """All attributes of a complex type, own + inherited, nearest wins, sorted by name."""
         merged: dict[str, Attribute] = {}
+        prohibited: set[str] = set()
         for tag in [type_tag, *self.ancestors(type_tag)]:
             node = self.complex_types.get(tag)
             if node is None:
                 continue
             for holder in _attribute_holders(node.obj):
-                for attr in self._expand_attributes(holder, node.schema, set()):
-                    merged.setdefault(attr.name, attr)  # nearest definition wins
+                expanded = self._expand_attributes(holder, node.schema, set())
+                for name in expanded.prohibited:
+                    if name not in merged:
+                        prohibited.add(name)
+                for attr in expanded.attributes:
+                    if attr.name not in merged and attr.name not in prohibited:
+                        merged[attr.name] = attr  # nearest definition wins
         return sorted(merged.values(), key=lambda a: a.name)
 
     # ---------------------------------------------------------- children
     def _make_children(
-        self, element: xsd.Element, schema: xsd.Schema, is_choice: bool
+        self,
+        element: xsd.Element,
+        schema: xsd.Schema,
+        is_choice: bool,
+        occurrence_factor: Cardinality,
     ) -> list[ChildElement]:
         """Build ChildElement(s) for one particle; expands abstract substitution heads."""
-        card = _cardinality(element)
+        card = _multiply_cardinality(occurrence_factor, _cardinality(element))
         if element.ref:
             tag = self.qref(element.ref, schema)
             node = self.elements.get(tag)
@@ -373,26 +424,44 @@ class _Resolver:
         ]
 
     def _collect_particles(
-        self, container, schema: xsd.Schema, is_choice: bool, seen_groups: set[str]
+        self,
+        container,
+        schema: xsd.Schema,
+        is_choice: bool,
+        seen_groups: set[str],
+        occurrence_factor: Optional[Cardinality] = None,
     ) -> list[ChildElement]:
         """Recursively walk a sequence/choice/all container collecting children."""
         if container is None:
             return []
+        effective_occurs = _multiply_cardinality(
+            occurrence_factor or Cardinality(lower=1, upper=1),
+            _cardinality(container),
+        )
         result: list[ChildElement] = []
         for element in getattr(container, "elements", []) or []:
-            result.extend(self._make_children(element, schema, is_choice))
+            result.extend(self._make_children(element, schema, is_choice, effective_occurs))
         for group in getattr(container, "groups", []) or []:
-            result.extend(self._collect_group(group, schema, is_choice, seen_groups))
+            result.extend(self._collect_group(group, schema, is_choice, seen_groups, effective_occurs))
         for choice in getattr(container, "choices", []) or []:
-            result.extend(self._collect_particles(choice, schema, True, seen_groups))
+            result.extend(self._collect_particles(choice, schema, True, seen_groups, effective_occurs))
         for sequence in getattr(container, "sequences", []) or []:
-            result.extend(self._collect_particles(sequence, schema, is_choice, seen_groups))
+            result.extend(self._collect_particles(sequence, schema, is_choice, seen_groups, effective_occurs))
         return result
 
     def _collect_group(
-        self, group: xsd.Group, schema: xsd.Schema, is_choice: bool, seen_groups: set[str]
+        self,
+        group: xsd.Group,
+        schema: xsd.Schema,
+        is_choice: bool,
+        seen_groups: set[str],
+        occurrence_factor: Optional[Cardinality] = None,
     ) -> list[ChildElement]:
         """Resolve a named model group (possibly a ref) and collect its particles."""
+        effective_occurs = _multiply_cardinality(
+            occurrence_factor or Cardinality(lower=1, upper=1),
+            _cardinality(group),
+        )
         if group.ref:
             tag = self.qref(group.ref, schema)
             if tag in seen_groups:
@@ -402,11 +471,11 @@ class _Resolver:
             if node is None:
                 self._missing(tag, "group")
                 return []
-            return self._collect_group(node.obj, node.schema, is_choice, seen_groups)
+            return self._collect_group(node.obj, node.schema, is_choice, seen_groups, effective_occurs)
         result: list[ChildElement] = []
-        result.extend(self._collect_particles(group.sequence, schema, is_choice, seen_groups))
-        result.extend(self._collect_particles(group.choice, schema, True, seen_groups))
-        result.extend(self._collect_particles(group.all, schema, is_choice, seen_groups))
+        result.extend(self._collect_particles(group.sequence, schema, is_choice, seen_groups, effective_occurs))
+        result.extend(self._collect_particles(group.choice, schema, True, seen_groups, effective_occurs))
+        result.extend(self._collect_particles(group.all, schema, is_choice, seen_groups, effective_occurs))
         return result
 
     def _own_children(self, ct: xsd.ComplexType, schema: xsd.Schema) -> list[ChildElement]:
@@ -526,13 +595,18 @@ class _Resolver:
                 if base_tag and not self.is_builtin(base_tag)
                 else []
             )
-            own_attrs = {
-                a.name: a
-                for holder in _attribute_holders(ct)
-                for a in self._expand_attributes(holder, node.schema, set())
-            }
+            own_attrs: dict[str, Attribute] = {}
+            prohibited_attrs: set[str] = set()
+            for holder in _attribute_holders(ct):
+                expanded = self._expand_attributes(holder, node.schema, set())
+                for name in expanded.prohibited:
+                    if name not in own_attrs:
+                        prohibited_attrs.add(name)
+                for attr in expanded.attributes:
+                    if attr.name not in own_attrs and attr.name not in prohibited_attrs:
+                        own_attrs[attr.name] = attr
             inherited = (
-                {a.name: a for a in self.attributes_of(base_tag)}
+                {a.name: a for a in self.attributes_of(base_tag) if a.name not in prohibited_attrs}
                 if base_tag and base_tag in self.complex_types
                 else {}
             )
@@ -642,10 +716,9 @@ class _Resolver:
         result = {}
         for tag, node in self.attribute_groups.items():
             _, local = self.split(tag)
+            expanded = self._expand_attributes(node.obj, node.schema, {tag})
             result[local] = sorted(
-                {
-                    a.name: a for a in self._expand_attributes(node.obj, node.schema, {tag})
-                }.values(),
+                {a.name: a for a in expanded.attributes}.values(),
                 key=lambda a: a.name,
             )
         return dict(sorted(result.items()))

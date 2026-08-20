@@ -80,6 +80,40 @@ def test_choice_flag():
     assert by_name["Note"].is_choice is False
 
 
+def test_compositor_occurs_multiplied_into_child_cardinality():
+    fragment = """<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:t="urn:test" targetNamespace="urn:test">
+  <xs:element name="SingleBracket" type="xs:string"/>
+  <xs:complexType name="WithCompositors_T">
+    <xs:sequence>
+      <xs:choice minOccurs="0">
+        <xs:element ref="t:SingleBracket"/>
+      </xs:choice>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element name="Repeated" type="xs:string"/>
+      </xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+"""
+    r = _Resolver([parse_fragment(fragment)])
+    children = {c.name: c for c in r.children_of("{urn:test}WithCompositors_T")}
+
+    assert children["SingleBracket"].cardinality.lower == 0
+    assert children["SingleBracket"].cardinality.upper == 1
+    assert children["Repeated"].cardinality.lower == 1
+    assert children["Repeated"].cardinality.upper is None
+
+
+def test_full_schema_connection_configuration_choice_child_optional(ocx_schemas):
+    r = _Resolver(ocx_schemas)
+    tns = "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"
+    children = {c.name: c for c in r.children_of(f"{{{tns}}}ConnectionConfiguration_T")}
+
+    assert children["SingleBracket"].cardinality.lower == 0
+
+
 def test_full_schema_vessel_children(ocx_schemas):
     r = _Resolver(ocx_schemas)
     tns = "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"

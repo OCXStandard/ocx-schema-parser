@@ -52,6 +52,23 @@ def test_qref():
     assert r.qref("xs:string", schema) == "{http://www.w3.org/2001/XMLSchema}string"
 
 
+def test_unprefixed_qref_uses_default_namespace_before_target_namespace():
+    fragment = """<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:t="urn:test"
+        targetNamespace="urn:test">
+  <complexType name="Thing_T">
+    <attribute name="name" type="string"/>
+  </complexType>
+</schema>
+"""
+    r = _Resolver([parse_fragment(fragment)])
+
+    attrs = {a.name: a for a in r.attributes_of("{urn:test}Thing_T")}
+    assert attrs["name"].type == "xs:string"
+
+
 def test_is_builtin():
     r = make_resolver()
     assert r.is_builtin("{http://www.w3.org/2001/XMLSchema}string")

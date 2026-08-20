@@ -1141,7 +1141,7 @@ complex_types:
     use: optional
   children:
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Double bracket connection.
     from_substitution_group: null
@@ -1151,7 +1151,7 @@ complex_types:
     prefix: ocx
     type: ocx:SingleBracket_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: A double bracket type connection. The reference to a connected bracket
       part of a ConnectionConfiguration. For a double bracket connection type, two
@@ -1163,7 +1163,7 @@ complex_types:
     prefix: ocx
     type: DoubleBracket
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Connection configuration with one web stiffener with a single bracket
       connection.
@@ -1174,7 +1174,7 @@ complex_types:
     prefix: ocx
     type: ocx:WebStiffener_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Connection configuration with one web stiffener with a single bracket
       connection.
@@ -1185,7 +1185,7 @@ complex_types:
     prefix: ocx
     type: ocx:WebStiffenerWithSingleBracket_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Web stiffener with double bracket connection.
     from_substitution_group: null
@@ -1195,7 +1195,7 @@ complex_types:
     prefix: ocx
     type: WebStiffenerWithDoubleBracket
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: The reference to a connected Plate.
     from_substitution_group: null
@@ -1205,7 +1205,7 @@ complex_types:
     prefix: ocx
     type: PlateRef
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: The reference to a connected Member (Pillar).
     from_substitution_group: null
@@ -1215,7 +1215,7 @@ complex_types:
     prefix: ocx
     type: PillarRef
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: A  reference to a Stiffener.
     from_substitution_group: null
@@ -2497,7 +2497,7 @@ complex_types:
     prefix: ocx
     type: ocx:SlotParameters_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Double bracket connection.
     from_substitution_group: null
@@ -2507,7 +2507,7 @@ complex_types:
     prefix: ocx
     type: ocx:SingleBracket_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: A double bracket type connection. The reference to a connected bracket
       part of a ConnectionConfiguration. For a double bracket connection type, two
@@ -2519,7 +2519,7 @@ complex_types:
     prefix: ocx
     type: DoubleBracket
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Connection configuration with one web stiffener with a single bracket
       connection.
@@ -2530,7 +2530,7 @@ complex_types:
     prefix: ocx
     type: ocx:WebStiffener_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Connection configuration with one web stiffener with a single bracket
       connection.
@@ -2541,7 +2541,7 @@ complex_types:
     prefix: ocx
     type: ocx:WebStiffenerWithSingleBracket_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Web stiffener with double bracket connection.
     from_substitution_group: null
@@ -2551,7 +2551,7 @@ complex_types:
     prefix: ocx
     type: WebStiffenerWithDoubleBracket
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: The reference to a connected Plate.
     from_substitution_group: null
@@ -2561,7 +2561,7 @@ complex_types:
     prefix: ocx
     type: PlateRef
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: The reference to a connected Member (Pillar).
     from_substitution_group: null
@@ -2571,7 +2571,7 @@ complex_types:
     prefix: ocx
     type: PillarRef
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: A  reference to a Stiffener.
     from_substitution_group: null
@@ -3779,7 +3779,7 @@ elements:
   children:
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: The concept of a compartment part of the vessel capacity plan representing
       a closed volume (space) defined by enclosing surface geometry.
     from_substitution_group: null
@@ -3790,7 +3790,7 @@ elements:
     type: ocx:Compartment_T
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: The concept of a physical compartment representing a closed volume
       (space) defined by  enclosing  structure panels.
     from_substitution_group: null
@@ -6345,7 +6345,7 @@ elements:
   children:
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: A list of 3D points defining a sequence of linear segments. Repeat
       the first position at the end of the last line segment to form a closed contour.
     from_substitution_group: null
@@ -6356,7 +6356,7 @@ elements:
     type: ocx:PolyLine3D_T
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: A straight line defined by two points.
     from_substitution_group: null
     inherited_from: null
@@ -6366,7 +6366,7 @@ elements:
     type: ocx:Line3D_T
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: Non-Uniform Rational Spline Base curve definition.
     from_substitution_group: null
     inherited_from: null
@@ -6376,7 +6376,7 @@ elements:
     type: ocx:NURBS3D_T
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: 3D Line/Arc representation. Represents a semicircle uniquely defined
       by three points in 3D space given by the start position, intermediate position
       and the end position..
@@ -6620,7 +6620,7 @@ elements:
     upper: 1
   children:
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Double bracket connection.
     from_substitution_group: null
@@ -6630,7 +6630,7 @@ elements:
     prefix: ocx
     type: ocx:SingleBracket_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: A double bracket type connection. The reference to a connected bracket
       part of a ConnectionConfiguration. For a double bracket connection type, two
@@ -6642,7 +6642,7 @@ elements:
     prefix: ocx
     type: DoubleBracket
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Connection configuration with one web stiffener with a single bracket
       connection.
@@ -6653,7 +6653,7 @@ elements:
     prefix: ocx
     type: ocx:WebStiffener_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Connection configuration with one web stiffener with a single bracket
       connection.
@@ -6664,7 +6664,7 @@ elements:
     prefix: ocx
     type: ocx:WebStiffenerWithSingleBracket_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Web stiffener with double bracket connection.
     from_substitution_group: null
@@ -6674,7 +6674,7 @@ elements:
     prefix: ocx
     type: WebStiffenerWithDoubleBracket
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: The reference to a connected Plate.
     from_substitution_group: null
@@ -6684,7 +6684,7 @@ elements:
     prefix: ocx
     type: PlateRef
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: The reference to a connected Member (Pillar).
     from_substitution_group: null
@@ -6694,7 +6694,7 @@ elements:
     prefix: ocx
     type: PillarRef
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: A  reference to a Stiffener.
     from_substitution_group: null
@@ -8028,7 +8028,7 @@ elements:
   children:
   - cardinality:
       lower: 0
-      upper: 1
+      upper: null
     description: Element containing the dimension of the quantity length.
     from_substitution_group: null
     inherited_from: null
@@ -8038,7 +8038,7 @@ elements:
     type: unitsml:LengthType
   - cardinality:
       lower: 0
-      upper: 1
+      upper: null
     description: Element containing the dimension of the quantity mass.
     from_substitution_group: null
     inherited_from: null
@@ -8048,7 +8048,7 @@ elements:
     type: unitsml:MassType
   - cardinality:
       lower: 0
-      upper: 1
+      upper: null
     description: Element containing the dimension of the quantity time.
     from_substitution_group: null
     inherited_from: null
@@ -8058,7 +8058,7 @@ elements:
     type: unitsml:TimeType
   - cardinality:
       lower: 0
-      upper: 1
+      upper: null
     description: Element containing the dimension of the quantity electric current.
     from_substitution_group: null
     inherited_from: null
@@ -8068,7 +8068,7 @@ elements:
     type: unitsml:ElectricCurrentType
   - cardinality:
       lower: 0
-      upper: 1
+      upper: null
     description: Element containing the dimension of the quantity thermodynamic temerature.
     from_substitution_group: null
     inherited_from: null
@@ -8078,7 +8078,7 @@ elements:
     type: unitsml:ThermodynamicTemperatureType
   - cardinality:
       lower: 0
-      upper: 1
+      upper: null
     description: Element containing the dimension of the quantity amount of substance.
     from_substitution_group: null
     inherited_from: null
@@ -8088,7 +8088,7 @@ elements:
     type: unitsml:AmountOfSubstanceType
   - cardinality:
       lower: 0
-      upper: 1
+      upper: null
     description: Element containing the dimension of the quantity luminous intensity.
     from_substitution_group: null
     inherited_from: null
@@ -8512,7 +8512,7 @@ elements:
     type: EdgeCurveRef
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: The landing curve on the moulded panel surface represented by any
       Curve3D type.
     from_substitution_group: null
@@ -13849,7 +13849,7 @@ elements:
     prefix: ocx
     type: ocx:SlotParameters_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Double bracket connection.
     from_substitution_group: null
@@ -13859,7 +13859,7 @@ elements:
     prefix: ocx
     type: ocx:SingleBracket_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: A double bracket type connection. The reference to a connected bracket
       part of a ConnectionConfiguration. For a double bracket connection type, two
@@ -13871,7 +13871,7 @@ elements:
     prefix: ocx
     type: DoubleBracket
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Connection configuration with one web stiffener with a single bracket
       connection.
@@ -13882,7 +13882,7 @@ elements:
     prefix: ocx
     type: ocx:WebStiffener_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Connection configuration with one web stiffener with a single bracket
       connection.
@@ -13893,7 +13893,7 @@ elements:
     prefix: ocx
     type: ocx:WebStiffenerWithSingleBracket_T
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: Web stiffener with double bracket connection.
     from_substitution_group: null
@@ -13903,7 +13903,7 @@ elements:
     prefix: ocx
     type: WebStiffenerWithDoubleBracket
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: The reference to a connected Plate.
     from_substitution_group: null
@@ -13913,7 +13913,7 @@ elements:
     prefix: ocx
     type: PlateRef
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: The reference to a connected Member (Pillar).
     from_substitution_group: null
@@ -13923,7 +13923,7 @@ elements:
     prefix: ocx
     type: PillarRef
   - cardinality:
-      lower: 1
+      lower: 0
       upper: 1
     description: A  reference to a Stiffener.
     from_substitution_group: null
@@ -18076,7 +18076,7 @@ elements:
   children:
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: A list of 3D points defining a sequence of linear segments. Repeat
       the first position at the end of the last line segment to form a closed contour.
     from_substitution_group: null
@@ -18087,7 +18087,7 @@ elements:
     type: ocx:PolyLine3D_T
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: A straight line defined by two points.
     from_substitution_group: null
     inherited_from: null
@@ -18097,7 +18097,7 @@ elements:
     type: ocx:Line3D_T
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: Non-Uniform Rational Spline Base curve definition.
     from_substitution_group: null
     inherited_from: null
@@ -18107,7 +18107,7 @@ elements:
     type: ocx:NURBS3D_T
   - cardinality:
       lower: 1
-      upper: 1
+      upper: null
     description: 3D Line/Arc representation. Represents a semicircle uniquely defined
       by three points in 3D space given by the start position, intermediate position
       and the end position..
