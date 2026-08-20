@@ -28,6 +28,8 @@ def _parse_file(path: Path) -> xsd.Schema:
             raise OcxParserError(f"Failed to parse {path}: root element is not an XSD schema")
         parser = SchemaParser(location=path.resolve().as_uri())
         return parser.parse(str(path), xsd.Schema)
+    except OcxParserError:
+        raise
     except Exception as exc:
         raise OcxParserError(f"Failed to parse {path}: {exc}") from exc
 
