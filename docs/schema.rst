@@ -1,120 +1,41 @@
-transformer classes
-===================
+=========
+Reference
+=========
 
-The ''Transformer'' class
-*************************
+loader
+======
 
-.. autoclass:: ocx_schema_parser.transformer.Transformer
+.. automodule:: ocx_schema_parser.loader
+   :members:
+
+resolver
+========
+
+.. autofunction:: ocx_schema_parser.resolver.resolve
+
+model
+=====
+
+.. automodule:: ocx_schema_parser.model
    :members:
    :undoc-members:
    :show-inheritance:
 
-parser classes
-==============
+downloader
+==========
 
-The ''OcxParser'' class
-***********************
-
-.. autoclass:: ocx_schema_parser.ocxparser.OcxParser
+.. autoclass:: ocx_schema_parser.downloader.SchemaDownloader
    :members:
-   :undoc-members:
    :show-inheritance:
 
-data_classes classes
-====================
+cli
+===
 
-The ''BaseDataClass'' class
-***************************
-
-.. autoclass:: ocx_schema_parser.data_classes.BaseDataClass
+.. automodule:: ocx_schema_parser.cli
    :members:
-   :undoc-members:
-   :show-inheritance:
 
-The ''SchemaType'' class
-************************
+errors
+======
 
-.. autoclass:: ocx_schema_parser.data_classes.SchemaType
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-The ''SchemaSummary'' class
-***************************
-
-.. autoclass:: ocx_schema_parser.data_classes.SchemaSummary
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-The  ''SchemaChange'' class
-***************************
-
-.. autoclass:: ocx_schema_parser.data_classes.SchemaChange
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-The  ''OcxEnumerator'' class
-*******************************
-
-.. autoclass:: ocx_schema_parser.data_classes.OcxEnumerator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-elements classes
-====================
-
-The ''OcxGlobalElement'' class
-******************************
-
-.. autoclass:: ocx_schema_parser.elements.OcxGlobalElement
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-xelement classes
-================
-
-The ''LxmlElement'' class
-*************************
-
-.. autoclass:: ocx_schema_parser.xelement.LxmlElement
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-ocxdownloader classes
-=====================
-
-The ''OcxDownloader'' class
-***************************
-
-.. autoclass:: ocx_schema_parser.ocxdownloader.downloader.SchemaDownloader
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-helpers classes
-===============
-
-The ''SchemaHelper'' class
-**************************
-
-.. autoclass:: ocx_schema_parser.helpers.SchemaHelper
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-xparse classes
-===============
-
-The ''LxmlParser'' class
-**************************
-
-.. autoclass:: ocx_schema_parser.xparse.LxmlParser
-   :members:
-   :undoc-members:
+.. autoclass:: ocx_schema_parser.errors.OcxParserError
    :show-inheritance:

@@ -13,6 +13,26 @@ and this project adheres to the Python [PEP 440 versioning recommendations](http
 * ``Fixed`` for any bug fixes.
 * ``Security`` in case of vulnerabilities.
 
+## [3.0.0] - 2026-08-20
+
+bump to [v3.0.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v3.0.0)
+
+### Changed
+
+* Complete rewrite: XSD parsing is now delegated to `xsdata`'s `SchemaParser`,
+  and the parsed schema is resolved into a typed, frozen Pydantic v2 model
+  (`OcxSchema`) that serializes to JSON.
+* New public API: `load(source)`, `resolve(schemas)`, and the model classes.
+* New `ocx-schema-parser export` CLI.
+
+### Removed
+
+* **BREAKING:** `OcxParser`, `Transformer`, `LxmlParser`, `LxmlElement`,
+  `SchemaHelper`, `OcxGlobalElement`, the `data_classes` module, the `utils`
+  package and the `ocxdownloader` sub-package (`SchemaDownloader` moved to
+  `ocx_schema_parser.downloader`).
+* Dependencies `ocx-common`, `pyspellchecker` and `pyyaml`.
+
 ## [2.0.1] - 2026-02-28
 
 bump to [v2.0.1](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v2.0.1)

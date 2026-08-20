@@ -10,7 +10,6 @@ API
     :glob:
 
     schema.rst
-    utils.rst
 
 
 
