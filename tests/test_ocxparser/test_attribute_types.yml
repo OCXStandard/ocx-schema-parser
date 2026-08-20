@@ -1,7 +1,0 @@
-GUIDRef: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}GUIDRef'
-base: '{http://www.w3.org/XML/1998/namespace}base'
-externalRef: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}externalRef'
-hasEdgeReinforcement: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}hasEdgeReinforcement'
-id: '{http://www.w3.org/XML/1998/namespace}id'
-newbuildingSociety: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}newbuildingSociety'
-society: '{https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd}society'

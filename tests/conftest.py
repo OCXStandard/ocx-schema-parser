@@ -1,54 +1,36 @@
-#  Copyright (c) 2022-2025. OCX Consortium https://3docx.org. See the LICENSE
+"""Shared fixtures for the ocx-schema-parser test suite."""
+from __future__ import annotations
 
+import io
+from pathlib import Path
 
 import pytest
+from xsdata.codegen.parsers.schema import SchemaParser
+from xsdata.models import xsd
 
-from ocx_schema_parser import WORKING_DRAFT
-from ocx_schema_parser.ocxparser import OcxParser
-from ocx_schema_parser.transformer import Transformer, resolve_source
-from ocx_schema_parser.xparse import LxmlParser
-
-
-# To make sure that the tests import the modules this has to come before the import statements
-# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
+SCHEMA_FOLDER = Path(__file__).parent / "data"
 
 
-@pytest.fixture
-def load_schema_from_file(shared_datadir) -> LxmlParser:
-    """Load the schema from file and make it available for processing."""
-    parser = LxmlParser()
-    file = shared_datadir / "OCX_Schema.xsd"
-    parser.parse_file(file.absolute())
-    assert parser.lxml_version() == (6, 0, 2, 0)
-    return parser
+def parse_fragment(source: str) -> xsd.Schema:
+    """Parse an in-memory XSD document into an xsdata Schema object."""
+    parser = SchemaParser()
+    return parser.parse(io.BytesIO(source.encode("utf-8")), xsd.Schema)
 
 
-@pytest.fixture
-def process_schema(shared_datadir, load_schema_from_file) -> OcxParser:
-    """Process the schema and make it available for testing."""
-    schema_folder = shared_datadir
-    folder = schema_folder.resolve()
-    parser = OcxParser()
-    for file in resolve_source(str(folder), True):
-        result = parser.process_xsd_from_file(file)
-        assert result is True
-    return parser
+@pytest.fixture(scope="session")
+def schema_folder() -> Path:
+    return SCHEMA_FOLDER
 
 
-@pytest.fixture
-def transformer_from_folder(shared_datadir) -> Transformer:
-    """Process the schema and make it available for testing."""
-    transformer = Transformer()
-    transformer.transform_schema_from_folder(shared_datadir)
-    assert transformer.is_transformed() is True
-    return transformer
+@pytest.fixture(scope="session")
+def ocx_schemas(schema_folder: Path) -> list[xsd.Schema]:
+    from ocx_schema_parser.loader import load
+
+    return load(schema_folder)
 
 
-@pytest.fixture
-def transformer_from_url(shared_datadir) -> Transformer:
-    """Process the schema and make it available for testing."""
-    transformer = Transformer()
-    transformer.transform_schema_from_url(WORKING_DRAFT, shared_datadir)
-    ns = transformer.parser.get_namespaces()
-    assert ns.get("ocx", None) == WORKING_DRAFT
-    return transformer
+@pytest.fixture(scope="session")
+def ocx_model(ocx_schemas):
+    from ocx_schema_parser.resolver import resolve
+
+    return resolve(ocx_schemas)
