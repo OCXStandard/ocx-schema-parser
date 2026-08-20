@@ -455,23 +455,48 @@ class _Resolver:
 
     # ----------------------------------------------------------- assembly
     def _main_schema(self) -> xsd.Schema:
-        """The schema declaring the fixed ``schemaVersion`` attribute; else the first."""
+        """The schema declaring the fixed ``schemaVersion`` attribute; else the first.
+        
+        Checks top-level attributes first, then complex types within each schema.
+        Priority: top-level match > complex-type match (within same schema) > first schema.
+        """
+        # First pass: check top-level schemaVersion attributes
         for schema in self.schemas:
             for attr in schema.attributes:
                 if attr.name == "schemaVersion" and attr.fixed:
                     return schema
+        
+        # Second pass: check complex type attributes (only from their declaring schema)
+        for schema in self.schemas:
+            for tag, node in self.complex_types.items():
+                if node.schema is not schema:
+                    continue
+                for attr in self.attributes_of(tag):
+                    if attr.name == "schemaVersion" and attr.fixed:
+                        return schema
+        
         return self.schemas[0]
 
     def _schema_version(self) -> str:
-        # First check schema-level attributes
-        for attr in self._main_schema().attributes:
+        """The fixed ``schemaVersion`` attribute from the main schema.
+        
+        Checks top-level attributes first, then complex types within the main schema.
+        """
+        main_schema = self._main_schema()
+        
+        # First check top-level attributes of main schema
+        for attr in main_schema.attributes:
             if attr.name == "schemaVersion" and attr.fixed:
                 return attr.fixed
-        # If not found at schema level, search in complex type attributes
+        
+        # Then check complex type attributes from main schema
         for tag, node in self.complex_types.items():
+            if node.schema is not main_schema:
+                continue
             for attr in self.attributes_of(tag):
                 if attr.name == "schemaVersion" and attr.fixed:
                     return attr.fixed
+        
         return ""
 
     def _type_tag_of(self, node: _Node) -> Optional[str]:
