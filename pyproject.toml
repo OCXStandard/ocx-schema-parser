@@ -1,17 +1,20 @@
 [project]
 name = "ocx-schema-parser"
-version = "2.0.1"
-description = "A python package for parsing the OCX schema definition and generating schema documentation."
+version = "3.0.0"
+description = "A python package for parsing the OCX schema and exporting it as a typed JSON model."
 readme = "README.md"
 authors = [
     { name = "ocastrup", email = "ole.christian.astrup@dnv.com" }
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "ocx-common>=2.6.0",
-    "pyspellchecker>=0.8.4",
-    "pyyaml>=6.0.3",
+    "xsdata[lxml]~=26.2",
+    "pydantic>=2",
+    "loguru>=0.7",
 ]
+
+[project.scripts]
+ocx-schema-parser = "ocx_schema_parser.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/OCXStandard/ocx-schema-parser"
@@ -27,7 +30,7 @@ dev = [
     "pre-commit>=4.0",
     "pytest>=8.3",
     "pytest-cov>=6.0",
-    "pytest-datadir>=1.5",
+    "pytest-regressions>=2.5",
     "tbump>=6.11",
 ]
 docs = [
@@ -56,7 +59,7 @@ skip_covered = false
 github_url = "https://github.com/OCXStandard/ocx-schema-parser/"
 
 [tool.tbump.version]
-current = "2.0.1"
+current = "3.0.0"
 regex = '''
   (?P<major>\d+)
   \.
