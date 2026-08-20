@@ -124,6 +124,15 @@ class _Resolver:
             add(self.attribute_groups, schema.attribute_groups)
             add(self.groups, schema.groups)
 
+        for schema in self.schemas:
+            for element in schema.elements:
+                if element.substitution_group and element.name:
+                    head = self.qref(element.substitution_group, schema)
+                    tag = f"{{{schema.target_namespace or ''}}}{element.name}"
+                    self.substitution_groups.setdefault(head, []).append(tag)
+        for head in self.substitution_groups:
+            self.substitution_groups[head].sort()
+
     # -------------------------------------------------------- references
     def qref(self, ref: str, schema: xsd.Schema) -> str:
         """Resolve a ``prefix:Name`` reference to a ``{uri}Name`` tag."""
@@ -248,4 +257,149 @@ class _Resolver:
                 for attr in self._expand_attributes(holder, node.schema, set()):
                     merged.setdefault(attr.name, attr)  # nearest definition wins
         return sorted(merged.values(), key=lambda a: a.name)
+
+    # ---------------------------------------------------------- children
+    def _make_children(
+        self, element: xsd.Element, schema: xsd.Schema, is_choice: bool
+    ) -> list[ChildElement]:
+        """Build ChildElement(s) for one particle; expands abstract substitution heads."""
+        card = _cardinality(element)
+        if element.ref:
+            tag = self.qref(element.ref, schema)
+            node = self.elements.get(tag)
+            if node is None:
+                self._missing(tag, "element")
+                return []
+            target: xsd.Element = node.obj
+            members = self.substitution_groups.get(tag, [])
+            if target.abstract and members:
+                head_prefixed = self.prefixed(tag)
+                result = []
+                for member_tag in members:
+                    member = self.elements.get(member_tag)
+                    if member is None:
+                        continue
+                    prefix, local = self.split(member_tag)
+                    type_ref = member.obj.type
+                    type_name = (
+                        self.prefixed(self.qref(type_ref, member.schema)) if type_ref else local
+                    )
+                    result.append(
+                        ChildElement(
+                            name=local,
+                            prefix=prefix,
+                            type=type_name,
+                            cardinality=card,
+                            is_choice=is_choice,
+                            from_substitution_group=head_prefixed,
+                            description=_description(member.obj),
+                        )
+                    )
+                return result
+            prefix, local = self.split(tag)
+            type_name = self.prefixed(self.qref(target.type, node.schema)) if target.type else local
+            return [
+                ChildElement(
+                    name=local,
+                    prefix=prefix,
+                    type=type_name,
+                    cardinality=card,
+                    is_choice=is_choice,
+                    description=_description(target),
+                )
+            ]
+        # local (inline) element declaration
+        prefix, _ = self.split(f"{{{schema.target_namespace or ''}}}{element.name}")
+        type_name = self.prefixed(self.qref(element.type, schema)) if element.type else (element.name or "")
+        return [
+            ChildElement(
+                name=element.name or "",
+                prefix=prefix,
+                type=type_name,
+                cardinality=card,
+                is_choice=is_choice,
+                description=_description(element),
+            )
+        ]
+
+    def _collect_particles(
+        self, container, schema: xsd.Schema, is_choice: bool, seen_groups: set[str]
+    ) -> list[ChildElement]:
+        """Recursively walk a sequence/choice/all container collecting children."""
+        if container is None:
+            return []
+        result: list[ChildElement] = []
+        for element in getattr(container, "elements", []) or []:
+            result.extend(self._make_children(element, schema, is_choice))
+        for group in getattr(container, "groups", []) or []:
+            result.extend(self._collect_group(group, schema, is_choice, seen_groups))
+        for choice in getattr(container, "choices", []) or []:
+            result.extend(self._collect_particles(choice, schema, True, seen_groups))
+        for sequence in getattr(container, "sequences", []) or []:
+            result.extend(self._collect_particles(sequence, schema, is_choice, seen_groups))
+        return result
+
+    def _collect_group(
+        self, group: xsd.Group, schema: xsd.Schema, is_choice: bool, seen_groups: set[str]
+    ) -> list[ChildElement]:
+        """Resolve a named model group (possibly a ref) and collect its particles."""
+        if group.ref:
+            tag = self.qref(group.ref, schema)
+            if tag in seen_groups:
+                return []
+            seen_groups.add(tag)
+            node = self.groups.get(tag)
+            if node is None:
+                self._missing(tag, "group")
+                return []
+            return self._collect_group(node.obj, node.schema, is_choice, seen_groups)
+        result: list[ChildElement] = []
+        result.extend(self._collect_particles(group.sequence, schema, is_choice, seen_groups))
+        result.extend(self._collect_particles(group.choice, schema, True, seen_groups))
+        result.extend(self._collect_particles(group.all, schema, is_choice, seen_groups))
+        return result
+
+    def _own_children(self, ct: xsd.ComplexType, schema: xsd.Schema) -> list[ChildElement]:
+        """Children declared directly on a complex type (incl. its derivation content)."""
+        result: list[ChildElement] = []
+        containers = [(ct.sequence, False), (ct.all, False), (ct.choice, True)]
+        if ct.group is not None:
+            result.extend(self._collect_group(ct.group, schema, False, set()))
+        for content in (ct.complex_content, ct.simple_content):
+            if content is None:
+                continue
+            for derivation in (content.extension, content.restriction):
+                if derivation is None:
+                    continue
+                containers.extend(
+                    [
+                        (getattr(derivation, "sequence", None), False),
+                        (getattr(derivation, "all", None), False),
+                        (getattr(derivation, "choice", None), True),
+                    ]
+                )
+                group = getattr(derivation, "group", None)
+                if group is not None:
+                    result.extend(self._collect_group(group, schema, False, set()))
+        for container, is_choice in containers:
+            result.extend(self._collect_particles(container, schema, is_choice, set()))
+        return result
+
+    def children_of(self, type_tag: str) -> list[ChildElement]:
+        """All children of a complex type: own first (declaration order), then inherited."""
+        merged: dict[str, ChildElement] = {}
+        result: list[ChildElement] = []
+        for tag in [type_tag, *self.ancestors(type_tag)]:
+            node = self.complex_types.get(tag)
+            if node is None:
+                continue
+            inherited_from = self.prefixed(tag) if tag != type_tag else None
+            for child in self._own_children(node.obj, node.schema):
+                if child.name in merged:
+                    continue  # nearest definition wins
+                if inherited_from is not None:
+                    child = child.model_copy(update={"inherited_from": inherited_from})
+                merged[child.name] = child
+                result.append(child)
+        return result
 
