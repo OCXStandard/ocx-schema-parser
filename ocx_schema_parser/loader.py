@@ -22,7 +22,10 @@ def _is_url(source: str) -> bool:
 
 def _parse_file(path: Path) -> xsd.Schema:
     try:
-        ET.parse(str(path))
+        tree = ET.parse(str(path))
+        root = tree.getroot()
+        if root.tag != "{http://www.w3.org/2001/XMLSchema}schema":
+            raise OcxParserError(f"Failed to parse {path}: root element is not an XSD schema")
         parser = SchemaParser(location=path.resolve().as_uri())
         return parser.parse(str(path), xsd.Schema)
     except Exception as exc:

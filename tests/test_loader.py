@@ -40,3 +40,10 @@ def test_load_invalid_xsd_raises(tmp_path: Path):
     bad.write_text("<not-a-schema>", encoding="utf-8")
     with pytest.raises(OcxParserError, match="Failed to parse"):
         load(bad)
+
+
+def test_load_non_schema_xml_raises(tmp_path: Path):
+    bad = tmp_path / "notaschema.xsd"
+    bad.write_text("<foo>text</foo>", encoding="utf-8")
+    with pytest.raises(OcxParserError, match="not an XSD schema"):
+        load(bad)
