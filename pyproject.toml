@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "ocx-schema-parser"
 version = "3.0.0"
@@ -8,7 +12,7 @@ authors = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "xsdata[lxml]~=26.2",
+    "xsdata[cli,lxml]~=26.2",
     "pydantic>=2",
     "loguru>=0.7",
 ]
