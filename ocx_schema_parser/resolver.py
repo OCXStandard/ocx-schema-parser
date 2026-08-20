@@ -74,6 +74,56 @@ def _attribute_holders(ct: xsd.ComplexType) -> list:
     return holders
 
 
+_FACET_FIELDS = (
+    "min_exclusive",
+    "min_inclusive",
+    "max_exclusive",
+    "max_inclusive",
+    "total_digits",
+    "fraction_digits",
+    "length",
+    "min_length",
+    "max_length",
+    "white_space",
+)
+
+
+def _facets(restriction: xsd.Restriction) -> dict[str, str]:
+    """Extract non-enumeration facets of a restriction as a name->value dict."""
+    result: dict[str, str] = {}
+    for field in _FACET_FIELDS:
+        facet = getattr(restriction, field, None)
+        if facet is not None and facet.value is not None:
+            result[field] = str(facet.value)
+    if restriction.patterns:
+        result["pattern"] = "|".join(p.value for p in restriction.patterns if p.value)
+    return result
+
+
+def _schema_changes_from(element) -> list[SchemaChange]:
+    """Recursively collect SchemaChange records from an appinfo AnyElement tree."""
+    result: list[SchemaChange] = []
+    qname = getattr(element, "qname", None) or ""
+    if qname.endswith("SchemaChange"):
+        attrs = getattr(element, "attributes", {}) or {}
+        description = ""
+        for child in getattr(element, "children", []) or []:
+            child_qname = getattr(child, "qname", None) or ""
+            if child_qname.endswith("Description") and getattr(child, "text", None):
+                description = child.text.strip()
+        result.append(
+            SchemaChange(
+                version=attrs.get("version", ""),
+                author=attrs.get("author", ""),
+                date=attrs.get("date", ""),
+                description=description,
+            )
+        )
+    for child in getattr(element, "children", []) or []:
+        result.extend(_schema_changes_from(child))
+    return result
+
+
 @dataclass
 class _Node:
     """A schema component together with the schema that declares it."""
@@ -403,3 +453,216 @@ class _Resolver:
                 result.append(child)
         return result
 
+    # ----------------------------------------------------------- assembly
+    def _main_schema(self) -> xsd.Schema:
+        """The schema declaring the fixed ``schemaVersion`` attribute; else the first."""
+        for schema in self.schemas:
+            for attr in schema.attributes:
+                if attr.name == "schemaVersion" and attr.fixed:
+                    return schema
+        return self.schemas[0]
+
+    def _schema_version(self) -> str:
+        # First check schema-level attributes
+        for attr in self._main_schema().attributes:
+            if attr.name == "schemaVersion" and attr.fixed:
+                return attr.fixed
+        # If not found at schema level, search in complex type attributes
+        for tag, node in self.complex_types.items():
+            for attr in self.attributes_of(tag):
+                if attr.name == "schemaVersion" and attr.fixed:
+                    return attr.fixed
+        return ""
+
+    def _type_tag_of(self, node: _Node) -> Optional[str]:
+        """Tag of the (named or inline) complex type of a global element."""
+        element: xsd.Element = node.obj
+        if element.type:
+            return self.qref(element.type, node.schema)
+        return None
+
+    def _build_element(self, node: _Node) -> GlobalElement:
+        element: xsd.Element = node.obj
+        prefix, local = self.split(node.tag)
+        type_tag = self._type_tag_of(node)
+        if type_tag is not None:
+            type_name = self.prefixed(type_tag)
+            parents = [self.prefixed(t) for t in self.ancestors(type_tag)]
+            attributes = self.attributes_of(type_tag)
+            children = self.children_of(type_tag)
+        elif element.complex_type is not None:
+            # inline anonymous complex type: resolve its own content + base ancestry
+            ct = element.complex_type
+            type_name = local
+            base_ref = _base_ref(ct)
+            base_tag = self.qref(base_ref, node.schema) if base_ref else None
+            parents = (
+                [self.prefixed(base_tag), *(self.prefixed(t) for t in self.ancestors(base_tag))]
+                if base_tag and not self.is_builtin(base_tag)
+                else []
+            )
+            own_attrs = {
+                a.name: a
+                for holder in _attribute_holders(ct)
+                for a in self._expand_attributes(holder, node.schema, set())
+            }
+            inherited = (
+                {a.name: a for a in self.attributes_of(base_tag)}
+                if base_tag and base_tag in self.complex_types
+                else {}
+            )
+            attributes = sorted(
+                {**inherited, **own_attrs}.values(), key=lambda a: a.name
+            )
+            children = self._own_children(ct, node.schema)
+            if base_tag and base_tag in self.complex_types:
+                own_names = {c.name for c in children}
+                for child in self.children_of(base_tag):
+                    if child.name not in own_names:
+                        children.append(
+                            child.model_copy(update={"inherited_from": self.prefixed(base_tag)})
+                        )
+        else:
+            type_name = self.prefixed(self.qref(element.type, node.schema)) if element.type else local
+            parents, attributes, children = [], [], []
+        substitution = (
+            self.prefixed(self.qref(element.substitution_group, node.schema))
+            if element.substitution_group
+            else None
+        )
+        return GlobalElement(
+            name=local,
+            prefix=prefix,
+            tag=node.tag,
+            type=type_name,
+            abstract=bool(element.abstract),
+            cardinality=Cardinality(lower=1, upper=1),
+            description=_description(element),
+            parents=parents,
+            attributes=attributes,
+            children=children,
+            substitution_group=substitution,
+        )
+
+    def _build_complex_types(self) -> list[ComplexType]:
+        """Named complex types that are NOT the type of any global element."""
+        used = {self._type_tag_of(node) for node in self.elements.values()}
+        result = []
+        for tag, node in self.complex_types.items():
+            if tag in used:
+                continue
+            prefix, local = self.split(tag)
+            result.append(
+                ComplexType(
+                    name=local,
+                    prefix=prefix,
+                    tag=tag,
+                    abstract=bool(node.obj.abstract),
+                    description=_description(node.obj),
+                    parents=[self.prefixed(t) for t in self.ancestors(tag)],
+                    attributes=self.attributes_of(tag),
+                    children=self.children_of(tag),
+                )
+            )
+        return sorted(result, key=lambda ct: ct.name)
+
+    def _build_simple_types(self) -> tuple[list[EnumType], list[SimpleType]]:
+        enums: list[EnumType] = []
+        simple: list[SimpleType] = []
+        for tag, node in self.simple_types.items():
+            st: xsd.SimpleType = node.obj
+            prefix, local = self.split(tag)
+            restriction = st.restriction
+            if restriction is None:
+                continue
+            if restriction.enumerations:
+                values = sorted(
+                    (
+                        EnumValue(value=e.value or "", description=_description(e))
+                        for e in restriction.enumerations
+                    ),
+                    key=lambda v: v.value,
+                )
+                enums.append(
+                    EnumType(
+                        name=local,
+                        prefix=prefix,
+                        tag=tag,
+                        description=_description(st),
+                        values=values,
+                    )
+                )
+            else:
+                base = (
+                    self.prefixed(self.qref(restriction.base, node.schema))
+                    if restriction.base
+                    else "xs:string"
+                )
+                simple.append(
+                    SimpleType(
+                        name=local,
+                        prefix=prefix,
+                        tag=tag,
+                        base=base,
+                        description=_description(st),
+                        restriction=_facets(restriction),
+                    )
+                )
+        return (
+            sorted(enums, key=lambda e: e.name),
+            sorted(simple, key=lambda s: s.name),
+        )
+
+    def _build_attribute_groups(self) -> dict[str, list[Attribute]]:
+        result = {}
+        for tag, node in self.attribute_groups.items():
+            _, local = self.split(tag)
+            result[local] = sorted(
+                {
+                    a.name: a for a in self._expand_attributes(node.obj, node.schema, {tag})
+                }.values(),
+                key=lambda a: a.name,
+            )
+        return dict(sorted(result.items()))
+
+    def _build_schema_changes(self) -> list[SchemaChange]:
+        result: list[SchemaChange] = []
+        for schema in self.schemas:
+            for annotation in schema.annotations:
+                for appinfo in annotation.app_infos:
+                    for item in appinfo.content:
+                        result.extend(_schema_changes_from(item))
+        return result
+
+    def build(self) -> OcxSchema:
+        elements = sorted(
+            (self._build_element(node) for node in self.elements.values()),
+            key=lambda e: e.name,
+        )
+        enums, simple = self._build_simple_types()
+        return OcxSchema(
+            schema_version=self._schema_version(),
+            target_namespace=self._main_schema().target_namespace or "",
+            namespaces=dict(sorted(self.namespaces.items())),
+            elements=elements,
+            complex_types=self._build_complex_types(),
+            enumerations=enums,
+            simple_types=simple,
+            attribute_groups=self._build_attribute_groups(),
+            substitution_groups={
+                self.prefixed(head): [self.prefixed(m) for m in members]
+                for head, members in sorted(self.substitution_groups.items())
+            },
+            schema_changes=self._build_schema_changes(),
+        )
+
+
+def resolve(schemas: list[xsd.Schema]) -> OcxSchema:
+    """Resolve parsed schemas into the immutable OcxSchema model.
+
+    Raises:
+        OcxParserError: If ``schemas`` is empty.
+    """
+    if not schemas:
+        raise OcxParserError("No schemas to resolve.")
+    return _Resolver(schemas).build()
