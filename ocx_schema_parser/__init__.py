@@ -1,24 +1,45 @@
-#  Copyright (c) 2023-2024. OCX Consortium https://3docx.org. See the LICENSE
-
-__version__ = "2.0.1"
-
-# Third party imports
+#  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
+"""ocx-schema-parser: parse the OCX XSD schema into a typed JSON model."""
 from loguru import logger
 
-# Application imports
-from ocx_schema_parser.config import config
+from ocx_schema_parser.errors import OcxParserError
+from ocx_schema_parser.loader import load
+from ocx_schema_parser.model import (
+    Attribute,
+    Cardinality,
+    ChildElement,
+    ComplexType,
+    EnumType,
+    EnumValue,
+    GlobalElement,
+    OcxSchema,
+    SchemaChange,
+    SimpleType,
+)
+from ocx_schema_parser.resolver import resolve
 
-SCHEMA_FOLDER = config.get("SchemaParserSettings", "schema_folder")
-TMP_FOLDER = config.get("SchemaParserSettings", "tmp_folder")
-WORKING_DRAFT = config.get("SchemaParserSettings", "working_draft")
-DEFAULT_SCHEMA = config.get("SchemaParserSettings", "schema_url")
-keys = config.get("SchemaParserSettings", "w3c_schema_builtin_keys").split()
-values = config.get("SchemaParserSettings", "w3c_schema_builtin_values").split()
-W3C_SCHEMA_BUILT_IN_TYPES = dict(zip(keys, values))
-PROCESS_SCHEMA_TYPES = config.get(
-    "SchemaParserSettings", "process_schema_types"
-).split()
-ALLOWED_WORDS = config.get("SchemaParserSettings", "known_word_list").split()
-OCX_NAME_EXCEPTIONS = config.get("SchemaParserSettings", "ocx_name_exceptions").split()
+__version__ = "3.0.0"
 
-logger.disable(__name__)
+DEFAULT_SCHEMA = "https://3docx.org/fileadmin/ocx_schema/V310/OCX_Schema.xsd"
+WORKING_DRAFT = "https://3docx.org/fileadmin//ocx_schema//V320rc8//OCX_Schema.xsd"
+
+__all__ = [
+    "Attribute",
+    "Cardinality",
+    "ChildElement",
+    "ComplexType",
+    "DEFAULT_SCHEMA",
+    "EnumType",
+    "EnumValue",
+    "GlobalElement",
+    "OcxParserError",
+    "OcxSchema",
+    "SchemaChange",
+    "SimpleType",
+    "WORKING_DRAFT",
+    "load",
+    "resolve",
+]
+
+# Library convention: silent unless the application enables logging.
+logger.disable("ocx_schema_parser")

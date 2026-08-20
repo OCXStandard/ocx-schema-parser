@@ -2483,6 +2483,7 @@ Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
 - `complex_types` uses a dedicated `ComplexType` model instead of reusing `GlobalElement` — cardinality, `type` and `substitution_group` are meaningless for a type definition. Simpler and more honest.
 - `transformer.py` is deleted although the spec's delete list omitted it — it is not part of the new architecture and depends on deleted modules.
 - `SimpleType.restriction` is a `dict[str, str]` of facets (spec left the shape open).
+- Task 7's full-schema ancestry test uses `ocxXML_T` instead of `Vessel_T` — verified against the bundled schema: `Vessel_T`'s chain is Form_T → EntityBase_T → DescriptionBase_T → IdBase_T (no DocumentBase_T), so the original expectation was factually wrong.
 
 - **Always use `uv`** for package management and running commands (`uv sync`, `uv run pytest`, `uv run python`).
 - Tests import `parse_fragment` from `conftest` directly (`from conftest import parse_fragment`) — this works because `pythonpath = ["."]` plus pytest's rootdir conftest handling puts `tests/` on the path during collection. If the import fails, use `from tests.conftest import parse_fragment` consistently in all test files.
