@@ -51,6 +51,29 @@ def _cardinality(node) -> Cardinality:
     return Cardinality(lower=lower, upper=upper)
 
 
+def _base_ref(ct: xsd.ComplexType) -> Optional[str]:
+    """Return the base type reference of a complex type's derivation, if any."""
+    for content in (ct.complex_content, ct.simple_content):
+        if content is None:
+            continue
+        derivation = content.extension or content.restriction
+        if derivation is not None and derivation.base:
+            return derivation.base
+    return None
+
+
+def _attribute_holders(ct: xsd.ComplexType) -> list:
+    """Return the objects on ``ct`` that may carry attributes/attribute_groups."""
+    holders = [ct]
+    for content in (ct.complex_content, ct.simple_content):
+        if content is None:
+            continue
+        for derivation in (content.extension, content.restriction):
+            if derivation is not None:
+                holders.append(derivation)
+    return holders
+
+
 @dataclass
 class _Node:
     """A schema component together with the schema that declares it."""
@@ -138,3 +161,91 @@ class _Resolver:
         if tag not in self._unresolved:
             self._unresolved.add(tag)
             logger.warning(f"Unresolved {kind} reference: {tag}")
+
+    # ---------------------------------------------------------- ancestry
+    def ancestors(self, type_tag: str) -> list[str]:
+        """Base-type chain of a complex type, nearest first, builtins excluded."""
+        result: list[str] = []
+        seen = {type_tag}
+        current = type_tag
+        while True:
+            node = self.complex_types.get(current)
+            if node is None:
+                break
+            base_ref = _base_ref(node.obj)
+            if base_ref is None:
+                break
+            base_tag = self.qref(base_ref, node.schema)
+            if self.is_builtin(base_tag) or base_tag in seen:
+                break
+            if base_tag not in self.complex_types:
+                if base_tag not in self.simple_types:
+                    self._missing(base_tag, "base type")
+                break
+            seen.add(base_tag)
+            result.append(base_tag)
+            current = base_tag
+        return result
+
+    # -------------------------------------------------------- attributes
+    def _make_attribute(self, attr: xsd.Attribute, schema: xsd.Schema) -> Optional[Attribute]:
+        """Build an Attribute model; resolve refs; skip prohibited. None if skipped."""
+        if attr.ref:
+            tag = self.qref(attr.ref, schema)
+            node = self.global_attributes.get(tag)
+            if node is None:
+                self._missing(tag, "attribute")
+                return None
+            return self._make_attribute(node.obj, node.schema)
+        use = attr.use.value if attr.use is not None else "optional"
+        if use == "prohibited":
+            return None
+        type_ref = attr.type
+        if type_ref is None and attr.simple_type is not None and attr.simple_type.restriction:
+            type_ref = attr.simple_type.restriction.base
+        type_name = self.prefixed(self.qref(type_ref, schema)) if type_ref else "xs:string"
+        prefix, _ = self.split(f"{{{schema.target_namespace or ''}}}{attr.name}")
+        return Attribute(
+            name=attr.name or "",
+            prefix=prefix,
+            type=type_name,
+            use=use,
+            default=attr.default,
+            fixed=attr.fixed,
+            description=_description(attr),
+        )
+
+    def _expand_attributes(self, holder, schema: xsd.Schema, seen_groups: set[str]) -> list[Attribute]:
+        """Collect attributes on ``holder``, expanding attributeGroup refs recursively."""
+        result: list[Attribute] = []
+        for attr in getattr(holder, "attributes", []) or []:
+            made = self._make_attribute(attr, schema)
+            if made is not None:
+                result.append(made)
+        for group in getattr(holder, "attribute_groups", []) or []:
+            ref = group.ref or group.name
+            if not ref:
+                continue
+            tag = self.qref(ref, schema) if group.ref else f"{{{schema.target_namespace}}}{group.name}"
+            if tag in seen_groups:
+                continue
+            seen_groups.add(tag)
+            node = self.attribute_groups.get(tag)
+            if node is None:
+                self._missing(tag, "attribute group")
+                continue
+            result.extend(self._expand_attributes(node.obj, node.schema, seen_groups))
+        return result
+
+    def attributes_of(self, type_tag: str) -> list[Attribute]:
+        """All attributes of a complex type, own + inherited, nearest wins, sorted by name."""
+        merged: dict[str, Attribute] = {}
+        for tag in [type_tag, *self.ancestors(type_tag)]:
+            node = self.complex_types.get(tag)
+            if node is None:
+                continue
+            for holder in _attribute_holders(node.obj):
+                for attr in self._expand_attributes(holder, node.schema, set()):
+                    merged.setdefault(attr.name, attr)  # nearest definition wins
+        return sorted(merged.values(), key=lambda a: a.name)
+
