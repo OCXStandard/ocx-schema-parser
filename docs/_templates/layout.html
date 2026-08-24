@@ -1,0 +1,6 @@
+{% extends "!layout.html" %}
+{# Restore the version display removed in sphinx-rtd-theme 3.x #}
+{% block sidebartitle %}
+{{ super() }}
+<div class="version">{{ version }}</div>
+{% endblock %}
