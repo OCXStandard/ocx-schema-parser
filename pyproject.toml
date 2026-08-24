@@ -24,6 +24,7 @@ ocx-schema-parser = "ocx_schema_parser.cli:main"
 Homepage = "https://github.com/OCXStandard/ocx-schema-parser"
 Repository = "https://github.com/OCXStandard/ocx-schema-parser.git"
 "Bug Tracker" = "https://github.com/OCXStandard/ocx-schema-parser/issues"
+Changelog = "https://github.com/OCXStandard/ocx-schema-parser/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 include = ["ocx_schema_parser*"]

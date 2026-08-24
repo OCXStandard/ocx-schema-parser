@@ -78,4 +78,4 @@ uv run pytest
    publishing) → GitHub Release with the CHANGELOG notes.
 
 ## Changelog
-[Changelog](CHANGELOG.md)
+[Changelog](https://github.com/OCXStandard/ocx-schema-parser/blob/main/CHANGELOG.md)
