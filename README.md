@@ -39,8 +39,8 @@ ocx-schema-parser summary path/to/OCX_Schema.xsd
 ```python
 from ocx_schema_parser import load, resolve, DEFAULT_SCHEMA
 
-schemas = load(DEFAULT_SCHEMA)          # URL, local .xsd file, or folder
-model = resolve(schemas)                # -> OcxSchema (frozen Pydantic model)
+schemas = load(DEFAULT_SCHEMA)  # URL, local .xsd file, or folder
+model = resolve(schemas)  # -> OcxSchema (frozen Pydantic model)
 
 vessel = model.get("ocx:Vessel")
 print(vessel.description)

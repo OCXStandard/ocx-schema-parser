@@ -144,6 +144,7 @@ Create `tests/conftest.py`:
 
 ```python
 """Shared fixtures for the ocx-schema-parser test suite."""
+
 from __future__ import annotations
 
 import io
@@ -210,6 +211,7 @@ Create `tests/test_model.py`:
 
 ```python
 """Tests for the Pydantic schema model."""
+
 import pytest
 from pydantic import ValidationError
 
@@ -282,7 +284,9 @@ def test_ocx_schema_get_by_name():
 
 
 def test_schema_serializes_to_json():
-    schema = OcxSchema(schema_version="3.0.0", target_namespace="urn:test", namespaces={})
+    schema = OcxSchema(
+        schema_version="3.0.0", target_namespace="urn:test", namespaces={}
+    )
     data = schema.model_dump_json()
     assert '"schema_version":"3.0.0"' in data
 
@@ -306,7 +310,9 @@ def test_enum_and_simple_type():
 
 
 def test_schema_change():
-    change = SchemaChange(version="3.0.0", author="OCX", date="2023-01-01", description="Initial")
+    change = SchemaChange(
+        version="3.0.0", author="OCX", date="2023-01-01", description="Initial"
+    )
     assert change.version == "3.0.0"
 ```
 
@@ -333,6 +339,7 @@ Create `ocx_schema_parser/model.py`:
 
 ```python
 """Typed, immutable data model of a resolved OCX schema (Pydantic v2)."""
+
 from __future__ import annotations
 
 from typing import Literal, Optional
@@ -502,6 +509,7 @@ Create `tests/test_downloader.py`:
 
 ```python
 """Tests for SchemaDownloader."""
+
 from pathlib import Path
 
 import pytest
@@ -517,7 +525,9 @@ def test_is_valid_uri():
     assert not is_valid_uri("not a uri")
 
 
-def test_wget_local_file_downloads_referenced_schemas(schema_folder: Path, tmp_path: Path):
+def test_wget_local_file_downloads_referenced_schemas(
+    schema_folder: Path, tmp_path: Path
+):
     downloader = SchemaDownloader(tmp_path)
     downloader.wget(str(schema_folder / "OCX_Schema.xsd"))
     written = sorted(p.name for p in tmp_path.glob("*.xsd"))
@@ -544,6 +554,7 @@ Create `ocx_schema_parser/downloader.py`:
 ```python
 #  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 """Download an XSD schema and all its referenced schemas into one folder."""
+
 from pathlib import Path
 from typing import Optional
 from urllib.parse import urlparse
@@ -584,7 +595,9 @@ class SchemaDownloader(Downloader):
         name = Path(uri).name
         file_path = self.schema_folder / name
         file_path.write_text(content, encoding="utf-8")
-        logger.debug(f"Writing schema {file_path.resolve()} to folder {self.schema_folder.resolve()}")
+        logger.debug(
+            f"Writing schema {file_path.resolve()} to folder {self.schema_folder.resolve()}"
+        )
         self.downloaded[uri] = file_path
         if location:
             self.downloaded[location] = file_path
@@ -660,6 +673,7 @@ Create `tests/test_loader.py`:
 
 ```python
 """Tests for loader.load()."""
+
 from pathlib import Path
 
 import pytest
@@ -678,7 +692,10 @@ def test_load_folder(schema_folder: Path):
 def test_load_single_file(schema_folder: Path):
     schemas = load(schema_folder / "OCX_Schema.xsd")
     assert len(schemas) == 1
-    assert schemas[0].target_namespace == "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"
+    assert (
+        schemas[0].target_namespace
+        == "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"
+    )
 
 
 def test_load_accepts_str(schema_folder: Path):
@@ -714,6 +731,7 @@ Create `ocx_schema_parser/loader.py`:
 
 ```python
 """Load OCX schemas from a local file, folder, or remote URL into xsdata Schema objects."""
+
 from __future__ import annotations
 
 import shutil
@@ -811,6 +829,7 @@ Create `tests/test_resolver_index.py`:
 
 ```python
 """Tests for the resolver index pass and reference resolution."""
+
 from conftest import parse_fragment
 
 from ocx_schema_parser.resolver import _Resolver, _cardinality, _description
@@ -904,6 +923,7 @@ Create `ocx_schema_parser/resolver.py`:
 
 ```python
 """Resolve parsed xsdata Schema objects into the OcxSchema Pydantic model."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -996,7 +1016,9 @@ class _Resolver:
             def add(store: dict[str, _Node], items) -> None:
                 for item in items:
                     if item.name:
-                        store[f"{{{tns}}}{item.name}"] = _Node(item, schema, f"{{{tns}}}{item.name}")
+                        store[f"{{{tns}}}{item.name}"] = _Node(
+                            item, schema, f"{{{tns}}}{item.name}"
+                        )
 
             add(self.elements, schema.elements)
             add(self.complex_types, schema.complex_types)
@@ -1072,6 +1094,7 @@ Create `tests/test_resolver_attributes.py`:
 
 ```python
 """Tests for type ancestry and attribute flattening."""
+
 from conftest import parse_fragment
 
 from ocx_schema_parser.resolver import _Resolver
@@ -1189,92 +1212,107 @@ def _attribute_holders(ct: xsd.ComplexType) -> list:
 And these methods inside `_Resolver`:
 
 ```python
-    # ---------------------------------------------------------- ancestry
-    def ancestors(self, type_tag: str) -> list[str]:
-        """Base-type chain of a complex type, nearest first, builtins excluded."""
-        result: list[str] = []
-        seen = {type_tag}
-        current = type_tag
-        while True:
-            node = self.complex_types.get(current)
-            if node is None:
-                break
-            base_ref = _base_ref(node.obj)
-            if base_ref is None:
-                break
-            base_tag = self.qref(base_ref, node.schema)
-            if self.is_builtin(base_tag) or base_tag in seen:
-                break
-            if base_tag not in self.complex_types:
-                if base_tag not in self.simple_types:
-                    self._missing(base_tag, "base type")
-                break
-            seen.add(base_tag)
-            result.append(base_tag)
-            current = base_tag
-        return result
+# ---------------------------------------------------------- ancestry
+def ancestors(self, type_tag: str) -> list[str]:
+    """Base-type chain of a complex type, nearest first, builtins excluded."""
+    result: list[str] = []
+    seen = {type_tag}
+    current = type_tag
+    while True:
+        node = self.complex_types.get(current)
+        if node is None:
+            break
+        base_ref = _base_ref(node.obj)
+        if base_ref is None:
+            break
+        base_tag = self.qref(base_ref, node.schema)
+        if self.is_builtin(base_tag) or base_tag in seen:
+            break
+        if base_tag not in self.complex_types:
+            if base_tag not in self.simple_types:
+                self._missing(base_tag, "base type")
+            break
+        seen.add(base_tag)
+        result.append(base_tag)
+        current = base_tag
+    return result
 
-    # -------------------------------------------------------- attributes
-    def _make_attribute(self, attr: xsd.Attribute, schema: xsd.Schema) -> Optional[Attribute]:
-        """Build an Attribute model; resolve refs; skip prohibited. None if skipped."""
-        if attr.ref:
-            tag = self.qref(attr.ref, schema)
-            node = self.global_attributes.get(tag)
-            if node is None:
-                self._missing(tag, "attribute")
-                return None
-            return self._make_attribute(node.obj, node.schema)
-        use = attr.use.value if attr.use is not None else "optional"
-        if use == "prohibited":
+
+# -------------------------------------------------------- attributes
+def _make_attribute(
+    self, attr: xsd.Attribute, schema: xsd.Schema
+) -> Optional[Attribute]:
+    """Build an Attribute model; resolve refs; skip prohibited. None if skipped."""
+    if attr.ref:
+        tag = self.qref(attr.ref, schema)
+        node = self.global_attributes.get(tag)
+        if node is None:
+            self._missing(tag, "attribute")
             return None
-        type_ref = attr.type
-        if type_ref is None and attr.simple_type is not None and attr.simple_type.restriction:
-            type_ref = attr.simple_type.restriction.base
-        type_name = self.prefixed(self.qref(type_ref, schema)) if type_ref else "xs:string"
-        prefix, _ = self.split(f"{{{schema.target_namespace or ''}}}{attr.name}")
-        return Attribute(
-            name=attr.name or "",
-            prefix=prefix,
-            type=type_name,
-            use=use,
-            default=attr.default,
-            fixed=attr.fixed,
-            description=_description(attr),
+        return self._make_attribute(node.obj, node.schema)
+    use = attr.use.value if attr.use is not None else "optional"
+    if use == "prohibited":
+        return None
+    type_ref = attr.type
+    if (
+        type_ref is None
+        and attr.simple_type is not None
+        and attr.simple_type.restriction
+    ):
+        type_ref = attr.simple_type.restriction.base
+    type_name = self.prefixed(self.qref(type_ref, schema)) if type_ref else "xs:string"
+    prefix, _ = self.split(f"{{{schema.target_namespace or ''}}}{attr.name}")
+    return Attribute(
+        name=attr.name or "",
+        prefix=prefix,
+        type=type_name,
+        use=use,
+        default=attr.default,
+        fixed=attr.fixed,
+        description=_description(attr),
+    )
+
+
+def _expand_attributes(
+    self, holder, schema: xsd.Schema, seen_groups: set[str]
+) -> list[Attribute]:
+    """Collect attributes on ``holder``, expanding attributeGroup refs recursively."""
+    result: list[Attribute] = []
+    for attr in getattr(holder, "attributes", []) or []:
+        made = self._make_attribute(attr, schema)
+        if made is not None:
+            result.append(made)
+    for group in getattr(holder, "attribute_groups", []) or []:
+        ref = group.ref or group.name
+        if not ref:
+            continue
+        tag = (
+            self.qref(ref, schema)
+            if group.ref
+            else f"{{{schema.target_namespace}}}{group.name}"
         )
+        if tag in seen_groups:
+            continue
+        seen_groups.add(tag)
+        node = self.attribute_groups.get(tag)
+        if node is None:
+            self._missing(tag, "attribute group")
+            continue
+        result.extend(self._expand_attributes(node.obj, node.schema, seen_groups))
+    return result
 
-    def _expand_attributes(self, holder, schema: xsd.Schema, seen_groups: set[str]) -> list[Attribute]:
-        """Collect attributes on ``holder``, expanding attributeGroup refs recursively."""
-        result: list[Attribute] = []
-        for attr in getattr(holder, "attributes", []) or []:
-            made = self._make_attribute(attr, schema)
-            if made is not None:
-                result.append(made)
-        for group in getattr(holder, "attribute_groups", []) or []:
-            ref = group.ref or group.name
-            if not ref:
-                continue
-            tag = self.qref(ref, schema) if group.ref else f"{{{schema.target_namespace}}}{group.name}"
-            if tag in seen_groups:
-                continue
-            seen_groups.add(tag)
-            node = self.attribute_groups.get(tag)
-            if node is None:
-                self._missing(tag, "attribute group")
-                continue
-            result.extend(self._expand_attributes(node.obj, node.schema, seen_groups))
-        return result
 
-    def attributes_of(self, type_tag: str) -> list[Attribute]:
-        """All attributes of a complex type, own + inherited, nearest wins, sorted by name."""
-        merged: dict[str, Attribute] = {}
-        for tag in [type_tag, *self.ancestors(type_tag)]:
-            node = self.complex_types.get(tag)
-            if node is None:
-                continue
-            for holder in _attribute_holders(node.obj):
-                for attr in self._expand_attributes(holder, node.schema, set()):
-                    merged.setdefault(attr.name, attr)  # nearest definition wins
-        return sorted(merged.values(), key=lambda a: a.name)
+def attributes_of(self, type_tag: str) -> list[Attribute]:
+    """All attributes of a complex type, own + inherited, nearest wins, sorted by name."""
+    merged: dict[str, Attribute] = {}
+    for tag in [type_tag, *self.ancestors(type_tag)]:
+        node = self.complex_types.get(tag)
+        if node is None:
+            continue
+        for holder in _attribute_holders(node.obj):
+            for attr in self._expand_attributes(holder, node.schema, set()):
+                merged.setdefault(attr.name, attr)  # nearest definition wins
+    return sorted(merged.values(), key=lambda a: a.name)
 ```
 
 - [ ] **Step 4: Run tests to verify they pass**
@@ -1305,6 +1343,7 @@ Create `tests/test_resolver_children.py`:
 
 ```python
 """Tests for child element collection and substitution group expansion."""
+
 from conftest import parse_fragment
 
 from ocx_schema_parser.resolver import _Resolver
@@ -1424,150 +1463,164 @@ At the end of `_Resolver._index`, add a second pass:
 Append these methods to `_Resolver`:
 
 ```python
-    # ---------------------------------------------------------- children
-    def _make_children(
-        self, element: xsd.Element, schema: xsd.Schema, is_choice: bool
-    ) -> list[ChildElement]:
-        """Build ChildElement(s) for one particle; expands abstract substitution heads."""
-        card = _cardinality(element)
-        if element.ref:
-            tag = self.qref(element.ref, schema)
-            node = self.elements.get(tag)
-            if node is None:
-                self._missing(tag, "element")
-                return []
-            target: xsd.Element = node.obj
-            members = self.substitution_groups.get(tag, [])
-            if target.abstract and members:
-                head_prefixed = self.prefixed(tag)
-                result = []
-                for member_tag in members:
-                    member = self.elements.get(member_tag)
-                    if member is None:
-                        continue
-                    prefix, local = self.split(member_tag)
-                    type_ref = member.obj.type
-                    type_name = (
-                        self.prefixed(self.qref(type_ref, member.schema)) if type_ref else local
-                    )
-                    result.append(
-                        ChildElement(
-                            name=local,
-                            prefix=prefix,
-                            type=type_name,
-                            cardinality=card,
-                            is_choice=is_choice,
-                            from_substitution_group=head_prefixed,
-                            description=_description(member.obj),
-                        )
-                    )
-                return result
-            prefix, local = self.split(tag)
-            type_name = self.prefixed(self.qref(target.type, node.schema)) if target.type else local
-            return [
-                ChildElement(
-                    name=local,
-                    prefix=prefix,
-                    type=type_name,
-                    cardinality=card,
-                    is_choice=is_choice,
-                    description=_description(target),
+# ---------------------------------------------------------- children
+def _make_children(
+    self, element: xsd.Element, schema: xsd.Schema, is_choice: bool
+) -> list[ChildElement]:
+    """Build ChildElement(s) for one particle; expands abstract substitution heads."""
+    card = _cardinality(element)
+    if element.ref:
+        tag = self.qref(element.ref, schema)
+        node = self.elements.get(tag)
+        if node is None:
+            self._missing(tag, "element")
+            return []
+        target: xsd.Element = node.obj
+        members = self.substitution_groups.get(tag, [])
+        if target.abstract and members:
+            head_prefixed = self.prefixed(tag)
+            result = []
+            for member_tag in members:
+                member = self.elements.get(member_tag)
+                if member is None:
+                    continue
+                prefix, local = self.split(member_tag)
+                type_ref = member.obj.type
+                type_name = (
+                    self.prefixed(self.qref(type_ref, member.schema))
+                    if type_ref
+                    else local
                 )
-            ]
-        # local (inline) element declaration
-        prefix, _ = self.split(f"{{{schema.target_namespace or ''}}}{element.name}")
-        type_name = self.prefixed(self.qref(element.type, schema)) if element.type else (element.name or "")
+                result.append(
+                    ChildElement(
+                        name=local,
+                        prefix=prefix,
+                        type=type_name,
+                        cardinality=card,
+                        is_choice=is_choice,
+                        from_substitution_group=head_prefixed,
+                        description=_description(member.obj),
+                    )
+                )
+            return result
+        prefix, local = self.split(tag)
+        type_name = (
+            self.prefixed(self.qref(target.type, node.schema)) if target.type else local
+        )
         return [
             ChildElement(
-                name=element.name or "",
+                name=local,
                 prefix=prefix,
                 type=type_name,
                 cardinality=card,
                 is_choice=is_choice,
-                description=_description(element),
+                description=_description(target),
             )
         ]
+    # local (inline) element declaration
+    prefix, _ = self.split(f"{{{schema.target_namespace or ''}}}{element.name}")
+    type_name = (
+        self.prefixed(self.qref(element.type, schema))
+        if element.type
+        else (element.name or "")
+    )
+    return [
+        ChildElement(
+            name=element.name or "",
+            prefix=prefix,
+            type=type_name,
+            cardinality=card,
+            is_choice=is_choice,
+            description=_description(element),
+        )
+    ]
 
-    def _collect_particles(
-        self, container, schema: xsd.Schema, is_choice: bool, seen_groups: set[str]
-    ) -> list[ChildElement]:
-        """Recursively walk a sequence/choice/all container collecting children."""
-        if container is None:
+
+def _collect_particles(
+    self, container, schema: xsd.Schema, is_choice: bool, seen_groups: set[str]
+) -> list[ChildElement]:
+    """Recursively walk a sequence/choice/all container collecting children."""
+    if container is None:
+        return []
+    result: list[ChildElement] = []
+    for element in getattr(container, "elements", []) or []:
+        result.extend(self._make_children(element, schema, is_choice))
+    for group in getattr(container, "groups", []) or []:
+        result.extend(self._collect_group(group, schema, is_choice, seen_groups))
+    for choice in getattr(container, "choices", []) or []:
+        result.extend(self._collect_particles(choice, schema, True, seen_groups))
+    for sequence in getattr(container, "sequences", []) or []:
+        result.extend(self._collect_particles(sequence, schema, is_choice, seen_groups))
+    return result
+
+
+def _collect_group(
+    self, group: xsd.Group, schema: xsd.Schema, is_choice: bool, seen_groups: set[str]
+) -> list[ChildElement]:
+    """Resolve a named model group (possibly a ref) and collect its particles."""
+    if group.ref:
+        tag = self.qref(group.ref, schema)
+        if tag in seen_groups:
             return []
-        result: list[ChildElement] = []
-        for element in getattr(container, "elements", []) or []:
-            result.extend(self._make_children(element, schema, is_choice))
-        for group in getattr(container, "groups", []) or []:
-            result.extend(self._collect_group(group, schema, is_choice, seen_groups))
-        for choice in getattr(container, "choices", []) or []:
-            result.extend(self._collect_particles(choice, schema, True, seen_groups))
-        for sequence in getattr(container, "sequences", []) or []:
-            result.extend(self._collect_particles(sequence, schema, is_choice, seen_groups))
-        return result
+        seen_groups.add(tag)
+        node = self.groups.get(tag)
+        if node is None:
+            self._missing(tag, "group")
+            return []
+        return self._collect_group(node.obj, node.schema, is_choice, seen_groups)
+    result: list[ChildElement] = []
+    result.extend(
+        self._collect_particles(group.sequence, schema, is_choice, seen_groups)
+    )
+    result.extend(self._collect_particles(group.choice, schema, True, seen_groups))
+    result.extend(self._collect_particles(group.all, schema, is_choice, seen_groups))
+    return result
 
-    def _collect_group(
-        self, group: xsd.Group, schema: xsd.Schema, is_choice: bool, seen_groups: set[str]
-    ) -> list[ChildElement]:
-        """Resolve a named model group (possibly a ref) and collect its particles."""
-        if group.ref:
-            tag = self.qref(group.ref, schema)
-            if tag in seen_groups:
-                return []
-            seen_groups.add(tag)
-            node = self.groups.get(tag)
-            if node is None:
-                self._missing(tag, "group")
-                return []
-            return self._collect_group(node.obj, node.schema, is_choice, seen_groups)
-        result: list[ChildElement] = []
-        result.extend(self._collect_particles(group.sequence, schema, is_choice, seen_groups))
-        result.extend(self._collect_particles(group.choice, schema, True, seen_groups))
-        result.extend(self._collect_particles(group.all, schema, is_choice, seen_groups))
-        return result
 
-    def _own_children(self, ct: xsd.ComplexType, schema: xsd.Schema) -> list[ChildElement]:
-        """Children declared directly on a complex type (incl. its derivation content)."""
-        result: list[ChildElement] = []
-        containers = [(ct.sequence, False), (ct.all, False), (ct.choice, True)]
-        if ct.group is not None:
-            result.extend(self._collect_group(ct.group, schema, False, set()))
-        for content in (ct.complex_content, ct.simple_content):
-            if content is None:
+def _own_children(self, ct: xsd.ComplexType, schema: xsd.Schema) -> list[ChildElement]:
+    """Children declared directly on a complex type (incl. its derivation content)."""
+    result: list[ChildElement] = []
+    containers = [(ct.sequence, False), (ct.all, False), (ct.choice, True)]
+    if ct.group is not None:
+        result.extend(self._collect_group(ct.group, schema, False, set()))
+    for content in (ct.complex_content, ct.simple_content):
+        if content is None:
+            continue
+        for derivation in (content.extension, content.restriction):
+            if derivation is None:
                 continue
-            for derivation in (content.extension, content.restriction):
-                if derivation is None:
-                    continue
-                containers.extend(
-                    [
-                        (getattr(derivation, "sequence", None), False),
-                        (getattr(derivation, "all", None), False),
-                        (getattr(derivation, "choice", None), True),
-                    ]
-                )
-                group = getattr(derivation, "group", None)
-                if group is not None:
-                    result.extend(self._collect_group(group, schema, False, set()))
-        for container, is_choice in containers:
-            result.extend(self._collect_particles(container, schema, is_choice, set()))
-        return result
+            containers.extend(
+                [
+                    (getattr(derivation, "sequence", None), False),
+                    (getattr(derivation, "all", None), False),
+                    (getattr(derivation, "choice", None), True),
+                ]
+            )
+            group = getattr(derivation, "group", None)
+            if group is not None:
+                result.extend(self._collect_group(group, schema, False, set()))
+    for container, is_choice in containers:
+        result.extend(self._collect_particles(container, schema, is_choice, set()))
+    return result
 
-    def children_of(self, type_tag: str) -> list[ChildElement]:
-        """All children of a complex type: own first (declaration order), then inherited."""
-        merged: dict[str, ChildElement] = {}
-        result: list[ChildElement] = []
-        for tag in [type_tag, *self.ancestors(type_tag)]:
-            node = self.complex_types.get(tag)
-            if node is None:
-                continue
-            inherited_from = self.prefixed(tag) if tag != type_tag else None
-            for child in self._own_children(node.obj, node.schema):
-                if child.name in merged:
-                    continue  # nearest definition wins
-                if inherited_from is not None:
-                    child = child.model_copy(update={"inherited_from": inherited_from})
-                merged[child.name] = child
-                result.append(child)
-        return result
+
+def children_of(self, type_tag: str) -> list[ChildElement]:
+    """All children of a complex type: own first (declaration order), then inherited."""
+    merged: dict[str, ChildElement] = {}
+    result: list[ChildElement] = []
+    for tag in [type_tag, *self.ancestors(type_tag)]:
+        node = self.complex_types.get(tag)
+        if node is None:
+            continue
+        inherited_from = self.prefixed(tag) if tag != type_tag else None
+        for child in self._own_children(node.obj, node.schema):
+            if child.name in merged:
+                continue  # nearest definition wins
+            if inherited_from is not None:
+                child = child.model_copy(update={"inherited_from": inherited_from})
+            merged[child.name] = child
+            result.append(child)
+    return result
 ```
 
 - [ ] **Step 5: Run tests to verify they pass**
@@ -1598,6 +1651,7 @@ Create `tests/test_resolver_assembly.py`:
 
 ```python
 """Tests for enum/simple-type extraction, schema changes, and resolve()."""
+
 import pytest
 from conftest import parse_fragment
 
@@ -1693,7 +1747,10 @@ def test_global_element(model):
 
 def test_resolve_full_ocx_schema(ocx_model):
     assert ocx_model.schema_version == "3.0.0"
-    assert ocx_model.target_namespace == "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"
+    assert (
+        ocx_model.target_namespace
+        == "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"
+    )
     assert ocx_model.get("ocx:Vessel") is not None
     assert len(ocx_model.elements) > 300
     assert len(ocx_model.enumerations) > 0
@@ -1767,202 +1824,217 @@ def _schema_changes_from(element) -> list[SchemaChange]:
 Append these methods to `_Resolver`:
 
 ```python
-    # ----------------------------------------------------------- assembly
-    def _main_schema(self) -> xsd.Schema:
-        """The schema declaring the fixed ``schemaVersion`` attribute; else the first."""
-        for schema in self.schemas:
-            for attr in schema.attributes:
-                if attr.name == "schemaVersion" and attr.fixed:
-                    return schema
-        return self.schemas[0]
-
-    def _schema_version(self) -> str:
-        for attr in self._main_schema().attributes:
+# ----------------------------------------------------------- assembly
+def _main_schema(self) -> xsd.Schema:
+    """The schema declaring the fixed ``schemaVersion`` attribute; else the first."""
+    for schema in self.schemas:
+        for attr in schema.attributes:
             if attr.name == "schemaVersion" and attr.fixed:
-                return attr.fixed
-        return ""
+                return schema
+    return self.schemas[0]
 
-    def _type_tag_of(self, node: _Node) -> Optional[str]:
-        """Tag of the (named or inline) complex type of a global element."""
-        element: xsd.Element = node.obj
-        if element.type:
-            return self.qref(element.type, node.schema)
-        return None
 
-    def _build_element(self, node: _Node) -> GlobalElement:
-        element: xsd.Element = node.obj
-        prefix, local = self.split(node.tag)
-        type_tag = self._type_tag_of(node)
-        if type_tag is not None:
-            type_name = self.prefixed(type_tag)
-            parents = [self.prefixed(t) for t in self.ancestors(type_tag)]
-            attributes = self.attributes_of(type_tag)
-            children = self.children_of(type_tag)
-        elif element.complex_type is not None:
-            # inline anonymous complex type: resolve its own content + base ancestry
-            ct = element.complex_type
-            type_name = local
-            base_ref = _base_ref(ct)
-            base_tag = self.qref(base_ref, node.schema) if base_ref else None
-            parents = (
-                [self.prefixed(base_tag), *(self.prefixed(t) for t in self.ancestors(base_tag))]
-                if base_tag and not self.is_builtin(base_tag)
-                else []
-            )
-            own_attrs = {
-                a.name: a
-                for holder in _attribute_holders(ct)
-                for a in self._expand_attributes(holder, node.schema, set())
-            }
-            inherited = (
-                {a.name: a for a in self.attributes_of(base_tag)}
-                if base_tag and base_tag in self.complex_types
-                else {}
-            )
-            attributes = sorted(
-                {**inherited, **own_attrs}.values(), key=lambda a: a.name
-            )
-            children = self._own_children(ct, node.schema)
-            if base_tag and base_tag in self.complex_types:
-                own_names = {c.name for c in children}
-                for child in self.children_of(base_tag):
-                    if child.name not in own_names:
-                        children.append(
-                            child.model_copy(update={"inherited_from": self.prefixed(base_tag)})
+def _schema_version(self) -> str:
+    for attr in self._main_schema().attributes:
+        if attr.name == "schemaVersion" and attr.fixed:
+            return attr.fixed
+    return ""
+
+
+def _type_tag_of(self, node: _Node) -> Optional[str]:
+    """Tag of the (named or inline) complex type of a global element."""
+    element: xsd.Element = node.obj
+    if element.type:
+        return self.qref(element.type, node.schema)
+    return None
+
+
+def _build_element(self, node: _Node) -> GlobalElement:
+    element: xsd.Element = node.obj
+    prefix, local = self.split(node.tag)
+    type_tag = self._type_tag_of(node)
+    if type_tag is not None:
+        type_name = self.prefixed(type_tag)
+        parents = [self.prefixed(t) for t in self.ancestors(type_tag)]
+        attributes = self.attributes_of(type_tag)
+        children = self.children_of(type_tag)
+    elif element.complex_type is not None:
+        # inline anonymous complex type: resolve its own content + base ancestry
+        ct = element.complex_type
+        type_name = local
+        base_ref = _base_ref(ct)
+        base_tag = self.qref(base_ref, node.schema) if base_ref else None
+        parents = (
+            [
+                self.prefixed(base_tag),
+                *(self.prefixed(t) for t in self.ancestors(base_tag)),
+            ]
+            if base_tag and not self.is_builtin(base_tag)
+            else []
+        )
+        own_attrs = {
+            a.name: a
+            for holder in _attribute_holders(ct)
+            for a in self._expand_attributes(holder, node.schema, set())
+        }
+        inherited = (
+            {a.name: a for a in self.attributes_of(base_tag)}
+            if base_tag and base_tag in self.complex_types
+            else {}
+        )
+        attributes = sorted({**inherited, **own_attrs}.values(), key=lambda a: a.name)
+        children = self._own_children(ct, node.schema)
+        if base_tag and base_tag in self.complex_types:
+            own_names = {c.name for c in children}
+            for child in self.children_of(base_tag):
+                if child.name not in own_names:
+                    children.append(
+                        child.model_copy(
+                            update={"inherited_from": self.prefixed(base_tag)}
                         )
-        else:
-            type_name = self.prefixed(self.qref(element.type, node.schema)) if element.type else local
-            parents, attributes, children = [], [], []
-        substitution = (
-            self.prefixed(self.qref(element.substitution_group, node.schema))
-            if element.substitution_group
-            else None
+                    )
+    else:
+        type_name = (
+            self.prefixed(self.qref(element.type, node.schema))
+            if element.type
+            else local
         )
-        return GlobalElement(
-            name=local,
-            prefix=prefix,
-            tag=node.tag,
-            type=type_name,
-            abstract=bool(element.abstract),
-            cardinality=Cardinality(lower=1, upper=1),
-            description=_description(element),
-            parents=parents,
-            attributes=attributes,
-            children=children,
-            substitution_group=substitution,
-        )
+        parents, attributes, children = [], [], []
+    substitution = (
+        self.prefixed(self.qref(element.substitution_group, node.schema))
+        if element.substitution_group
+        else None
+    )
+    return GlobalElement(
+        name=local,
+        prefix=prefix,
+        tag=node.tag,
+        type=type_name,
+        abstract=bool(element.abstract),
+        cardinality=Cardinality(lower=1, upper=1),
+        description=_description(element),
+        parents=parents,
+        attributes=attributes,
+        children=children,
+        substitution_group=substitution,
+    )
 
-    def _build_complex_types(self) -> list[ComplexType]:
-        """Named complex types that are NOT the type of any global element."""
-        used = {self._type_tag_of(node) for node in self.elements.values()}
-        result = []
-        for tag, node in self.complex_types.items():
-            if tag in used:
-                continue
-            prefix, local = self.split(tag)
-            result.append(
-                ComplexType(
+
+def _build_complex_types(self) -> list[ComplexType]:
+    """Named complex types that are NOT the type of any global element."""
+    used = {self._type_tag_of(node) for node in self.elements.values()}
+    result = []
+    for tag, node in self.complex_types.items():
+        if tag in used:
+            continue
+        prefix, local = self.split(tag)
+        result.append(
+            ComplexType(
+                name=local,
+                prefix=prefix,
+                tag=tag,
+                abstract=bool(node.obj.abstract),
+                description=_description(node.obj),
+                parents=[self.prefixed(t) for t in self.ancestors(tag)],
+                attributes=self.attributes_of(tag),
+                children=self.children_of(tag),
+            )
+        )
+    return sorted(result, key=lambda ct: ct.name)
+
+
+def _build_simple_types(self) -> tuple[list[EnumType], list[SimpleType]]:
+    enums: list[EnumType] = []
+    simple: list[SimpleType] = []
+    for tag, node in self.simple_types.items():
+        st: xsd.SimpleType = node.obj
+        prefix, local = self.split(tag)
+        restriction = st.restriction
+        if restriction is None:
+            continue
+        if restriction.enumerations:
+            values = sorted(
+                (
+                    EnumValue(value=e.value or "", description=_description(e))
+                    for e in restriction.enumerations
+                ),
+                key=lambda v: v.value,
+            )
+            enums.append(
+                EnumType(
                     name=local,
                     prefix=prefix,
                     tag=tag,
-                    abstract=bool(node.obj.abstract),
-                    description=_description(node.obj),
-                    parents=[self.prefixed(t) for t in self.ancestors(tag)],
-                    attributes=self.attributes_of(tag),
-                    children=self.children_of(tag),
+                    description=_description(st),
+                    values=values,
                 )
             )
-        return sorted(result, key=lambda ct: ct.name)
-
-    def _build_simple_types(self) -> tuple[list[EnumType], list[SimpleType]]:
-        enums: list[EnumType] = []
-        simple: list[SimpleType] = []
-        for tag, node in self.simple_types.items():
-            st: xsd.SimpleType = node.obj
-            prefix, local = self.split(tag)
-            restriction = st.restriction
-            if restriction is None:
-                continue
-            if restriction.enumerations:
-                values = sorted(
-                    (
-                        EnumValue(value=e.value or "", description=_description(e))
-                        for e in restriction.enumerations
-                    ),
-                    key=lambda v: v.value,
-                )
-                enums.append(
-                    EnumType(
-                        name=local,
-                        prefix=prefix,
-                        tag=tag,
-                        description=_description(st),
-                        values=values,
-                    )
-                )
-            else:
-                base = (
-                    self.prefixed(self.qref(restriction.base, node.schema))
-                    if restriction.base
-                    else "xs:string"
-                )
-                simple.append(
-                    SimpleType(
-                        name=local,
-                        prefix=prefix,
-                        tag=tag,
-                        base=base,
-                        description=_description(st),
-                        restriction=_facets(restriction),
-                    )
-                )
-        return (
-            sorted(enums, key=lambda e: e.name),
-            sorted(simple, key=lambda s: s.name),
-        )
-
-    def _build_attribute_groups(self) -> dict[str, list[Attribute]]:
-        result = {}
-        for tag, node in self.attribute_groups.items():
-            _, local = self.split(tag)
-            result[local] = sorted(
-                {
-                    a.name: a for a in self._expand_attributes(node.obj, node.schema, {tag})
-                }.values(),
-                key=lambda a: a.name,
+        else:
+            base = (
+                self.prefixed(self.qref(restriction.base, node.schema))
+                if restriction.base
+                else "xs:string"
             )
-        return dict(sorted(result.items()))
+            simple.append(
+                SimpleType(
+                    name=local,
+                    prefix=prefix,
+                    tag=tag,
+                    base=base,
+                    description=_description(st),
+                    restriction=_facets(restriction),
+                )
+            )
+    return (
+        sorted(enums, key=lambda e: e.name),
+        sorted(simple, key=lambda s: s.name),
+    )
 
-    def _build_schema_changes(self) -> list[SchemaChange]:
-        result: list[SchemaChange] = []
-        for schema in self.schemas:
-            for annotation in schema.annotations:
-                for appinfo in annotation.app_infos:
-                    for item in appinfo.content:
-                        result.extend(_schema_changes_from(item))
-        return result
 
-    def build(self) -> OcxSchema:
-        elements = sorted(
-            (self._build_element(node) for node in self.elements.values()),
-            key=lambda e: e.name,
+def _build_attribute_groups(self) -> dict[str, list[Attribute]]:
+    result = {}
+    for tag, node in self.attribute_groups.items():
+        _, local = self.split(tag)
+        result[local] = sorted(
+            {
+                a.name: a for a in self._expand_attributes(node.obj, node.schema, {tag})
+            }.values(),
+            key=lambda a: a.name,
         )
-        enums, simple = self._build_simple_types()
-        return OcxSchema(
-            schema_version=self._schema_version(),
-            target_namespace=self._main_schema().target_namespace or "",
-            namespaces=dict(sorted(self.namespaces.items())),
-            elements=elements,
-            complex_types=self._build_complex_types(),
-            enumerations=enums,
-            simple_types=simple,
-            attribute_groups=self._build_attribute_groups(),
-            substitution_groups={
-                self.prefixed(head): [self.prefixed(m) for m in members]
-                for head, members in sorted(self.substitution_groups.items())
-            },
-            schema_changes=self._build_schema_changes(),
-        )
+    return dict(sorted(result.items()))
+
+
+def _build_schema_changes(self) -> list[SchemaChange]:
+    result: list[SchemaChange] = []
+    for schema in self.schemas:
+        for annotation in schema.annotations:
+            for appinfo in annotation.app_infos:
+                for item in appinfo.content:
+                    result.extend(_schema_changes_from(item))
+    return result
+
+
+def build(self) -> OcxSchema:
+    elements = sorted(
+        (self._build_element(node) for node in self.elements.values()),
+        key=lambda e: e.name,
+    )
+    enums, simple = self._build_simple_types()
+    return OcxSchema(
+        schema_version=self._schema_version(),
+        target_namespace=self._main_schema().target_namespace or "",
+        namespaces=dict(sorted(self.namespaces.items())),
+        elements=elements,
+        complex_types=self._build_complex_types(),
+        enumerations=enums,
+        simple_types=simple,
+        attribute_groups=self._build_attribute_groups(),
+        substitution_groups={
+            self.prefixed(head): [self.prefixed(m) for m in members]
+            for head, members in sorted(self.substitution_groups.items())
+        },
+        schema_changes=self._build_schema_changes(),
+    )
 ```
 
 Then add the public entry point at the bottom of the module:
@@ -2016,6 +2088,7 @@ Replace the entire content of `ocx_schema_parser/__init__.py` with:
 ```python
 #  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 """ocx-schema-parser: parse the OCX XSD schema into a typed JSON model."""
+
 from loguru import logger
 
 from ocx_schema_parser.errors import OcxParserError
@@ -2097,6 +2170,7 @@ Create `tests/test_cli.py`:
 
 ```python
 """Tests for the ocx-schema-parser CLI."""
+
 import json
 from pathlib import Path
 
@@ -2150,6 +2224,7 @@ Create `ocx_schema_parser/cli.py`:
 
 ```python
 """Command line interface: export the OCX schema model as JSON."""
+
 from __future__ import annotations
 
 import argparse
@@ -2169,7 +2244,9 @@ def _build_parser() -> argparse.ArgumentParser:
         description="Parse the OCX schema and export it as a typed JSON model.",
     )
     parser.add_argument(
-        "--version", action="version", version=f"%(prog)s {ocx_schema_parser.__version__}"
+        "--version",
+        action="version",
+        version=f"%(prog)s {ocx_schema_parser.__version__}",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -2178,14 +2255,22 @@ def _build_parser() -> argparse.ArgumentParser:
         "source",
         help="A local .xsd file, a folder of .xsd files, or an http(s) URL",
     )
-    export.add_argument("-o", "--output", type=Path, default=None, help="Output JSON file (default: stdout)")
+    export.add_argument(
+        "-o",
+        "--output",
+        type=Path,
+        default=None,
+        help="Output JSON file (default: stdout)",
+    )
     export.add_argument(
         "--download-folder",
         type=Path,
         default=None,
         help="Folder for downloaded schemas when source is a URL (default: temp folder)",
     )
-    export.add_argument("--indent", type=int, default=2, help="JSON indentation (default: 2)")
+    export.add_argument(
+        "--indent", type=int, default=2, help="JSON indentation (default: 2)"
+    )
     return parser
 
 
