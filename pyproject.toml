@@ -46,6 +46,11 @@ docs = [
     "myst-parser>=3.0",
 ]
 
+[tool.ruff.lint]
+# Pin the rule set so `uv run ruff` (whatever version xsdata[cli] pulls in)
+# and the pre-commit ruff hook agree, regardless of default changes.
+select = ["E4", "E7", "E9", "F"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
