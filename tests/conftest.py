@@ -1,4 +1,5 @@
 """Shared fixtures for the ocx-schema-parser test suite."""
+
 from __future__ import annotations
 
 import io

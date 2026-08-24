@@ -1,4 +1,5 @@
 """Load OCX schemas from a local file, folder, or remote URL into xsdata Schema objects."""
+
 from __future__ import annotations
 
 import shutil
@@ -25,7 +26,9 @@ def _parse_file(path: Path) -> xsd.Schema:
         tree = ET.parse(str(path))
         root = tree.getroot()
         if root.tag != "{http://www.w3.org/2001/XMLSchema}schema":
-            raise OcxParserError(f"Failed to parse {path}: root element is not an XSD schema")
+            raise OcxParserError(
+                f"Failed to parse {path}: root element is not an XSD schema"
+            )
         parser = SchemaParser(location=path.resolve().as_uri())
         return parser.parse(str(path), xsd.Schema)
     except OcxParserError:

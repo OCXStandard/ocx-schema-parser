@@ -1,4 +1,5 @@
 """Command line interface: export the OCX schema model as JSON or list its entities."""
+
 from __future__ import annotations
 
 import argparse
@@ -19,7 +20,9 @@ def _build_parser() -> argparse.ArgumentParser:
         description="Parse the OCX schema and export it as a typed JSON model.",
     )
     parser.add_argument(
-        "--version", action="version", version=f"%(prog)s {ocx_schema_parser.__version__}"
+        "--version",
+        action="version",
+        version=f"%(prog)s {ocx_schema_parser.__version__}",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -28,14 +31,22 @@ def _build_parser() -> argparse.ArgumentParser:
         "source",
         help="A local .xsd file, a folder of .xsd files, or an http(s) URL",
     )
-    export.add_argument("-o", "--output", type=Path, default=None, help="Output JSON file (default: stdout)")
+    export.add_argument(
+        "-o",
+        "--output",
+        type=Path,
+        default=None,
+        help="Output JSON file (default: stdout)",
+    )
     export.add_argument(
         "--download-folder",
         type=Path,
         default=None,
         help="Folder for downloaded schemas when source is a URL (default: temp folder)",
     )
-    export.add_argument("--indent", type=int, default=2, help="JSON indentation (default: 2)")
+    export.add_argument(
+        "--indent", type=int, default=2, help="JSON indentation (default: 2)"
+    )
 
     lister = subparsers.add_parser(
         "list", help="List schema entities as 'prefix:name', one per line"
@@ -109,7 +120,8 @@ def _print_table(title: str, headers: list[str], rows: list[list[str]]) -> None:
     print(f"\n{title}")
     desc_width = 80
     widths = [
-        max(len(headers[i]), *(len(row[i]) for row in rows)) for i in range(len(headers) - 1)
+        max(len(headers[i]), *(len(row[i]) for row in rows))
+        for i in range(len(headers) - 1)
     ]
     lines = [headers, *rows]
     rules = ["-" * w for w in widths] + ["-" * desc_width]
@@ -129,7 +141,11 @@ def _print_entity(entity) -> None:
     """Print an entity's documentation plus attribute and child tables."""
     print(f"{entity.prefix}:{entity.name}")
     if entity.description:
-        print(textwrap.fill(entity.description, 100, initial_indent="  ", subsequent_indent="  "))
+        print(
+            textwrap.fill(
+                entity.description, 100, initial_indent="  ", subsequent_indent="  "
+            )
+        )
     attributes = getattr(entity, "attributes", [])
     if attributes:
         rows = [[a.name, a.type, a.use, a.description] for a in attributes]
@@ -168,7 +184,9 @@ def main(argv: Optional[list[str]] = None) -> int:
                     None,
                 )
                 if match is None:
-                    print(f"error: {args.name} not found in {args.kind}", file=sys.stderr)
+                    print(
+                        f"error: {args.name} not found in {args.kind}", file=sys.stderr
+                    )
                     return 1
                 _print_entity(match)
                 return 0

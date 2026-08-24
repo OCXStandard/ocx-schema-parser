@@ -1,4 +1,5 @@
 """Resolve parsed xsdata Schema objects into the OcxSchema Pydantic model."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -183,7 +184,9 @@ class _Resolver:
             def add(store: dict[str, _Node], items) -> None:
                 for item in items:
                     if item.name:
-                        store[f"{{{tns}}}{item.name}"] = _Node(item, schema, f"{{{tns}}}{item.name}")
+                        store[f"{{{tns}}}{item.name}"] = _Node(
+                            item, schema, f"{{{tns}}}{item.name}"
+                        )
 
             add(self.elements, schema.elements)
             add(self.complex_types, schema.complex_types)
@@ -267,7 +270,9 @@ class _Resolver:
         return result
 
     # -------------------------------------------------------- attributes
-    def _make_attribute(self, attr: xsd.Attribute, schema: xsd.Schema) -> Optional[Attribute]:
+    def _make_attribute(
+        self, attr: xsd.Attribute, schema: xsd.Schema
+    ) -> Optional[Attribute]:
         """Build an Attribute model; resolve refs; skip prohibited. None if skipped."""
         if attr.ref:
             tag = self.qref(attr.ref, schema)
@@ -280,9 +285,15 @@ class _Resolver:
         if use == "prohibited":
             return None
         type_ref = attr.type
-        if type_ref is None and attr.simple_type is not None and attr.simple_type.restriction:
+        if (
+            type_ref is None
+            and attr.simple_type is not None
+            and attr.simple_type.restriction
+        ):
             type_ref = attr.simple_type.restriction.base
-        type_name = self.prefixed(self.qref(type_ref, schema)) if type_ref else "xs:string"
+        type_name = (
+            self.prefixed(self.qref(type_ref, schema)) if type_ref else "xs:string"
+        )
         prefix, _ = self.split(f"{{{schema.target_namespace or ''}}}{attr.name}")
         return Attribute(
             name=attr.name or "",
@@ -294,7 +305,9 @@ class _Resolver:
             description=_description(attr),
         )
 
-    def _prohibited_attribute_name(self, attr: xsd.Attribute, schema: xsd.Schema) -> Optional[str]:
+    def _prohibited_attribute_name(
+        self, attr: xsd.Attribute, schema: xsd.Schema
+    ) -> Optional[str]:
         """Return the local attribute name if this declaration prohibits it."""
         use = attr.use.value if attr.use is not None else "optional"
         if use != "prohibited":
@@ -324,7 +337,11 @@ class _Resolver:
             ref = group.ref or group.name
             if not ref:
                 continue
-            tag = self.qref(ref, schema) if group.ref else f"{{{schema.target_namespace}}}{group.name}"
+            tag = (
+                self.qref(ref, schema)
+                if group.ref
+                else f"{{{schema.target_namespace}}}{group.name}"
+            )
             if tag in seen_groups:
                 continue
             seen_groups.add(tag)
@@ -383,7 +400,9 @@ class _Resolver:
                     prefix, local = self.split(member_tag)
                     type_ref = member.obj.type
                     type_name = (
-                        self.prefixed(self.qref(type_ref, member.schema)) if type_ref else local
+                        self.prefixed(self.qref(type_ref, member.schema))
+                        if type_ref
+                        else local
                     )
                     result.append(
                         ChildElement(
@@ -398,7 +417,11 @@ class _Resolver:
                     )
                 return result
             prefix, local = self.split(tag)
-            type_name = self.prefixed(self.qref(target.type, node.schema)) if target.type else local
+            type_name = (
+                self.prefixed(self.qref(target.type, node.schema))
+                if target.type
+                else local
+            )
             return [
                 ChildElement(
                     name=local,
@@ -411,7 +434,11 @@ class _Resolver:
             ]
         # local (inline) element declaration
         prefix, _ = self.split(f"{{{schema.target_namespace or ''}}}{element.name}")
-        type_name = self.prefixed(self.qref(element.type, schema)) if element.type else (element.name or "")
+        type_name = (
+            self.prefixed(self.qref(element.type, schema))
+            if element.type
+            else (element.name or "")
+        )
         return [
             ChildElement(
                 name=element.name or "",
@@ -440,13 +467,27 @@ class _Resolver:
         )
         result: list[ChildElement] = []
         for element in getattr(container, "elements", []) or []:
-            result.extend(self._make_children(element, schema, is_choice, effective_occurs))
+            result.extend(
+                self._make_children(element, schema, is_choice, effective_occurs)
+            )
         for group in getattr(container, "groups", []) or []:
-            result.extend(self._collect_group(group, schema, is_choice, seen_groups, effective_occurs))
+            result.extend(
+                self._collect_group(
+                    group, schema, is_choice, seen_groups, effective_occurs
+                )
+            )
         for choice in getattr(container, "choices", []) or []:
-            result.extend(self._collect_particles(choice, schema, True, seen_groups, effective_occurs))
+            result.extend(
+                self._collect_particles(
+                    choice, schema, True, seen_groups, effective_occurs
+                )
+            )
         for sequence in getattr(container, "sequences", []) or []:
-            result.extend(self._collect_particles(sequence, schema, is_choice, seen_groups, effective_occurs))
+            result.extend(
+                self._collect_particles(
+                    sequence, schema, is_choice, seen_groups, effective_occurs
+                )
+            )
         return result
 
     def _collect_group(
@@ -471,14 +512,30 @@ class _Resolver:
             if node is None:
                 self._missing(tag, "group")
                 return []
-            return self._collect_group(node.obj, node.schema, is_choice, seen_groups, effective_occurs)
+            return self._collect_group(
+                node.obj, node.schema, is_choice, seen_groups, effective_occurs
+            )
         result: list[ChildElement] = []
-        result.extend(self._collect_particles(group.sequence, schema, is_choice, seen_groups, effective_occurs))
-        result.extend(self._collect_particles(group.choice, schema, True, seen_groups, effective_occurs))
-        result.extend(self._collect_particles(group.all, schema, is_choice, seen_groups, effective_occurs))
+        result.extend(
+            self._collect_particles(
+                group.sequence, schema, is_choice, seen_groups, effective_occurs
+            )
+        )
+        result.extend(
+            self._collect_particles(
+                group.choice, schema, True, seen_groups, effective_occurs
+            )
+        )
+        result.extend(
+            self._collect_particles(
+                group.all, schema, is_choice, seen_groups, effective_occurs
+            )
+        )
         return result
 
-    def _own_children(self, ct: xsd.ComplexType, schema: xsd.Schema) -> list[ChildElement]:
+    def _own_children(
+        self, ct: xsd.ComplexType, schema: xsd.Schema
+    ) -> list[ChildElement]:
         """Children declared directly on a complex type (incl. its derivation content)."""
         result: list[ChildElement] = []
         containers = [(ct.sequence, False), (ct.all, False), (ct.choice, True)]
@@ -525,7 +582,7 @@ class _Resolver:
     # ----------------------------------------------------------- assembly
     def _main_schema(self) -> xsd.Schema:
         """The schema declaring the fixed ``schemaVersion`` attribute; else the first.
-        
+
         Checks top-level attributes first, then complex types within each schema.
         Priority: top-level match > complex-type match (within same schema) > first schema.
         """
@@ -534,7 +591,7 @@ class _Resolver:
             for attr in schema.attributes:
                 if attr.name == "schemaVersion" and attr.fixed:
                     return schema
-        
+
         # Second pass: check complex type attributes (only from their declaring schema)
         for schema in self.schemas:
             for tag, node in self.complex_types.items():
@@ -543,21 +600,21 @@ class _Resolver:
                 for attr in self.attributes_of(tag):
                     if attr.name == "schemaVersion" and attr.fixed:
                         return schema
-        
+
         return self.schemas[0]
 
     def _schema_version(self) -> str:
         """The fixed ``schemaVersion`` attribute from the main schema.
-        
+
         Checks top-level attributes first, then complex types within the main schema.
         """
         main_schema = self._main_schema()
-        
+
         # First check top-level attributes of main schema
         for attr in main_schema.attributes:
             if attr.name == "schemaVersion" and attr.fixed:
                 return attr.fixed
-        
+
         # Then check complex type attributes from main schema
         for tag, node in self.complex_types.items():
             if node.schema is not main_schema:
@@ -565,7 +622,7 @@ class _Resolver:
             for attr in self.attributes_of(tag):
                 if attr.name == "schemaVersion" and attr.fixed:
                     return attr.fixed
-        
+
         return ""
 
     def _type_tag_of(self, node: _Node) -> Optional[str]:
@@ -591,7 +648,10 @@ class _Resolver:
             base_ref = _base_ref(ct)
             base_tag = self.qref(base_ref, node.schema) if base_ref else None
             parents = (
-                [self.prefixed(base_tag), *(self.prefixed(t) for t in self.ancestors(base_tag))]
+                [
+                    self.prefixed(base_tag),
+                    *(self.prefixed(t) for t in self.ancestors(base_tag)),
+                ]
                 if base_tag and not self.is_builtin(base_tag)
                 else []
             )
@@ -606,7 +666,11 @@ class _Resolver:
                     if attr.name not in own_attrs and attr.name not in prohibited_attrs:
                         own_attrs[attr.name] = attr
             inherited = (
-                {a.name: a for a in self.attributes_of(base_tag) if a.name not in prohibited_attrs}
+                {
+                    a.name: a
+                    for a in self.attributes_of(base_tag)
+                    if a.name not in prohibited_attrs
+                }
                 if base_tag and base_tag in self.complex_types
                 else {}
             )
@@ -619,10 +683,16 @@ class _Resolver:
                 for child in self.children_of(base_tag):
                     if child.name not in own_names:
                         children.append(
-                            child.model_copy(update={"inherited_from": self.prefixed(base_tag)})
+                            child.model_copy(
+                                update={"inherited_from": self.prefixed(base_tag)}
+                            )
                         )
         else:
-            type_name = self.prefixed(self.qref(element.type, node.schema)) if element.type else local
+            type_name = (
+                self.prefixed(self.qref(element.type, node.schema))
+                if element.type
+                else local
+            )
             parents, attributes, children = [], [], []
         substitution = (
             self.prefixed(self.qref(element.substitution_group, node.schema))

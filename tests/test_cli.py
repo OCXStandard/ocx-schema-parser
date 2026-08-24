@@ -1,4 +1,5 @@
 """Tests for the ocx-schema-parser CLI."""
+
 import json
 from pathlib import Path
 
@@ -80,21 +81,33 @@ def test_list_name_details_case_insensitive(schema_folder: Path, capsys):
 
 
 def test_list_name_complex_type(schema_folder: Path, capsys):
-    exit_code = main(["list", "complex-types", str(schema_folder), "--name", "ocx:vessel_t"])
+    exit_code = main(
+        ["list", "complex-types", str(schema_folder), "--name", "ocx:vessel_t"]
+    )
     assert exit_code == 0
     out = capsys.readouterr().out
     assert out.startswith("ocx:Vessel_T")
 
 
 def test_list_name_enumeration(schema_folder: Path, capsys):
-    exit_code = main(["list", "enumerations", str(schema_folder), "--name", "ocx:classificationsociety"])
+    exit_code = main(
+        [
+            "list",
+            "enumerations",
+            str(schema_folder),
+            "--name",
+            "ocx:classificationsociety",
+        ]
+    )
     assert exit_code == 0
     out = capsys.readouterr().out
     assert out.startswith("ocx:classificationSociety")
 
 
 def test_list_name_not_found(schema_folder: Path, capsys):
-    exit_code = main(["list", "elements", str(schema_folder), "--name", "ocx:NoSuchThing"])
+    exit_code = main(
+        ["list", "elements", str(schema_folder), "--name", "ocx:NoSuchThing"]
+    )
     assert exit_code == 1
     assert "not found" in capsys.readouterr().err
 
@@ -119,7 +132,9 @@ def test_summary(schema_folder: Path, capsys):
     assert all(c >= 0 for c in counts)
     assert counts[0] >= 300  # ocx global elements
     assert counts[1] > 100  # ocx complex types
-    assert rows["TOTAL"] == [str(sum(int(r[i]) for ns, r in rows.items() if ns != "TOTAL")) for i in range(5)]
+    assert rows["TOTAL"] == [
+        str(sum(int(r[i]) for ns, r in rows.items() if ns != "TOTAL")) for i in range(5)
+    ]
 
 
 def test_list_bad_source_returns_1(tmp_path: Path, capsys):

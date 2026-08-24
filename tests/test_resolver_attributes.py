@@ -1,4 +1,5 @@
 """Tests for type ancestry and attribute flattening."""
+
 from conftest import parse_fragment
 
 from ocx_schema_parser.resolver import _Resolver

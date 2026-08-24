@@ -1,5 +1,6 @@
 #  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 """ocx-schema-parser: parse the OCX XSD schema into a typed JSON model."""
+
 from loguru import logger
 
 from ocx_schema_parser.errors import OcxParserError

@@ -1,4 +1,5 @@
 """Tests for loader.load()."""
+
 from pathlib import Path
 
 import pytest
@@ -17,7 +18,10 @@ def test_load_folder(schema_folder: Path):
 def test_load_single_file(schema_folder: Path):
     schemas = load(schema_folder / "OCX_Schema.xsd")
     assert len(schemas) == 1
-    assert schemas[0].target_namespace == "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"
+    assert (
+        schemas[0].target_namespace
+        == "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"
+    )
 
 
 def test_load_accepts_str(schema_folder: Path):

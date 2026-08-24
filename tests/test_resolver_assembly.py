@@ -1,4 +1,5 @@
 """Tests for enum/simple-type extraction, schema changes, and resolve()."""
+
 import pytest
 from conftest import parse_fragment
 
@@ -110,7 +111,10 @@ def test_global_element(model):
 
 def test_resolve_full_ocx_schema(ocx_model):
     assert ocx_model.schema_version == "3.0.0"
-    assert ocx_model.target_namespace == "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"
+    assert (
+        ocx_model.target_namespace
+        == "https://3docx.org/fileadmin//ocx_schema//V300//OCX_Schema.xsd"
+    )
     assert ocx_model.get("ocx:Vessel") is not None
     assert len(ocx_model.elements) > 300
     assert len(ocx_model.enumerations) > 0

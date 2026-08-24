@@ -1,4 +1,5 @@
 """Tests for the resolver index pass and reference resolution."""
+
 from conftest import parse_fragment
 
 from ocx_schema_parser.resolver import _Resolver, _cardinality, _description

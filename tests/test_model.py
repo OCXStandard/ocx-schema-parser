@@ -1,4 +1,5 @@
 """Tests for the Pydantic schema model."""
+
 import pytest
 from pydantic import ValidationError
 
@@ -71,7 +72,9 @@ def test_ocx_schema_get_by_name():
 
 
 def test_schema_serializes_to_json():
-    schema = OcxSchema(schema_version="3.0.0", target_namespace="urn:test", namespaces={})
+    schema = OcxSchema(
+        schema_version="3.0.0", target_namespace="urn:test", namespaces={}
+    )
     data = schema.model_dump_json()
     assert '"schema_version":"3.0.0"' in data
 
@@ -95,5 +98,7 @@ def test_enum_and_simple_type():
 
 
 def test_schema_change():
-    change = SchemaChange(version="3.0.0", author="OCX", date="2023-01-01", description="Initial")
+    change = SchemaChange(
+        version="3.0.0", author="OCX", date="2023-01-01", description="Initial"
+    )
     assert change.version == "3.0.0"

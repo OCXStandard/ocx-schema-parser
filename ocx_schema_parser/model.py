@@ -1,4 +1,5 @@
 """Typed, immutable data model of a resolved OCX schema (Pydantic v2)."""
+
 from __future__ import annotations
 
 from typing import Literal, Optional

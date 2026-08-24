@@ -1,4 +1,5 @@
 """Tests for SchemaDownloader."""
+
 from pathlib import Path
 
 import pytest
@@ -14,7 +15,9 @@ def test_is_valid_uri():
     assert not is_valid_uri("not a uri")
 
 
-def test_wget_local_file_downloads_referenced_schemas(schema_folder: Path, tmp_path: Path):
+def test_wget_local_file_downloads_referenced_schemas(
+    schema_folder: Path, tmp_path: Path
+):
     downloader = SchemaDownloader(tmp_path)
     downloader.wget(str(schema_folder / "OCX_Schema.xsd"))
     written = sorted(p.name for p in tmp_path.glob("*.xsd"))

@@ -1,5 +1,6 @@
 #  Copyright (c) 2023-2025. OCX Consortium https://3docx.org. See the LICENSE
 """Download an XSD schema and all its referenced schemas into one folder."""
+
 from pathlib import Path
 from typing import Optional
 from urllib.parse import urlparse
@@ -40,7 +41,9 @@ class SchemaDownloader(Downloader):
         name = Path(uri).name
         file_path = self.schema_folder / name
         file_path.write_text(content, encoding="utf-8")
-        logger.debug(f"Writing schema {file_path.resolve()} to folder {self.schema_folder.resolve()}")
+        logger.debug(
+            f"Writing schema {file_path.resolve()} to folder {self.schema_folder.resolve()}"
+        )
         self.downloaded[uri] = file_path
         if location:
             self.downloaded[location] = file_path
