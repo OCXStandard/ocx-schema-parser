@@ -65,7 +65,7 @@ class GlobalElement(FrozenModel):
 
 
 class ComplexType(FrozenModel):
-    """A named complex type that is not the type of any global element."""
+    """A named complex type declared in the schema."""
 
     name: str
     prefix: str

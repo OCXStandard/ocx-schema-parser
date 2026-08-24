@@ -13,6 +13,26 @@ and this project adheres to the Python [PEP 440 versioning recommendations](http
 * ``Fixed`` for any bug fixes.
 * ``Security`` in case of vulnerabilities.
 
+## [Unreleased]
+
+### Added
+
+* `summary` CLI command: entity counts (elements, complex types, simple types,
+  global attributes, attribute groups) grouped by target namespace.
+* `list <kind> --name prefix:name` (case-insensitive): prints the entity's
+  documentation plus tabular listings of its attributes and children.
+
+### Changed
+
+* `DEFAULT_SCHEMA` bumped to the V320 schema URL.
+* Exported `complex_types` now include **all** named complex types; previously
+  types used as the type of a global element were omitted.
+
+### Fixed
+
+* Enumerations declared as anonymous simple types on global attributes
+  (e.g. `ocx:liquidCargoType`, `ocx:grade`) are now resolved and listed.
+
 ## [3.0.0] - 2026-08-20
 
 bump to [v3.0.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v3.0.0)

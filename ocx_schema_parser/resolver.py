@@ -644,12 +644,9 @@ class _Resolver:
         )
 
     def _build_complex_types(self) -> list[ComplexType]:
-        """Named complex types that are NOT the type of any global element."""
-        used = {self._type_tag_of(node) for node in self.elements.values()}
+        """All named complex types declared in the schemas."""
         result = []
         for tag, node in self.complex_types.items():
-            if tag in used:
-                continue
             prefix, local = self.split(tag)
             result.append(
                 ComplexType(
@@ -666,6 +663,7 @@ class _Resolver:
         return sorted(result, key=lambda ct: ct.name)
 
     def _build_simple_types(self) -> tuple[list[EnumType], list[SimpleType]]:
+        """Named simple types plus enums inlined on global attributes."""
         enums: list[EnumType] = []
         simple: list[SimpleType] = []
         for tag, node in self.simple_types.items():
@@ -707,10 +705,40 @@ class _Resolver:
                         restriction=_facets(restriction),
                     )
                 )
+        enums.extend(self._build_attribute_enums({e.tag for e in enums}))
         return (
             sorted(enums, key=lambda e: e.name),
             sorted(simple, key=lambda s: s.name),
         )
+
+    def _build_attribute_enums(self, taken: set[str]) -> list[EnumType]:
+        """Enums declared as anonymous simple types on global attributes."""
+        result: list[EnumType] = []
+        for tag, node in self.global_attributes.items():
+            attribute: xsd.Attribute = node.obj
+            inline = attribute.simple_type
+            restriction = inline.restriction if inline is not None else None
+            if restriction is None or not restriction.enumerations or tag in taken:
+                continue
+            prefix, local = self.split(tag)
+            values = sorted(
+                (
+                    EnumValue(value=e.value or "", description=_description(e))
+                    for e in restriction.enumerations
+                ),
+                key=lambda v: v.value,
+            )
+            description = _description(attribute) or _description(inline)
+            result.append(
+                EnumType(
+                    name=local,
+                    prefix=prefix,
+                    tag=tag,
+                    description=description,
+                    values=values,
+                )
+            )
+        return result
 
     def _build_attribute_groups(self) -> dict[str, list[Attribute]]:
         result = {}

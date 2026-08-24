@@ -16,10 +16,22 @@ pip install ocx-schema-parser
 
 ```
 # Export a remote schema to JSON
-ocx-schema-parser export https://3docx.org/fileadmin/ocx_schema/V310/OCX_Schema.xsd -o ocx_schema.json
+ocx-schema-parser export https://3docx.org/fileadmin/ocx_schema/V320/OCX_Schema.xsd -o ocx_schema.json
 
 # Export a local schema file or folder
 ocx-schema-parser export path/to/OCX_Schema.xsd
+
+# List schema entities as 'prefix:name', one per line
+ocx-schema-parser list elements path/to/OCX_Schema.xsd
+ocx-schema-parser list complex-types path/to/OCX_Schema.xsd
+ocx-schema-parser list simple-types path/to/OCX_Schema.xsd
+ocx-schema-parser list enumerations path/to/OCX_Schema.xsd
+
+# Show one entity's documentation, attributes and children (case-insensitive)
+ocx-schema-parser list elements path/to/OCX_Schema.xsd --name ocx:Vessel
+
+# Print entity counts grouped by target namespace
+ocx-schema-parser summary path/to/OCX_Schema.xsd
 ```
 
 ### Python API

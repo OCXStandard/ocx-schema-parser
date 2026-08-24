@@ -24,6 +24,15 @@ FRAGMENT = """<?xml version="1.0"?>
     <xs:annotation><xs:documentation>No global element uses me.</xs:documentation></xs:annotation>
   </xs:complexType>
   <xs:attribute name="schemaVersion" type="xs:string" fixed="9.9.9"/>
+  <xs:attribute name="liquidCargoType">
+    <xs:annotation><xs:documentation>Inline enum on a global attribute.</xs:documentation></xs:annotation>
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="crude oil"/>
+        <xs:enumeration value="diesel oil"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
   <xs:simpleType name="functionType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="cargo oil"/>
@@ -63,6 +72,13 @@ def test_enumerations(model):
     assert [v.value for v in enums["functionType"].values] == ["ballast", "cargo oil"]
 
 
+def test_enumeration_inline_on_global_attribute(model):
+    enums = {e.name: e for e in model.enumerations}
+    enum = enums["liquidCargoType"]
+    assert [v.value for v in enum.values] == ["crude oil", "diesel oil"]
+    assert enum.description == "Inline enum on a global attribute."
+
+
 def test_simple_type_facets(model):
     st = {s.name: s for s in model.simple_types}["guid"]
     assert st.base == "xs:string"
@@ -77,10 +93,10 @@ def test_schema_changes(model):
     assert change.description == "Added Thing."
 
 
-def test_orphan_complex_type_documented(model):
+def test_all_named_complex_types_documented(model):
     names = [ct.name for ct in model.complex_types]
     assert "Orphan_T" in names
-    assert "Thing_T" not in names  # used by global element Thing
+    assert "Thing_T" in names  # included even though global element Thing uses it
 
 
 def test_global_element(model):

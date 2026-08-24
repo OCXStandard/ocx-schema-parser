@@ -20,7 +20,7 @@ from ocx_schema_parser.resolver import resolve
 
 __version__ = "3.0.0"
 
-DEFAULT_SCHEMA = "https://3docx.org/fileadmin/ocx_schema/V310/OCX_Schema.xsd"
+DEFAULT_SCHEMA = "https://3docx.org/fileadmin/ocx_schema/V320/OCX_Schema.xsd"
 WORKING_DRAFT = "https://3docx.org/fileadmin//ocx_schema//V320rc8//OCX_Schema.xsd"
 
 __all__ = [
