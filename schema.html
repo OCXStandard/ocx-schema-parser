@@ -1,0 +1,807 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reference &mdash; ocx_schema_parser 3.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=dd1205ac"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Contents" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ocx_schema_parser
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+<div class="version">3.1.0</div>
+
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-ocx_schema_parser.loader">loader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.loader.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#resolver">resolver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.resolver.resolve"><code class="docutils literal notranslate"><span class="pre">resolve()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ocx_schema_parser.model">model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.Attribute"><code class="docutils literal notranslate"><span class="pre">Attribute</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Attribute.default"><code class="docutils literal notranslate"><span class="pre">Attribute.default</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Attribute.description"><code class="docutils literal notranslate"><span class="pre">Attribute.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Attribute.fixed"><code class="docutils literal notranslate"><span class="pre">Attribute.fixed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Attribute.model_config"><code class="docutils literal notranslate"><span class="pre">Attribute.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Attribute.name"><code class="docutils literal notranslate"><span class="pre">Attribute.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Attribute.prefix"><code class="docutils literal notranslate"><span class="pre">Attribute.prefix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Attribute.type"><code class="docutils literal notranslate"><span class="pre">Attribute.type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Attribute.use"><code class="docutils literal notranslate"><span class="pre">Attribute.use</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.Cardinality"><code class="docutils literal notranslate"><span class="pre">Cardinality</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Cardinality.lower"><code class="docutils literal notranslate"><span class="pre">Cardinality.lower</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Cardinality.model_config"><code class="docutils literal notranslate"><span class="pre">Cardinality.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.Cardinality.upper"><code class="docutils literal notranslate"><span class="pre">Cardinality.upper</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.ChildElement"><code class="docutils literal notranslate"><span class="pre">ChildElement</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ChildElement.cardinality"><code class="docutils literal notranslate"><span class="pre">ChildElement.cardinality</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ChildElement.description"><code class="docutils literal notranslate"><span class="pre">ChildElement.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ChildElement.from_substitution_group"><code class="docutils literal notranslate"><span class="pre">ChildElement.from_substitution_group</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ChildElement.inherited_from"><code class="docutils literal notranslate"><span class="pre">ChildElement.inherited_from</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ChildElement.is_choice"><code class="docutils literal notranslate"><span class="pre">ChildElement.is_choice</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ChildElement.model_config"><code class="docutils literal notranslate"><span class="pre">ChildElement.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ChildElement.name"><code class="docutils literal notranslate"><span class="pre">ChildElement.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ChildElement.prefix"><code class="docutils literal notranslate"><span class="pre">ChildElement.prefix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ChildElement.type"><code class="docutils literal notranslate"><span class="pre">ChildElement.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.ComplexType"><code class="docutils literal notranslate"><span class="pre">ComplexType</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ComplexType.abstract"><code class="docutils literal notranslate"><span class="pre">ComplexType.abstract</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ComplexType.attributes"><code class="docutils literal notranslate"><span class="pre">ComplexType.attributes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ComplexType.children"><code class="docutils literal notranslate"><span class="pre">ComplexType.children</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ComplexType.description"><code class="docutils literal notranslate"><span class="pre">ComplexType.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ComplexType.model_config"><code class="docutils literal notranslate"><span class="pre">ComplexType.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ComplexType.name"><code class="docutils literal notranslate"><span class="pre">ComplexType.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ComplexType.parents"><code class="docutils literal notranslate"><span class="pre">ComplexType.parents</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ComplexType.prefix"><code class="docutils literal notranslate"><span class="pre">ComplexType.prefix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.ComplexType.tag"><code class="docutils literal notranslate"><span class="pre">ComplexType.tag</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.EnumType"><code class="docutils literal notranslate"><span class="pre">EnumType</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.EnumType.description"><code class="docutils literal notranslate"><span class="pre">EnumType.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.EnumType.model_config"><code class="docutils literal notranslate"><span class="pre">EnumType.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.EnumType.name"><code class="docutils literal notranslate"><span class="pre">EnumType.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.EnumType.prefix"><code class="docutils literal notranslate"><span class="pre">EnumType.prefix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.EnumType.tag"><code class="docutils literal notranslate"><span class="pre">EnumType.tag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.EnumType.values"><code class="docutils literal notranslate"><span class="pre">EnumType.values</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.EnumValue"><code class="docutils literal notranslate"><span class="pre">EnumValue</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.EnumValue.description"><code class="docutils literal notranslate"><span class="pre">EnumValue.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.EnumValue.model_config"><code class="docutils literal notranslate"><span class="pre">EnumValue.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.EnumValue.value"><code class="docutils literal notranslate"><span class="pre">EnumValue.value</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.FrozenModel"><code class="docutils literal notranslate"><span class="pre">FrozenModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.FrozenModel.model_config"><code class="docutils literal notranslate"><span class="pre">FrozenModel.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement"><code class="docutils literal notranslate"><span class="pre">GlobalElement</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.abstract"><code class="docutils literal notranslate"><span class="pre">GlobalElement.abstract</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.attributes"><code class="docutils literal notranslate"><span class="pre">GlobalElement.attributes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.cardinality"><code class="docutils literal notranslate"><span class="pre">GlobalElement.cardinality</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.children"><code class="docutils literal notranslate"><span class="pre">GlobalElement.children</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.description"><code class="docutils literal notranslate"><span class="pre">GlobalElement.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.model_config"><code class="docutils literal notranslate"><span class="pre">GlobalElement.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.name"><code class="docutils literal notranslate"><span class="pre">GlobalElement.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.parents"><code class="docutils literal notranslate"><span class="pre">GlobalElement.parents</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.prefix"><code class="docutils literal notranslate"><span class="pre">GlobalElement.prefix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.substitution_group"><code class="docutils literal notranslate"><span class="pre">GlobalElement.substitution_group</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.tag"><code class="docutils literal notranslate"><span class="pre">GlobalElement.tag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.GlobalElement.type"><code class="docutils literal notranslate"><span class="pre">GlobalElement.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema"><code class="docutils literal notranslate"><span class="pre">OcxSchema</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.attribute_groups"><code class="docutils literal notranslate"><span class="pre">OcxSchema.attribute_groups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.complex_types"><code class="docutils literal notranslate"><span class="pre">OcxSchema.complex_types</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.elements"><code class="docutils literal notranslate"><span class="pre">OcxSchema.elements</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.enumerations"><code class="docutils literal notranslate"><span class="pre">OcxSchema.enumerations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.get"><code class="docutils literal notranslate"><span class="pre">OcxSchema.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.model_config"><code class="docutils literal notranslate"><span class="pre">OcxSchema.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.namespaces"><code class="docutils literal notranslate"><span class="pre">OcxSchema.namespaces</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.schema_changes"><code class="docutils literal notranslate"><span class="pre">OcxSchema.schema_changes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.schema_version"><code class="docutils literal notranslate"><span class="pre">OcxSchema.schema_version</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.simple_types"><code class="docutils literal notranslate"><span class="pre">OcxSchema.simple_types</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.substitution_groups"><code class="docutils literal notranslate"><span class="pre">OcxSchema.substitution_groups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema.target_namespace"><code class="docutils literal notranslate"><span class="pre">OcxSchema.target_namespace</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.SchemaChange"><code class="docutils literal notranslate"><span class="pre">SchemaChange</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SchemaChange.author"><code class="docutils literal notranslate"><span class="pre">SchemaChange.author</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SchemaChange.date"><code class="docutils literal notranslate"><span class="pre">SchemaChange.date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SchemaChange.description"><code class="docutils literal notranslate"><span class="pre">SchemaChange.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SchemaChange.model_config"><code class="docutils literal notranslate"><span class="pre">SchemaChange.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SchemaChange.version"><code class="docutils literal notranslate"><span class="pre">SchemaChange.version</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.model.SimpleType"><code class="docutils literal notranslate"><span class="pre">SimpleType</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SimpleType.base"><code class="docutils literal notranslate"><span class="pre">SimpleType.base</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SimpleType.description"><code class="docutils literal notranslate"><span class="pre">SimpleType.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SimpleType.model_config"><code class="docutils literal notranslate"><span class="pre">SimpleType.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SimpleType.name"><code class="docutils literal notranslate"><span class="pre">SimpleType.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SimpleType.prefix"><code class="docutils literal notranslate"><span class="pre">SimpleType.prefix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SimpleType.restriction"><code class="docutils literal notranslate"><span class="pre">SimpleType.restriction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.model.SimpleType.tag"><code class="docutils literal notranslate"><span class="pre">SimpleType.tag</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#downloader">downloader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.downloader.SchemaDownloader"><code class="docutils literal notranslate"><span class="pre">SchemaDownloader</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.downloader.SchemaDownloader.wget"><code class="docutils literal notranslate"><span class="pre">SchemaDownloader.wget()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ocx_schema_parser.downloader.SchemaDownloader.write_file"><code class="docutils literal notranslate"><span class="pre">SchemaDownloader.write_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ocx_schema_parser.cli">cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#errors">errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ocx_schema_parser.errors.OcxParserError"><code class="docutils literal notranslate"><span class="pre">OcxParserError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ocx_schema_parser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/schema.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h1>
+<section id="module-ocx_schema_parser.loader">
+<span id="loader"></span><h2>loader<a class="headerlink" href="#module-ocx_schema_parser.loader" title="Link to this heading"></a></h2>
+<p>Load OCX schemas from a local file, folder, or remote URL into xsdata Schema objects.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.loader.load">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.loader.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/loader.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.loader.load" title="Link to this definition"></a></dt>
+<dd><p>Load <code class="docutils literal notranslate"><span class="pre">source</span></code> and return one parsed <code class="docutils literal notranslate"><span class="pre">xsd.Schema</span></code> per XSD file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – A local <code class="docutils literal notranslate"><span class="pre">.xsd</span></code> file, a folder of <code class="docutils literal notranslate"><span class="pre">.xsd</span></code> files, or an http(s) URL.</p></li>
+<li><p><strong>download_folder</strong> – Where remote schemas are downloaded. Defaults to a
+temporary folder. The folder is cleared before downloading.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ocx_schema_parser.errors.OcxParserError" title="ocx_schema_parser.errors.OcxParserError"><strong>OcxParserError</strong></a> – If the source is missing, empty, or fails to parse.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="resolver">
+<h2>resolver<a class="headerlink" href="#resolver" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ocx_schema_parser.resolver.resolve">
+<span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.resolver.</span></span><span class="sig-name descname"><span class="pre">resolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schemas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/resolver.html#resolve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.resolver.resolve" title="Link to this definition"></a></dt>
+<dd><p>Resolve parsed schemas into the immutable OcxSchema model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ocx_schema_parser.errors.OcxParserError" title="ocx_schema_parser.errors.OcxParserError"><strong>OcxParserError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">schemas</span></code> is empty.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#ocx_schema_parser.model.OcxSchema" title="ocx_schema_parser.model.OcxSchema"><code class="xref py py-class docutils literal notranslate"><span class="pre">OcxSchema</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ocx_schema_parser.model">
+<span id="model"></span><h2>model<a class="headerlink" href="#module-ocx_schema_parser.model" title="Link to this heading"></a></h2>
+<p>Typed, immutable data model of a resolved OCX schema (Pydantic v2).</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Attribute">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">Attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#Attribute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.Attribute" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocx_schema_parser.model.FrozenModel" title="ocx_schema_parser.model.FrozenModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenModel</span></code></a></p>
+<p>A resolved XML attribute of a global element or complex type.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Attribute.default">
+<span class="sig-name descname"><span class="pre">default</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional[str]</span></em><a class="headerlink" href="#ocx_schema_parser.model.Attribute.default" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Attribute.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.Attribute.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Attribute.fixed">
+<span class="sig-name descname"><span class="pre">fixed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional[str]</span></em><a class="headerlink" href="#ocx_schema_parser.model.Attribute.fixed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Attribute.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.Attribute.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Attribute.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.Attribute.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Attribute.prefix">
+<span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.Attribute.prefix" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Attribute.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.Attribute.type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Attribute.use">
+<span class="sig-name descname"><span class="pre">use</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal['required',</span> <span class="pre">'optional']</span></em><a class="headerlink" href="#ocx_schema_parser.model.Attribute.use" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Cardinality">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">Cardinality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#Cardinality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.Cardinality" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocx_schema_parser.model.FrozenModel" title="ocx_schema_parser.model.FrozenModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenModel</span></code></a></p>
+<p>Occurrence bounds of an element. <code class="docutils literal notranslate"><span class="pre">upper=None</span></code> means unbounded.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Cardinality.lower">
+<span class="sig-name descname"><span class="pre">lower</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ocx_schema_parser.model.Cardinality.lower" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Cardinality.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.Cardinality.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.Cardinality.upper">
+<span class="sig-name descname"><span class="pre">upper</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional[int]</span></em><a class="headerlink" href="#ocx_schema_parser.model.Cardinality.upper" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ChildElement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">ChildElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#ChildElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.ChildElement" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocx_schema_parser.model.FrozenModel" title="ocx_schema_parser.model.FrozenModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenModel</span></code></a></p>
+<p>A resolved child element (particle) of a global element or complex type.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ChildElement.cardinality">
+<span class="sig-name descname"><span class="pre">cardinality</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Cardinality</span></em><a class="headerlink" href="#ocx_schema_parser.model.ChildElement.cardinality" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ChildElement.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.ChildElement.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ChildElement.from_substitution_group">
+<span class="sig-name descname"><span class="pre">from_substitution_group</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional[str]</span></em><a class="headerlink" href="#ocx_schema_parser.model.ChildElement.from_substitution_group" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ChildElement.inherited_from">
+<span class="sig-name descname"><span class="pre">inherited_from</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional[str]</span></em><a class="headerlink" href="#ocx_schema_parser.model.ChildElement.inherited_from" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ChildElement.is_choice">
+<span class="sig-name descname"><span class="pre">is_choice</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ocx_schema_parser.model.ChildElement.is_choice" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ChildElement.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.ChildElement.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ChildElement.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.ChildElement.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ChildElement.prefix">
+<span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.ChildElement.prefix" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ChildElement.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.ChildElement.type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ComplexType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">ComplexType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#ComplexType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.ComplexType" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocx_schema_parser.model.FrozenModel" title="ocx_schema_parser.model.FrozenModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenModel</span></code></a></p>
+<p>A named complex type declared in the schema.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ComplexType.abstract">
+<span class="sig-name descname"><span class="pre">abstract</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ocx_schema_parser.model.ComplexType.abstract" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ComplexType.attributes">
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[Attribute]</span></em><a class="headerlink" href="#ocx_schema_parser.model.ComplexType.attributes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ComplexType.children">
+<span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[ChildElement]</span></em><a class="headerlink" href="#ocx_schema_parser.model.ComplexType.children" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ComplexType.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.ComplexType.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ComplexType.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.ComplexType.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ComplexType.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.ComplexType.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ComplexType.parents">
+<span class="sig-name descname"><span class="pre">parents</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[str]</span></em><a class="headerlink" href="#ocx_schema_parser.model.ComplexType.parents" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ComplexType.prefix">
+<span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.ComplexType.prefix" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.ComplexType.tag">
+<span class="sig-name descname"><span class="pre">tag</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.ComplexType.tag" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">EnumType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#EnumType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.EnumType" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocx_schema_parser.model.FrozenModel" title="ocx_schema_parser.model.FrozenModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenModel</span></code></a></p>
+<p>A simple type restricted to an enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumType.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.EnumType.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumType.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.EnumType.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumType.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.EnumType.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumType.prefix">
+<span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.EnumType.prefix" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumType.tag">
+<span class="sig-name descname"><span class="pre">tag</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.EnumType.tag" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumType.values">
+<span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[EnumValue]</span></em><a class="headerlink" href="#ocx_schema_parser.model.EnumType.values" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumValue">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">EnumValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#EnumValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.EnumValue" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocx_schema_parser.model.FrozenModel" title="ocx_schema_parser.model.FrozenModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenModel</span></code></a></p>
+<p>One enumeration facet value.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumValue.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.EnumValue.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumValue.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.EnumValue.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.EnumValue.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.EnumValue.value" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.FrozenModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">FrozenModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#FrozenModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.FrozenModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Base model: immutable after construction.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.FrozenModel.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.FrozenModel.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">GlobalElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#GlobalElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocx_schema_parser.model.FrozenModel" title="ocx_schema_parser.model.FrozenModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenModel</span></code></a></p>
+<p>A global element declaration with its fully flattened content model.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.abstract">
+<span class="sig-name descname"><span class="pre">abstract</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.abstract" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.attributes">
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[Attribute]</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.attributes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.cardinality">
+<span class="sig-name descname"><span class="pre">cardinality</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Cardinality</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.cardinality" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.children">
+<span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[ChildElement]</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.children" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.parents">
+<span class="sig-name descname"><span class="pre">parents</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[str]</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.parents" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.prefix">
+<span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.prefix" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.substitution_group">
+<span class="sig-name descname"><span class="pre">substitution_group</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional[str]</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.substitution_group" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.tag">
+<span class="sig-name descname"><span class="pre">tag</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.tag" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.GlobalElement.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.GlobalElement.type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">OcxSchema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#OcxSchema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocx_schema_parser.model.FrozenModel" title="ocx_schema_parser.model.FrozenModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenModel</span></code></a></p>
+<p>The fully resolved OCX schema.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.attribute_groups">
+<span class="sig-name descname"><span class="pre">attribute_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict[str,</span> <span class="pre">list[Attribute]]</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.attribute_groups" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.complex_types">
+<span class="sig-name descname"><span class="pre">complex_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[ComplexType]</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.complex_types" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.elements">
+<span class="sig-name descname"><span class="pre">elements</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[GlobalElement]</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.elements" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.enumerations">
+<span class="sig-name descname"><span class="pre">enumerations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[EnumType]</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.enumerations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#OcxSchema.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.get" title="Link to this definition"></a></dt>
+<dd><p>Look up a global element by <code class="docutils literal notranslate"><span class="pre">name</span></code> or <code class="docutils literal notranslate"><span class="pre">prefix:name</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="#ocx_schema_parser.model.GlobalElement" title="ocx_schema_parser.model.GlobalElement"><code class="xref py py-class docutils literal notranslate"><span class="pre">GlobalElement</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.namespaces">
+<span class="sig-name descname"><span class="pre">namespaces</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict[str,</span> <span class="pre">str]</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.namespaces" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.schema_changes">
+<span class="sig-name descname"><span class="pre">schema_changes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[SchemaChange]</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.schema_changes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.schema_version">
+<span class="sig-name descname"><span class="pre">schema_version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.schema_version" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.simple_types">
+<span class="sig-name descname"><span class="pre">simple_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list[SimpleType]</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.simple_types" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.substitution_groups">
+<span class="sig-name descname"><span class="pre">substitution_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict[str,</span> <span class="pre">list[str]]</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.substitution_groups" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.OcxSchema.target_namespace">
+<span class="sig-name descname"><span class="pre">target_namespace</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.OcxSchema.target_namespace" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SchemaChange">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">SchemaChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#SchemaChange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.SchemaChange" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocx_schema_parser.model.FrozenModel" title="ocx_schema_parser.model.FrozenModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenModel</span></code></a></p>
+<p>A SchemaChange appinfo record.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SchemaChange.author">
+<span class="sig-name descname"><span class="pre">author</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.SchemaChange.author" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SchemaChange.date">
+<span class="sig-name descname"><span class="pre">date</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.SchemaChange.date" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SchemaChange.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.SchemaChange.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SchemaChange.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.SchemaChange.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SchemaChange.version">
+<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.SchemaChange.version" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SimpleType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.model.</span></span><span class="sig-name descname"><span class="pre">SimpleType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/model.html#SimpleType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.model.SimpleType" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocx_schema_parser.model.FrozenModel" title="ocx_schema_parser.model.FrozenModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrozenModel</span></code></a></p>
+<p>A non-enumeration simple type with its restriction facets.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SimpleType.base">
+<span class="sig-name descname"><span class="pre">base</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.SimpleType.base" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SimpleType.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.SimpleType.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SimpleType.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ocx_schema_parser.model.SimpleType.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SimpleType.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.SimpleType.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SimpleType.prefix">
+<span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.SimpleType.prefix" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SimpleType.restriction">
+<span class="sig-name descname"><span class="pre">restriction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict[str,</span> <span class="pre">str]</span></em><a class="headerlink" href="#ocx_schema_parser.model.SimpleType.restriction" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocx_schema_parser.model.SimpleType.tag">
+<span class="sig-name descname"><span class="pre">tag</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ocx_schema_parser.model.SimpleType.tag" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="downloader">
+<h2>downloader<a class="headerlink" href="#downloader" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.downloader.SchemaDownloader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.downloader.</span></span><span class="sig-name descname"><span class="pre">SchemaDownloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/downloader.html#SchemaDownloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.downloader.SchemaDownloader" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Downloader</span></code></p>
+<p>Downloader specialisation: writes all referenced schemas into one folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>output</strong> – The path to the schema download folder.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ocx_schema_parser.downloader.SchemaDownloader.wget">
+<span class="sig-name descname"><span class="pre">wget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/downloader.html#SchemaDownloader.wget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.downloader.SchemaDownloader.wget" title="Link to this definition"></a></dt>
+<dd><p>Download <code class="docutils literal notranslate"><span class="pre">uri</span></code> (remote URI or local file path) with circular protection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ocx_schema_parser.errors.OcxParserError" title="ocx_schema_parser.errors.OcxParserError"><strong>OcxParserError</strong></a> – If the source cannot be fetched or parsed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ocx_schema_parser.downloader.SchemaDownloader.write_file">
+<span class="sig-name descname"><span class="pre">write_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ocx_schema_parser/downloader.html#SchemaDownloader.write_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.downloader.SchemaDownloader.write_file" title="Link to this definition"></a></dt>
+<dd><p>Write a downloaded schema into the single download folder.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ocx_schema_parser.cli">
+<span id="cli"></span><h2>cli<a class="headerlink" href="#module-ocx_schema_parser.cli" title="Link to this heading"></a></h2>
+<p>Command line interface: export the OCX schema model as JSON or list its entities.</p>
+</section>
+<section id="errors">
+<h2>errors<a class="headerlink" href="#errors" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ocx_schema_parser.errors.OcxParserError">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ocx_schema_parser.errors.</span></span><span class="sig-name descname"><span class="pre">OcxParserError</span></span><a class="reference internal" href="_modules/ocx_schema_parser/errors.html#OcxParserError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocx_schema_parser.errors.OcxParserError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when loading or resolving an OCX schema fails.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Contents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, 3Docx.org.
+      <span class="lastupdated">Last updated on Sep 07, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
