@@ -34,6 +34,28 @@ FRAGMENT = """<?xml version="1.0"?>
       </xs:restriction>
     </xs:simpleType>
   </xs:attribute>
+  <xs:attributeGroup name="prefixGroup">
+    <xs:attribute name="prefix">
+      <xs:annotation><xs:documentation>Inline enum in an attribute group.</xs:documentation></xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="k"/>
+          <xs:enumeration value="M"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:complexType name="Unit_T">
+    <xs:attribute name="unit" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="meter"/>
+          <xs:enumeration value="gram"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attributeGroup ref="t:prefixGroup"/>
+  </xs:complexType>
   <xs:simpleType name="functionType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="cargo oil"/>
@@ -80,6 +102,30 @@ def test_enumeration_inline_on_global_attribute(model):
     assert enum.description == "Inline enum on a global attribute."
 
 
+def test_enumeration_inline_in_attribute_group(model):
+    enums = {e.name: e for e in model.enumerations}
+    enum = enums["prefix"]
+    assert [v.value for v in enum.values] == ["M", "k"]
+    assert enum.description == "Inline enum in an attribute group."
+
+
+def test_enumeration_inline_on_local_attribute(model):
+    enums = {e.name: e for e in model.enumerations}
+    assert [v.value for v in enums["unit"].values] == ["gram", "meter"]
+
+
+def test_no_duplicate_enum_tags(model):
+    tags = [e.tag for e in model.enumerations]
+    assert len(tags) == len(set(tags))
+
+
+def test_inline_enum_attribute_type_is_prefixed_enum_name(model):
+    ct = {c.name: c for c in model.complex_types}["Unit_T"]
+    attrs = {a.name: a for a in ct.attributes}
+    assert attrs["unit"].type == "t:unit"
+    assert attrs["prefix"].type == "t:prefix"
+
+
 def test_simple_type_facets(model):
     st = {s.name: s for s in model.simple_types}["guid"]
     assert st.base == "xs:string"
@@ -121,3 +167,20 @@ def test_resolve_full_ocx_schema(ocx_model):
     assert len(ocx_model.substitution_groups) > 0
     names = [e.name for e in ocx_model.elements]
     assert names == sorted(names)
+
+
+def test_full_schema_unitsml_attribute_enums(ocx_model):
+    enums = {f"{e.prefix}:{e.name}": e for e in ocx_model.enumerations}
+    assert len(enums["unitsml:prefix"].values) == 27
+    assert len(enums["unitsml:unit"].values) == 243
+    ct = {c.name: c for c in ocx_model.complex_types}["EnumeratedRootUnitType"]
+    attrs = {a.name: a for a in ct.attributes}
+    assert attrs["prefix"].type == "unitsml:prefix"
+    assert attrs["unit"].type == "unitsml:unit"
+    assert attrs["powerNumerator"].type == "xs:byte"
+
+
+def test_full_schema_ocx_inline_enum_attribute_types(ocx_model):
+    cts = {c.name: c for c in ocx_model.complex_types}
+    bracket = {a.name: a for a in cts["Bracket_T"].attributes}
+    assert bracket["functionType"].type == "ocx:functionType"
