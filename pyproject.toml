@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ocx-schema-parser"
-version = "3.0.0"
+version = "3.1.0"
 description = "A python package for parsing the OCX schema and exporting it as a typed JSON model."
 readme = "README.md"
 authors = [
@@ -69,7 +69,7 @@ skip_covered = false
 github_url = "https://github.com/OCXStandard/ocx-schema-parser/"
 
 [tool.tbump.version]
-current = "3.0.0"
+current = "3.1.0"
 regex = '''
   (?P<major>\d+)
   \.
