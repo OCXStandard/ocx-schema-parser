@@ -285,15 +285,23 @@ class _Resolver:
         if use == "prohibited":
             return None
         type_ref = attr.type
-        if (
-            type_ref is None
-            and attr.simple_type is not None
-            and attr.simple_type.restriction
-        ):
-            type_ref = attr.simple_type.restriction.base
-        type_name = (
-            self.prefixed(self.qref(type_ref, schema)) if type_ref else "xs:string"
-        )
+        inline = attr.simple_type
+        restriction = inline.restriction if inline is not None else None
+        if type_ref is None and restriction is not None:
+            if restriction.enumerations:
+                # Inline enum: point at the synthesized EnumType instead of the base.
+                type_name = self.prefixed(
+                    f"{{{schema.target_namespace or ''}}}{attr.name}"
+                )
+            else:
+                base = restriction.base
+                type_name = (
+                    self.prefixed(self.qref(base, schema)) if base else "xs:string"
+                )
+        else:
+            type_name = (
+                self.prefixed(self.qref(type_ref, schema)) if type_ref else "xs:string"
+            )
         prefix, _ = self.split(f"{{{schema.target_namespace or ''}}}{attr.name}")
         return Attribute(
             name=attr.name or "",
@@ -781,15 +789,42 @@ class _Resolver:
             sorted(simple, key=lambda s: s.name),
         )
 
-    def _build_attribute_enums(self, taken: set[str]) -> list[EnumType]:
-        """Enums declared as anonymous simple types on global attributes."""
-        result: list[EnumType] = []
-        for tag, node in self.global_attributes.items():
-            attribute: xsd.Attribute = node.obj
-            inline = attribute.simple_type
+    def _inline_enum_attributes(self) -> list[tuple[str, xsd.Attribute]]:
+        """(tag, attribute) pairs for attributes carrying an inline enumeration."""
+
+        def candidates():
+            for node in self.global_attributes.values():
+                yield node.obj, node.schema
+            for node in self.attribute_groups.values():
+                for attr in node.obj.attributes:
+                    yield attr, node.schema
+            for node in self.complex_types.values():
+                for holder in _attribute_holders(node.obj):
+                    for attr in getattr(holder, "attributes", []) or []:
+                        yield attr, node.schema
+
+        result = []
+        for attr, schema in candidates():
+            inline = attr.simple_type
             restriction = inline.restriction if inline is not None else None
-            if restriction is None or not restriction.enumerations or tag in taken:
+            if attr.name and restriction is not None and restriction.enumerations:
+                tag = f"{{{schema.target_namespace or ''}}}{attr.name}"
+                result.append((tag, attr))
+        return result
+
+    def _build_attribute_enums(self, taken: set[str]) -> list[EnumType]:
+        """Enums declared as anonymous simple types on attributes.
+
+        Covers global attributes plus local attributes declared inside
+        attribute groups and complex types.
+        """
+        result: list[EnumType] = []
+        for tag, attribute in self._inline_enum_attributes():
+            if tag in taken:
                 continue
+            taken.add(tag)
+            inline = attribute.simple_type
+            restriction = inline.restriction
             prefix, local = self.split(tag)
             values = sorted(
                 (

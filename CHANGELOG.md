@@ -13,7 +13,9 @@ and this project adheres to the Python [PEP 440 versioning recommendations](http
 * ``Fixed`` for any bug fixes.
 * ``Security`` in case of vulnerabilities.
 
-## [Unreleased]
+## [3.1.0] - 2026-09-07
+
+bump to [v3.1.0](https://github.com/OCXStandard/ocx-schema-parser/releases/tag/v3.1.0)
 
 ### Added
 
@@ -32,6 +34,15 @@ and this project adheres to the Python [PEP 440 versioning recommendations](http
 
 * Enumerations declared as anonymous simple types on global attributes
   (e.g. `ocx:liquidCargoType`, `ocx:grade`) are now resolved and listed.
+* Inline attribute enumerations declared on local attributes inside
+  `xsd:attributeGroup`s or complex types (e.g. `unitsml:prefix`,
+  `unitsml:unit`) are now synthesized as `EnumType`s too; previously only
+  global attributes were scanned.
+* Attributes carrying an inline enumeration now resolve their `type` to the
+  synthesized enum's prefixed name (e.g. `Bracket.functionType` →
+  `ocx:functionType`, `EnumeratedRootUnit.prefix` → `unitsml:prefix`)
+  instead of the restriction base type, so consumers can link attributes to
+  their enumerations.
 
 ## [3.0.0] - 2026-08-20
 

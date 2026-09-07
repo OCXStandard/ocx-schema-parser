@@ -46,6 +46,11 @@ vessel = model.get("ocx:Vessel")
 print(vessel.description)
 print([a.name for a in vessel.attributes])
 print(model.model_dump_json(indent=2))  # full JSON export
+
+# Attributes with inline enumerations reference their EnumType by prefixed
+# name (e.g. "ocx:functionType", "unitsml:prefix"), so attribute types can
+# be looked up in model.enumerations.
+enums = {f"{e.prefix}:{e.name}": e for e in model.enumerations}
 ```
 
 ## API documentation

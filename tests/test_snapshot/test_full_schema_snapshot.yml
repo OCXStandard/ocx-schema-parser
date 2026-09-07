@@ -5,7 +5,7 @@ attribute_groups:
     fixed: null
     name: manufacture
     prefix: ocx
-    type: xs:string
+    type: ocx:manufacture
     use: optional
   - default: null
     description: Section  short id.
@@ -44,7 +44,7 @@ attribute_groups:
     fixed: null
     name: geometryFormat
     prefix: ocx
-    type: xs:string
+    type: ocx:geometryFormat
     use: optional
   header:
   - default: null
@@ -185,7 +185,7 @@ attribute_groups:
     fixed: null
     name: prefix
     prefix: unitsml
-    type: xs:token
+    type: unitsml:prefix
     use: optional
   sourceName:
   - default: null
@@ -230,7 +230,7 @@ attribute_groups:
     fixed: null
     name: space
     prefix: xml
-    type: xs:NCName
+    type: xml:space
     use: optional
 complex_types:
 - abstract: false
@@ -394,7 +394,7 @@ complex_types:
     fixed: null
     name: manufacture
     prefix: ocx
-    type: xs:string
+    type: ocx:manufacture
     use: optional
   - default: null
     description: An optional descriptive or display name.
@@ -848,7 +848,7 @@ complex_types:
     fixed: null
     name: reinforcementType
     prefix: ocx
-    type: xs:string
+    type: ocx:reinforcementType
     use: optional
   children:
   - cardinality:
@@ -1013,7 +1013,7 @@ complex_types:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -1314,7 +1314,7 @@ complex_types:
     fixed: null
     name: bulkCargoType
     prefix: ocx
-    type: xs:string
+    type: ocx:bulkCargoType
     use: optional
   children:
   - cardinality:
@@ -1426,7 +1426,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children:
   - cardinality:
@@ -1499,7 +1499,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children: []
   description: Type definition
@@ -2311,7 +2311,7 @@ complex_types:
     fixed: null
     name: compartmentPurpose
     prefix: ocx
-    type: xs:string
+    type: ocx:compartmentPurpose
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -2733,7 +2733,7 @@ complex_types:
     fixed: null
     name: position
     prefix: ocx
-    type: xs:string
+    type: ocx:position
     use: optional
   children: []
   description: Type definition of a connected bracket part of a ConnectionConfiguration.
@@ -3854,7 +3854,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children:
   - cardinality:
@@ -3909,7 +3909,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children:
   - cardinality:
@@ -3948,7 +3948,7 @@ complex_types:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -4273,7 +4273,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children: []
   description: Type definition
@@ -4481,7 +4481,7 @@ complex_types:
     fixed: null
     name: prefix
     prefix: unitsml
-    type: xs:token
+    type: unitsml:prefix
     use: optional
   - default: null
     description: Relevant URL for available information.
@@ -4496,7 +4496,7 @@ complex_types:
     fixed: null
     name: unit
     prefix: unitsml
-    type: xs:token
+    type: unitsml:unit
     use: required
   children: []
   description: Type for the element for a root unit (from an extensive enumerated
@@ -4659,7 +4659,7 @@ complex_types:
     fixed: null
     name: geometryFormat
     prefix: ocx
-    type: xs:string
+    type: ocx:geometryFormat
     use: optional
   children: []
   description: ''
@@ -5127,7 +5127,7 @@ complex_types:
     fixed: null
     name: liquidCargoType
     prefix: ocx
-    type: xs:string
+    type: ocx:liquidCargoType
     use: optional
   - default: 'false'
     description: Set to True if the gaseous cargo is carried in a liquid state.
@@ -5256,7 +5256,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children:
   - cardinality:
@@ -5616,7 +5616,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children: []
   description: Type definition
@@ -5660,7 +5660,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children: []
   description: Type definition
@@ -6246,7 +6246,7 @@ complex_types:
     fixed: null
     name: liquidCargoType
     prefix: ocx
-    type: xs:string
+    type: ocx:liquidCargoType
     use: optional
   children:
   - cardinality:
@@ -6449,7 +6449,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children: []
   description: Type definition
@@ -6476,7 +6476,7 @@ complex_types:
     fixed: null
     name: grade
     prefix: ocx
-    type: xs:string
+    type: ocx:grade
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -7267,7 +7267,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children:
   - cardinality:
@@ -7306,7 +7306,7 @@ complex_types:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -7330,7 +7330,7 @@ complex_types:
     fixed: null
     name: tightness
     prefix: ocx
-    type: xs:string
+    type: ocx:tightness
     use: optional
   children:
   - cardinality:
@@ -7615,7 +7615,7 @@ complex_types:
     fixed: null
     name: tightness
     prefix: ocx
-    type: xs:string
+    type: ocx:tightness
     use: optional
   children:
   - cardinality:
@@ -7802,7 +7802,7 @@ complex_types:
     fixed: null
     name: compartmentPurpose
     prefix: ocx
-    type: xs:string
+    type: ocx:compartmentPurpose
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -7986,7 +7986,7 @@ complex_types:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -8340,7 +8340,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children:
   - cardinality:
@@ -8414,7 +8414,7 @@ complex_types:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -8720,7 +8720,7 @@ complex_types:
     fixed: null
     name: freeboardType
     prefix: ocx
-    type: xs:string
+    type: ocx:freeboardType
     use: optional
   - default: null
     description: Whether the vessel has a bilge keel or not.
@@ -9624,7 +9624,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children:
   - cardinality:
@@ -9820,7 +9820,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children:
   - cardinality:
@@ -9930,7 +9930,7 @@ complex_types:
     fixed: null
     name: slotType
     prefix: ocx
-    type: xs:string
+    type: ocx:slotType
     use: optional
   children:
   - cardinality:
@@ -10220,7 +10220,7 @@ complex_types:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   children:
   - cardinality:
@@ -10259,7 +10259,7 @@ complex_types:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -11365,7 +11365,7 @@ complex_types:
     fixed: null
     name: unitCargoType
     prefix: ocx
-    type: xs:string
+    type: ocx:unitCargoType
     use: optional
   children: []
   description: Type definition of dry cargo properties, reference is made to ISO 10303-215:2004.
@@ -11887,7 +11887,7 @@ complex_types:
     fixed: null
     name: position
     prefix: ocx
-    type: xs:string
+    type: ocx:position
     use: optional
   children: []
   description: Type definition of WebStiffener connection.
@@ -12559,7 +12559,7 @@ elements:
     fixed: null
     name: manufacture
     prefix: ocx
-    type: xs:string
+    type: ocx:manufacture
     use: optional
   - default: null
     description: An optional descriptive or display name.
@@ -13084,7 +13084,7 @@ elements:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -13280,7 +13280,7 @@ elements:
     fixed: null
     name: reinforcementType
     prefix: ocx
-    type: xs:string
+    type: ocx:reinforcementType
     use: optional
   cardinality:
     lower: 1
@@ -13429,7 +13429,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -13723,7 +13723,7 @@ elements:
     fixed: null
     name: bulkCargoType
     prefix: ocx
-    type: xs:string
+    type: ocx:bulkCargoType
     use: optional
   cardinality:
     lower: 1
@@ -13950,7 +13950,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -14033,7 +14033,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -14669,7 +14669,7 @@ elements:
     fixed: null
     name: compartmentPurpose
     prefix: ocx
-    type: xs:string
+    type: ocx:compartmentPurpose
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -15263,7 +15263,7 @@ elements:
     fixed: null
     name: position
     prefix: ocx
-    type: xs:string
+    type: ocx:position
     use: optional
   cardinality:
     lower: 1
@@ -15465,7 +15465,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -17079,7 +17079,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -17125,7 +17125,7 @@ elements:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -17300,7 +17300,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -17791,7 +17791,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -17912,7 +17912,7 @@ elements:
     fixed: null
     name: prefix
     prefix: unitsml
-    type: xs:token
+    type: unitsml:prefix
     use: optional
   - default: null
     description: Relevant URL for available information.
@@ -17927,7 +17927,7 @@ elements:
     fixed: null
     name: unit
     prefix: unitsml
-    type: xs:token
+    type: unitsml:unit
     use: required
   cardinality:
     lower: 1
@@ -18105,7 +18105,7 @@ elements:
     fixed: null
     name: geometryFormat
     prefix: ocx
-    type: xs:string
+    type: ocx:geometryFormat
     use: optional
   cardinality:
     lower: 1
@@ -19011,7 +19011,7 @@ elements:
     fixed: null
     name: liquidCargoType
     prefix: ocx
-    type: xs:string
+    type: ocx:liquidCargoType
     use: optional
   - default: 'false'
     description: Set to True if the gaseous cargo is carried in a liquid state.
@@ -19151,7 +19151,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -19597,7 +19597,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -19646,7 +19646,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -20507,7 +20507,7 @@ elements:
     fixed: null
     name: liquidCargoType
     prefix: ocx
-    type: xs:string
+    type: ocx:liquidCargoType
     use: optional
   cardinality:
     lower: 1
@@ -20679,7 +20679,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -20834,7 +20834,7 @@ elements:
     fixed: null
     name: grade
     prefix: ocx
-    type: xs:string
+    type: ocx:grade
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -21046,7 +21046,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -22159,7 +22159,7 @@ elements:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -22183,7 +22183,7 @@ elements:
     fixed: null
     name: tightness
     prefix: ocx
-    type: xs:string
+    type: ocx:tightness
     use: optional
   cardinality:
     lower: 1
@@ -22345,7 +22345,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -22515,7 +22515,7 @@ elements:
     fixed: null
     name: tightness
     prefix: ocx
-    type: xs:string
+    type: ocx:tightness
     use: optional
   cardinality:
     lower: 1
@@ -22742,7 +22742,7 @@ elements:
     fixed: null
     name: compartmentPurpose
     prefix: ocx
-    type: xs:string
+    type: ocx:compartmentPurpose
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -22895,7 +22895,7 @@ elements:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -23100,7 +23100,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -23251,7 +23251,7 @@ elements:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -23492,7 +23492,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -23552,7 +23552,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -23810,7 +23810,7 @@ elements:
     fixed: null
     name: freeboardType
     prefix: ocx
-    type: xs:string
+    type: ocx:freeboardType
     use: optional
   - default: null
     description: Whether the vessel has a bilge keel or not.
@@ -24969,7 +24969,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -25325,7 +25325,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -25594,7 +25594,7 @@ elements:
     fixed: null
     name: slotType
     prefix: ocx
-    type: xs:string
+    type: ocx:slotType
     use: optional
   cardinality:
     lower: 1
@@ -25977,7 +25977,7 @@ elements:
     fixed: null
     name: functionType
     prefix: ocx
-    type: xs:string
+    type: ocx:functionType
     use: optional
   - default: null
     description: An identifier for an element unique within the scope of the XML file.
@@ -26213,7 +26213,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -26657,7 +26657,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -27710,7 +27710,7 @@ elements:
     fixed: null
     name: unitCargoType
     prefix: ocx
-    type: xs:string
+    type: ocx:unitCargoType
     use: optional
   cardinality:
     lower: 1
@@ -28380,7 +28380,7 @@ elements:
     fixed: null
     name: refType
     prefix: ocx
-    type: xs:QName
+    type: ocx:refType
     use: optional
   cardinality:
     lower: 1
@@ -28632,7 +28632,7 @@ elements:
     fixed: null
     name: position
     prefix: ocx
-    type: xs:string
+    type: ocx:position
     use: optional
   cardinality:
     lower: 1
@@ -29866,6 +29866,66 @@ enumerations:
     value: Far side
   - description: The bracket is at the near side of a penetration.
     value: Near side
+- description: Prefix identifier; e.g., m, k, M, G.  [Enumeration order is by prefix
+    magnitude (Y to y) followed by binary prefixes.]
+  name: prefix
+  prefix: unitsml
+  tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}prefix'
+  values:
+  - description: 'exbi: exabinary'
+    value: Ei
+  - description: 'tera: trillion'
+    value: G
+  - description: 'mebi: magabinary'
+    value: Gi
+  - description: 'yocto: septillionth'
+    value: Ki
+  - description: 'giga: billion'
+    value: M
+  - description: 'kibi: kilobinary'
+    value: Mi
+  - description: 'exa: quintillion'
+    value: P
+  - description: 'tebi: terabinary'
+    value: Pi
+  - description: 'peta: quadrillion'
+    value: T
+  - description: 'gibi: gigabinary'
+    value: Ti
+  - description: 'yotta: septillion'
+    value: Y
+  - description: 'yobi: yottabinary'
+    value: Yi
+  - description: 'zetta: sextillion'
+    value: Z
+  - description: 'pebi: petabinary'
+    value: Zi
+  - description: 'femto: quadrillionth'
+    value: a
+  - description: 'deci: tenth'
+    value: c
+  - description: 'deca: ten'
+    value: d
+  - description: 'hecto: hundred'
+    value: da
+  - description: 'pico: trillionth'
+    value: f
+  - description: 'kilo: thousand'
+    value: h
+  - description: 'mega: million'
+    value: k
+  - description: 'centi: hundredth'
+    value: m
+  - description: 'micro: millonth'
+    value: n
+  - description: 'nano: billonth'
+    value: p
+  - description: 'milli: thousandth'
+    value: u
+  - description: 'zepto: sextillionth:'
+    value: y
+  - description: 'atto: quintillionth'
+    value: z
 - description: The OCX entity type which is referenced. Must be a qualified OCX name.
   name: refType
   prefix: ocx
@@ -29951,6 +30011,498 @@ enumerations:
     value: Undefined
   - description: The panel or plate in water tight.
     value: WaterTight
+- description: Unit identifier; the enumerated list is basically English unit names
+    in lowercase, with a few upper case exceptions, e.g., 32F, mmHg, pH.
+  name: unit
+  prefix: unitsml
+  tag: '{urn:oasis:names:tc:unitsml:schema:xsd:UnitsMLSchema_lite-0.9.18}unit'
+  values:
+  - description: ''
+    value: 0C_cm_Hg
+  - description: ''
+    value: 32F_in_Hg
+  - description: ''
+    value: 39F_btu
+  - description: ''
+    value: 39F_ft_water
+  - description: ''
+    value: 39F_in_water
+  - description: ''
+    value: 4C_cm_water
+  - description: ''
+    value: 59F_btu
+  - description: ''
+    value: 60F_btu
+  - description: ''
+    value: 60F_in_Hg
+  - description: ''
+    value: 60F_in_water
+  - description: ''
+    value: abampere
+  - description: ''
+    value: abcoulomb
+  - description: ''
+    value: abfarad
+  - description: ''
+    value: abhenry
+  - description: ''
+    value: abmho
+  - description: ''
+    value: abohm
+  - description: ''
+    value: abvolt
+  - description: ''
+    value: abwatt
+  - description: ''
+    value: ampere
+  - description: ''
+    value: angstrom
+  - description: ''
+    value: apothecaries_dram
+  - description: ''
+    value: arc_degree
+  - description: ''
+    value: arc_minute
+  - description: ''
+    value: arc_second
+  - description: ''
+    value: are
+  - description: ''
+    value: astronomical_unit
+  - description: ''
+    value: atomic_unit_of_1st_hyperpolarizablity
+  - description: ''
+    value: atomic_unit_of_2nd_hyperpolarizablity
+  - description: ''
+    value: atomic_unit_of_action
+  - description: ''
+    value: atomic_unit_of_charge
+  - description: ''
+    value: atomic_unit_of_charge_density
+  - description: ''
+    value: atomic_unit_of_current
+  - description: ''
+    value: atomic_unit_of_electric_dipole_moment
+  - description: ''
+    value: atomic_unit_of_electric_field
+  - description: ''
+    value: atomic_unit_of_electric_field_gradient
+  - description: ''
+    value: atomic_unit_of_electric_polarizablity
+  - description: ''
+    value: atomic_unit_of_electric_potential
+  - description: ''
+    value: atomic_unit_of_electric_quadrupole_moment
+  - description: ''
+    value: atomic_unit_of_energy
+  - description: ''
+    value: atomic_unit_of_force
+  - description: ''
+    value: atomic_unit_of_length
+  - description: ''
+    value: atomic_unit_of_magnetic_dipole_moment
+  - description: ''
+    value: atomic_unit_of_magnetic_flux_density
+  - description: ''
+    value: atomic_unit_of_magnetizability
+  - description: ''
+    value: atomic_unit_of_mass
+  - description: ''
+    value: atomic_unit_of_momentum
+  - description: ''
+    value: atomic_unit_of_permittivity
+  - description: ''
+    value: atomic_unit_of_time
+  - description: ''
+    value: atomic_unit_of_velocity
+  - description: ''
+    value: bar
+  - description: ''
+    value: barn
+  - description: ''
+    value: barye
+  - description: ''
+    value: becquerel
+  - description: ''
+    value: bel
+  - description: ''
+    value: boiler_horsepower
+  - description: ''
+    value: candela
+  - description: ''
+    value: carat
+  - description: ''
+    value: circular_mil
+  - description: ''
+    value: cm_Hg
+  - description: ''
+    value: cm_water
+  - description: ''
+    value: computer_pica
+  - description: ''
+    value: computer_point
+  - description: ''
+    value: coulomb
+  - description: ''
+    value: curie
+  - description: ''
+    value: darcy
+  - description: ''
+    value: day
+  - description: ''
+    value: debye
+  - description: ''
+    value: degree_Celsius
+  - description: ''
+    value: degree_Fahrenheit
+  - description: ''
+    value: degree_Rankine
+  - description: ''
+    value: denier
+  - description: ''
+    value: dram
+  - description: ''
+    value: dyne
+  - description: ''
+    value: ec_therm
+  - description: ''
+    value: electric_horsepower
+  - description: ''
+    value: electronvolt
+  - description: ''
+    value: erg
+  - description: ''
+    value: farad
+  - description: ''
+    value: foot
+  - description: ''
+    value: footcandle
+  - description: ''
+    value: footlambert
+  - description: ''
+    value: ft_Hg
+  - description: ''
+    value: ft_water
+  - description: ''
+    value: gal
+  - description: ''
+    value: gauss
+  - description: ''
+    value: gilbert
+  - description: ''
+    value: gon
+  - description: ''
+    value: grain
+  - description: ''
+    value: gram
+  - description: ''
+    value: gray
+  - description: ''
+    value: gross_hundredweight
+  - description: ''
+    value: hectare
+  - description: ''
+    value: henry
+  - description: ''
+    value: hertz
+  - description: ''
+    value: horsepower
+  - description: ''
+    value: hour
+  - description: ''
+    value: hundredweight
+  - description: ''
+    value: imperial_gallon
+  - description: ''
+    value: imperial_gill
+  - description: ''
+    value: imperial_ounce
+  - description: ''
+    value: imperial_pint
+  - description: ''
+    value: imperial_quart
+  - description: ''
+    value: in_Hg
+  - description: ''
+    value: in_water
+  - description: ''
+    value: inch
+  - description: ''
+    value: joule
+  - description: ''
+    value: katal
+  - description: ''
+    value: kayser
+  - description: ''
+    value: kelvin
+  - description: ''
+    value: kilogram_force
+  - description: ''
+    value: kip
+  - description: ''
+    value: knot
+  - description: ''
+    value: lambert
+  - description: ''
+    value: light_year
+  - description: ''
+    value: liter
+  - description: ''
+    value: long_ton
+  - description: ''
+    value: lumen
+  - description: ''
+    value: lux
+  - description: ''
+    value: maxwell
+  - description: ''
+    value: mean_btu
+  - description: ''
+    value: meter
+  - description: ''
+    value: metric_horsepower
+  - description: ''
+    value: metric_ton
+  - description: ''
+    value: mile
+  - description: ''
+    value: minute
+  - description: ''
+    value: mm_Hg
+  - description: ''
+    value: mm_water
+  - description: ''
+    value: mole
+  - description: ''
+    value: nato_mil
+  - description: ''
+    value: natural_unit_of_action
+  - description: ''
+    value: natural_unit_of_action_in_eV_s
+  - description: ''
+    value: natural_unit_of_energy
+  - description: ''
+    value: natural_unit_of_energy_in_MeV
+  - description: ''
+    value: natural_unit_of_length
+  - description: ''
+    value: natural_unit_of_mass
+  - description: ''
+    value: natural_unit_of_momentum
+  - description: ''
+    value: natural_unit_of_momentum_in_MeV_per_c
+  - description: ''
+    value: natural_unit_of_time
+  - description: ''
+    value: natural_unit_of_velocity
+  - description: ''
+    value: nautical_mile
+  - description: ''
+    value: neper
+  - description: ''
+    value: newton
+  - description: ''
+    value: oersted
+  - description: ''
+    value: ohm
+  - description: ''
+    value: ounce
+  - description: ''
+    value: pH
+  - description: ''
+    value: parsec
+  - description: ''
+    value: pascal
+  - description: ''
+    value: pennyweight
+  - description: ''
+    value: petro_barrel
+  - description: ''
+    value: phot
+  - description: ''
+    value: poise
+  - description: ''
+    value: pound
+  - description: ''
+    value: pound_force
+  - description: ''
+    value: pound_mole
+  - description: ''
+    value: poundal
+  - description: ''
+    value: printers_pica
+  - description: ''
+    value: printers_point
+  - description: ''
+    value: rad
+  - description: ''
+    value: radian
+  - description: ''
+    value: rem
+  - description: ''
+    value: rhe
+  - description: ''
+    value: roentgen
+  - description: ''
+    value: scruple
+  - description: ''
+    value: second
+  - description: ''
+    value: shake
+  - description: ''
+    value: short_ton
+  - description: ''
+    value: sidereal_day
+  - description: ''
+    value: sidereal_hour
+  - description: ''
+    value: sidereal_minute
+  - description: ''
+    value: sidereal_second
+  - description: ''
+    value: sidereal_year
+  - description: ''
+    value: siemens
+  - description: ''
+    value: sievert
+  - description: ''
+    value: slug
+  - description: ''
+    value: standard_atmosphere
+  - description: ''
+    value: statampere
+  - description: ''
+    value: statcoulomb
+  - description: ''
+    value: statfarad
+  - description: ''
+    value: stathenry
+  - description: ''
+    value: statmho
+  - description: ''
+    value: statohm
+  - description: ''
+    value: stattesla
+  - description: ''
+    value: statvolt
+  - description: ''
+    value: statwatt
+  - description: ''
+    value: statweber
+  - description: ''
+    value: steradian
+  - description: ''
+    value: stilb
+  - description: ''
+    value: stokes
+  - description: ''
+    value: table_btu
+  - description: ''
+    value: table_calorie
+  - description: ''
+    value: table_kg_calorie
+  - description: ''
+    value: technical_atmosphere
+  - description: ''
+    value: tesla
+  - description: ''
+    value: tex
+  - description: ''
+    value: thermo_btu
+  - description: ''
+    value: thermo_calorie
+  - description: ''
+    value: thermo_kg_calorie
+  - description: ''
+    value: ton_force
+  - description: ''
+    value: ton_refrigeration
+  - description: ''
+    value: tons_of_tnt
+  - description: ''
+    value: torr
+  - description: ''
+    value: tropical_year
+  - description: ''
+    value: troy_ounce
+  - description: ''
+    value: troy_pound
+  - description: ''
+    value: uk_horsepower
+  - description: ''
+    value: unified_atomic_mass_unit
+  - description: ''
+    value: us_acre
+  - description: ''
+    value: us_bushel
+  - description: ''
+    value: us_cup
+  - description: ''
+    value: us_dry_pint
+  - description: ''
+    value: us_dry_quart
+  - description: ''
+    value: us_fill
+  - description: ''
+    value: us_fluid_dram
+  - description: ''
+    value: us_fluid_ounce
+  - description: ''
+    value: us_gallon
+  - description: ''
+    value: us_label_cup
+  - description: ''
+    value: us_label_fluid_ounce
+  - description: ''
+    value: us_label_ounce
+  - description: ''
+    value: us_label_tablespoon
+  - description: ''
+    value: us_label_teaspoon
+  - description: ''
+    value: us_minim
+  - description: ''
+    value: us_peck
+  - description: ''
+    value: us_pint
+  - description: ''
+    value: us_quart
+  - description: ''
+    value: us_survey_chain
+  - description: ''
+    value: us_survey_fathom
+  - description: ''
+    value: us_survey_foot
+  - description: ''
+    value: us_survey_furlong
+  - description: ''
+    value: us_survey_inch
+  - description: ''
+    value: us_survey_link
+  - description: ''
+    value: us_survey_mile
+  - description: ''
+    value: us_survey_rod
+  - description: ''
+    value: us_survey_yard
+  - description: ''
+    value: us_tablespoon
+  - description: ''
+    value: us_teaspoon
+  - description: ''
+    value: us_therm
+  - description: ''
+    value: volt
+  - description: ''
+    value: water_horsepower
+  - description: ''
+    value: watt
+  - description: ''
+    value: weber
+  - description: ''
+    value: yard
+  - description: ''
+    value: year_365
 - description: Unit  cargo types after ISO 10303-215:2004.
   name: unitCargoType
   prefix: ocx
